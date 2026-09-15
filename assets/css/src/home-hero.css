@@ -1,0 +1,35 @@
+/* ============================================
+   HOME HERO (upa-hmhi-*)
+   Component classes specific to the homepage hero.
+   ============================================ */
+
+@layer components {
+
+  /* Small bold label above the main heading */
+  .upa-hmhi-eyebrow {
+    @apply text-normal font-bold text-upa-navy;
+  }
+
+  /* Rounded image frame with navy border, matches Canva mock */
+  .upa-hmhi-image-frame {
+    @apply rounded-upa-lg border-2 border-upa-navy overflow-hidden;
+  }
+
+  /* Search bar - pill container clipping input + icon button */
+  .upa-hmhi-search {
+    @apply flex items-stretch border-2 border-upa-navy rounded-full overflow-hidden bg-white w-full;
+  }
+
+  .upa-hmhi-search-input {
+    @apply flex-1 min-w-0 pl-5 pr-2 py-3 text-sm text-upa-navy placeholder-gray-400 outline-none bg-transparent;
+  }
+
+  .upa-hmhi-search-btn {
+    @apply flex items-center justify-center bg-upa-navy text-white w-12 flex-shrink-0 hover:bg-upa-green transition-colors;
+  }
+
+  /* Quick-filter chip pills below the search bar */
+  .upa-hmhi-chip {
+    @apply flex items-center gap-1.5 border border-gray-300 rounded-full px-3 py-1.5 text-xs text-upa-navy hover:border-upa-green hover:text-upa-green transition-colors;
+  }
+}

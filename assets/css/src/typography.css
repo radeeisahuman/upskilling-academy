@@ -1,0 +1,23 @@
+/* ============================================
+   TYPOGRAPHY COMPONENTS
+   Bundles size + weight + color so you don't
+   have to stack 3 utilities every time.
+   ============================================ */
+
+@layer components {
+  .upa-page-header {
+    @apply text-page-header font-bold text-upa-navy;
+  }
+
+  .upa-sec-header {
+    @apply text-sec-header font-bold text-upa-navy;
+  }
+
+  .upa-txt-normal {
+    @apply text-normal font-normal text-upa-navy;
+  }
+
+  .upa-txt-sm {
+    @apply text-xs font-light text-upa-navy;
+  }
+}

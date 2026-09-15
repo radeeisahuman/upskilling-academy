@@ -1,0 +1,48 @@
+/* ============================================
+   REUSABLE SECTION COMPONENTS
+   Put classes for sections repeated across pages
+   here (e.g. .upa-hero, .upa-card, .upa-footer).
+   Keeping these separate makes the later WordPress
+   template-part split much easier.
+   ============================================ */
+
+@layer components {
+
+  /* ============================================
+     STACKED SLIDER (.upa-stack-swiper)
+     Add next to .swiper on any card slider. Below md the section's
+     script runs Swiper's creative effect: active card on top,
+     prev/next scaled down behind it and peeking out each side.
+     Used by popular courses (mobile), bundle CTA and learner reviews.
+     The section needs overflow-hidden so the side cards can't
+     cause horizontal scroll on narrow phones.
+     ============================================ */
+
+  /* Equal-height cards across slides */
+  .upa-stack-swiper .swiper-wrapper {
+    @apply items-stretch;
+  }
+
+  .upa-stack-swiper .swiper-slide {
+    @apply h-auto!;
+  }
+
+  /* Narrowed to the active card's width so the side cards have room
+     to peek out. md:w-full restores full width for row sliders. */
+  .upa-stack-swiper {
+    @apply w-[78%] md:w-full;
+  }
+
+  /* Swiper adds .swiper-creative only while the stacked config runs.
+     The ! beats Swiper's own CDN CSS, which is unlayered and so
+     outranks anything in this layer. */
+  .upa-stack-swiper.swiper-creative,
+  .upa-stack-swiper.swiper-creative .swiper-slide {
+    @apply overflow-visible!;
+  }
+
+  /* Separates the active card from the cards behind it */
+  .upa-stack-swiper.swiper-creative .swiper-slide > * {
+    @apply shadow-upa-md;
+  }
+}

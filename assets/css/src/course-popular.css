@@ -1,0 +1,63 @@
+/* ============================================
+   POPULAR COURSES (upa-popcrs-*)
+   Component classes for course cards used in both
+   the desktop grid and the mobile Swiper carousel.
+   ============================================ */
+
+@layer components {
+
+  .upa-popcrs-card {
+    @apply flex flex-col border border-upa-green rounded-upa-lg overflow-hidden bg-white h-full p-2;
+  }
+
+  .upa-popcrs-image-wrap {
+    @apply relative w-full aspect-[4/3] overflow-hidden rounded-xl;
+  }
+
+  .upa-popcrs-image-wrap img {
+    @apply w-full h-full object-cover;
+  }
+
+  /* Diagonal "SALE" ribbon - conditional, only on discounted courses */
+  .upa-popcrs-sale-clip {
+    @apply absolute top-0 right-0 w-24 h-24 overflow-hidden pointer-events-none;
+  }
+
+  .upa-popcrs-sale-ribbon {
+    @apply absolute top-[18px] right-[-34px] w-[140px] rotate-45 bg-upa-red text-white text-xs font-bold text-center py-1 uppercase;
+  }
+
+  .upa-popcrs-body {
+    @apply flex flex-col gap-2 pt-4 px-2 pb-2 flex-1;
+  }
+
+  /* "Free PDF Certificate" pill badge */
+  .upa-popcrs-badge {
+    @apply inline-block w-fit bg-upa-peach/20 text-upa-navy text-xs font-bold rounded-full px-3 py-1;
+  }
+
+  .upa-popcrs-stars {
+    @apply flex items-center gap-0.5;
+  }
+
+  .upa-popcrs-price-row {
+    @apply flex items-center justify-between gap-2 mt-auto pt-2;
+  }
+
+  .upa-popcrs-price-new {
+    @apply text-upa-navy font-bold text-2xl;
+  }
+
+  .upa-popcrs-price-old {
+    @apply text-upa-red line-through text-normal;
+  }
+
+  /* Swiper pagination dots (mobile carousel) */
+  .upa-popcrs-dot {
+    @apply w-2 h-2 rounded-full bg-gray-300 cursor-pointer transition-all;
+  }
+
+  .upa-popcrs-dot-active {
+    @apply w-5 rounded-full bg-upa-green;
+  }
+}

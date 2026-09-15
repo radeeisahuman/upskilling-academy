@@ -1,0 +1,42 @@
+/* ============================================
+   THEME TOKENS (Tailwind v4)
+   Anything defined here auto-generates BOTH
+   a CSS variable (--color-upa-navy) AND a
+   Tailwind utility class (bg-upa-navy, text-upa-navy, etc).
+   ============================================ */
+
+@theme {
+  /* ===== Colors ===== */
+  --color-upa-primary: #ffffff;
+  --color-upa-navy: #02274a;
+  --color-upa-green: #00cb90;
+  --color-upa-green-2: #eefffa;
+  --color-upa-peach: #ffbd59;
+  --color-upa-gray: #f7f7f7;
+  --color-upa-red: #ef0000;
+
+  /* ===== Font family ===== */
+  --font-sans: 'Montserrat', system-ui, sans-serif;
+
+  /* ===== Font sizes (namespace is --text-*, becomes text-* utilities) ===== */
+  --text-page-header: 2.5rem;
+  --text-page-header--line-height: 1.2;
+
+  --text-sec-header: 1.5rem;
+  --text-sec-header--line-height: 1.2;
+
+  --text-normal: 1rem;
+  --text-normal--line-height: 1.6;
+
+  --text-xs: 0.75rem;
+  --text-xs--line-height: 1.6;
+
+  /* ===== Border radius ===== */
+  --radius-upa-sm: 4px;
+  --radius-upa-md: 8px;
+  --radius-upa-lg: 16px;
+
+  /* ===== Shadows ===== */
+  --shadow-upa-sm: 0 1px 2px rgba(2, 39, 74, 0.08);
+  --shadow-upa-md: 0 4px 12px rgba(2, 39, 74, 0.12);
+}

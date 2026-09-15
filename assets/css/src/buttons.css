@@ -1,0 +1,91 @@
+/* ============================================
+   BUTTONS — vertical fill-sweep (top → down)
+   ============================================ */
+
+@layer components {
+  /* Base variant — green bg → peach hover, usable on its own */
+  .upa-btn {
+    --_bg-base: var(--color-upa-green);
+    --_bg-hover: var(--color-upa-peach);
+    --_text-base: var(--color-upa-primary);
+    --_text-hover: var(--color-upa-navy);
+
+    position: relative;
+    z-index: 1;
+    overflow: hidden;
+    display: inline-block;
+
+    background: var(--_bg-base) !important;
+    color: var(--_text-base);
+    border: none !important;
+    padding: 0.6rem 1.2rem;
+    border-radius: 200px;
+    font-weight: 700;
+    text-decoration: none;
+    cursor: pointer;
+
+    transition: color 0s ease 0.1s;
+  }
+
+  .upa-btn:hover,
+  .upa-btn:focus,
+  .upa-btn:target {
+    background: var(--_bg-base) !important;
+    color: var(--_text-hover);
+  }
+
+  .upa-btn::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    bottom: auto; /* anchored to TOP edge → grows downward */
+    height: 0%;
+    z-index: -1;
+
+    background: var(--_bg-hover);
+    transition: height 0.4s ease;
+  }
+
+  .upa-btn:hover::before,
+  .upa-btn:focus::before,
+  .upa-btn:target::before {
+    height: 100%;
+  }
+
+  /* Reverse variant — peach bg → green hover, text colors swapped too */
+  .upa-btn-peach_green {
+    --_bg-base: var(--color-upa-peach);
+    --_bg-hover: var(--color-upa-green);
+    --_text-base: var(--color-upa-navy);
+    --_text-hover: var(--color-upa-primary);
+  }
+
+  /* Navy → Green — used for "Log in" style solid pill buttons */
+  .upa-btn-navy_green {
+    --_bg-base: var(--color-upa-navy);
+    --_bg-hover: var(--color-upa-green);
+    --_text-base: var(--color-upa-primary);
+    --_text-hover: var(--color-upa-navy);
+  }
+
+  /* Outline variant - transparent bg, green border/text, fills green on hover.
+     Doesn't use the fill-sweep animation - just a plain color transition,
+     since the outline style reads better without the shutter effect. */
+  .upa-btn-outline-green {
+    --_bg-base: var(--color-upa-primary);
+    --_bg-hover: var(--color-upa-green);
+    --_text-base: var(--color-upa-green);
+    --_text-hover: var(--color-upa-primary);
+    border: 2px solid var(--color-upa-green) !important;
+    border-radius: 200px !important;
+    padding: 0.6rem 1.2rem !important;
+    font-weight: 700 !important;
+    text-decoration: none !important;
+    cursor: pointer !important;
+
+  }
+
+  /* .upa-btn-outline-green {
+    @apply inline-block border-2 border-upa-green text-upa-green bg-transparent rounded-full px-6 py-2 font-bold no-underline cursor-pointer transition-colors hover:bg-upa-green hover:text-white;
+  } */
+}

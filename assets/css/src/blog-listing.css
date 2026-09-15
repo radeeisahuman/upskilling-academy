@@ -1,0 +1,149 @@
+/* ============================================
+   BLOG LISTING PAGE (upa-alblg-*)
+   One file for the page; each block has its own sub-prefix:
+     -hi    page header (typography classes only, no rules yet)
+     -feat  featured slider: coverflow with 2 cards each side on md+,
+            stacked (.upa-stack-swiper) below md
+     -list  post list - E1 card: a row on md+, a bordered card below md
+     -lead  newsletter lead form
+   ============================================ */
+
+@layer components {
+
+  /* ---------- Featured slider ----------
+     The swiper is the active card's width; the side cards spill out of
+     it (overflow visible via .upa-stack-swiper.swiper-creative) and the
+     section clips them. Below md .upa-stack-swiper sets 78%. */
+  .upa-alblg-feat-swiper {
+    @apply md:w-[46%] lg:w-[32%];
+  }
+
+  .upa-alblg-feat-card {
+    @apply relative block aspect-16/10 overflow-hidden rounded-upa-lg bg-upa-navy;
+  }
+
+  .upa-alblg-feat-card img {
+    @apply absolute inset-0 w-full h-full object-cover;
+  }
+
+  /* Text over the photo, on a navy fade from the left for contrast */
+  .upa-alblg-feat-body {
+    @apply absolute inset-0 flex flex-col justify-center gap-1 p-5 md:p-6 bg-linear-to-r from-upa-navy/75 via-upa-navy/35 to-transparent text-white;
+  }
+
+  .upa-alblg-feat-title {
+    @apply text-sec-header font-bold leading-tight;
+  }
+
+  .upa-alblg-feat-text {
+    @apply max-w-3xs text-xs;
+  }
+
+  .upa-alblg-feat-dot {
+    @apply w-2 h-2 rounded-full bg-gray-300 cursor-pointer transition-all;
+  }
+
+  .upa-alblg-feat-dot-active {
+    @apply w-5 rounded-full bg-upa-green;
+  }
+
+  /* ---------- Post list ---------- */
+  .upa-alblg-list-title {
+    @apply text-sec-header font-medium text-upa-navy;
+  }
+
+  .upa-alblg-list {
+    @apply flex flex-col gap-6 md:gap-8 max-w-4xl mx-auto mt-10;
+  }
+
+  /* E1 post card. Below md: bordered card, image on top, date as a pill
+     above the category. md+: borderless row - date box, image, text. */
+  .upa-alblg-post {
+    @apply flex flex-col gap-4 border border-upa-green rounded-upa-lg p-3 md:flex-row md:items-start md:gap-6 md:border-0 md:rounded-none md:p-0;
+  }
+
+  /* md+ only: stacked day over month */
+  .upa-alblg-post-datebox {
+    @apply hidden md:flex flex-col items-center justify-center shrink-0 w-16 py-2 bg-upa-green-2 rounded-upa-md text-upa-navy;
+  }
+
+  .upa-alblg-post-day {
+    @apply text-3xl font-medium leading-none;
+  }
+
+  .upa-alblg-post-month {
+    @apply mt-1 text-xs;
+  }
+
+  .upa-alblg-post-image {
+    @apply block shrink-0 aspect-16/10 overflow-hidden rounded-upa-md md:w-56 lg:w-64;
+  }
+
+  .upa-alblg-post-image img {
+    @apply w-full h-full object-cover transition-transform duration-300 hover:scale-105;
+  }
+
+  .upa-alblg-post-body {
+    @apply flex flex-col items-start gap-2 flex-1 min-w-0 px-1 md:px-0;
+  }
+
+  /* Below md only: "22 Aug, 2026" pill */
+  .upa-alblg-post-date {
+    @apply md:hidden bg-upa-green-2 rounded-full px-3 py-1 text-xs font-medium text-upa-navy;
+  }
+
+  .upa-alblg-post-cat {
+    @apply inline-block border border-upa-green rounded-full px-3 py-1 text-sm text-upa-navy hover:bg-upa-green-2 transition-colors;
+  }
+
+  .upa-alblg-post-title {
+    @apply text-sec-header md:text-normal lg:text-lg font-medium leading-snug text-upa-navy;
+  }
+
+  .upa-alblg-post-title a {
+    @apply hover:text-upa-green transition-colors;
+  }
+
+  .upa-alblg-post-excerpt {
+    @apply text-sm text-upa-navy;
+  }
+
+  /* Green rule above the link: full card width on mobile, shorter on md+ */
+  .upa-alblg-post-more {
+    @apply flex items-center gap-2 w-full md:max-w-sm mt-1 pt-2 border-t-2 border-upa-green text-sm font-bold text-upa-navy hover:text-upa-green transition-colors;
+  }
+
+  .upa-alblg-post-more svg {
+    @apply w-4 h-4 shrink-0;
+  }
+
+  /* ---------- Newsletter lead form ---------- */
+  .upa-alblg-lead {
+    @apply flex flex-col items-center gap-4 max-w-2xl mx-auto text-center;
+  }
+
+  .upa-alblg-lead-graphic {
+    @apply w-60 md:w-48 max-w-full h-auto;
+  }
+
+  .upa-alblg-lead-title {
+    @apply text-sec-header font-bold text-upa-navy;
+  }
+
+  .upa-alblg-lead-form {
+    @apply flex items-center gap-2 w-full max-w-md bg-white border border-upa-green rounded-upa-sm p-1 focus-within:ring-2 focus-within:ring-upa-green/40;
+  }
+
+  .upa-alblg-lead-input {
+    @apply flex-1 min-w-0 bg-transparent px-3 py-2 text-sm text-upa-navy outline-none placeholder:text-upa-navy/50;
+  }
+
+  /* Squared-off .upa-btn - keeps its hover sweep */
+  .upa-alblg-lead-btn {
+    @apply shrink-0 rounded-upa-sm px-4 py-2 text-sm;
+  }
+
+  .upa-alblg-lead-note {
+    @apply text-xs text-upa-navy;
+  }
+}

@@ -1,0 +1,192 @@
+/* ============================================
+   SINGLE BLOG PAGE (upa-snglblg-*)
+   One file for the page; each block has its own sub-prefix:
+     -hi      hero: featured image, title block, "Relevant Courses"
+              mini slider (-hi-rel)
+     -layout  article column + sidebar
+     -content post body - styles plain editor output (the_content)
+     -course  featured course card under the article
+     -aside   sidebar: lifetime membership image link
+   Newsletter reuses the blog listing section (upa-alblg-lead-*).
+   ============================================ */
+
+@layer components {
+
+  /* ---------- Hero ----------
+     Below lg: image, title block, related courses - centred.
+     lg+: image over related courses on the left, title block right. */
+  .upa-snglblg-hi {
+    @apply grid gap-8 lg:gap-x-10 lg:gap-y-6;
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas:
+      "image"
+      "text"
+      "rel";
+
+    @variant lg {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
+      grid-template-areas:
+        "image text"
+        "rel   text";
+    }
+  }
+
+  .upa-snglblg-hi-image {
+    grid-area: image;
+    @apply w-full max-w-xl mx-auto aspect-16/10 overflow-hidden rounded-upa-lg lg:max-w-none;
+  }
+
+  .upa-snglblg-hi-image img {
+    @apply w-full h-full object-cover;
+  }
+
+  .upa-snglblg-hi-text {
+    grid-area: text;
+    @apply flex flex-col items-center gap-3 text-center lg:items-start lg:text-left;
+  }
+
+  .upa-snglblg-hi-title {
+    @apply text-sec-header md:text-page-header font-bold text-upa-navy;
+  }
+
+  /* Green rule above the date */
+  .upa-snglblg-hi-date {
+    @apply block w-full max-w-sm mt-4 pt-5 border-t-2 border-upa-green text-normal text-upa-navy;
+  }
+
+  /* ---------- Hero: relevant courses mini slider ---------- */
+  .upa-snglblg-hi-rel {
+    grid-area: rel;
+    @apply w-full max-w-md mx-auto min-w-0 lg:max-w-none;
+  }
+
+  .upa-snglblg-hi-rel-title {
+    @apply mb-3 text-normal font-bold text-upa-navy text-center lg:text-left;
+  }
+
+  .upa-snglblg-hi-rel-card {
+    @apply flex items-center gap-3 h-full bg-white border border-upa-green/40 rounded-upa-md p-1.5 hover:border-upa-green transition-colors;
+  }
+
+  .upa-snglblg-hi-rel-card img {
+    @apply w-20 shrink-0 aspect-16/10 object-cover rounded-upa-sm;
+  }
+
+  .upa-snglblg-hi-rel-name {
+    @apply text-xs font-bold text-upa-navy;
+  }
+
+  .upa-snglblg-hi-rel-nav {
+    @apply flex justify-center gap-2 mt-3;
+  }
+
+  .upa-snglblg-hi-rel-btn {
+    @apply flex items-center justify-center w-7 h-7 rounded-full bg-upa-green text-white cursor-pointer hover:bg-upa-navy transition-colors;
+  }
+
+  .upa-snglblg-hi-rel-btn svg {
+    @apply w-4 h-4;
+  }
+
+  /* ---------- Layout ----------
+     Flat grid so the sidebar can sit between the article and the course
+     card below lg (DOM order), and span both rows on the right on lg. */
+  .upa-snglblg-layout {
+    @apply grid grid-cols-1 gap-10 lg:grid-cols-[minmax(0,1fr)_18rem];
+  }
+
+  .upa-snglblg-layout > .upa-snglblg-content {
+    @apply lg:col-start-1 lg:row-start-1;
+  }
+
+  .upa-snglblg-layout > .upa-snglblg-course {
+    @apply lg:col-start-1 lg:row-start-2;
+  }
+
+  .upa-snglblg-layout > .upa-snglblg-aside {
+    @apply lg:col-start-2 lg:row-start-1 lg:row-span-2;
+  }
+
+  /* ---------- Post content ----------
+     Targets plain elements so whatever the editor outputs is styled
+     without extra classes. */
+  .upa-snglblg-content {
+    @apply min-w-0 text-normal text-upa-navy;
+  }
+
+  .upa-snglblg-content > * + * {
+    @apply mt-4;
+  }
+
+  .upa-snglblg-content h2 {
+    @apply mt-10 text-sec-header font-bold;
+  }
+
+  .upa-snglblg-content h3 {
+    @apply mt-8 text-normal font-bold;
+  }
+
+  .upa-snglblg-content h2 + *,
+  .upa-snglblg-content h3 + * {
+    @apply mt-2;
+  }
+
+  .upa-snglblg-content ul {
+    @apply list-disc pl-5 space-y-1 marker:text-upa-navy;
+  }
+
+  .upa-snglblg-content ol {
+    @apply list-decimal pl-5 space-y-1;
+  }
+
+  .upa-snglblg-content strong {
+    @apply font-bold;
+  }
+
+  .upa-snglblg-content a {
+    @apply text-upa-green font-medium underline underline-offset-2 hover:text-upa-navy;
+  }
+
+  .upa-snglblg-content figure,
+  .upa-snglblg-content > img {
+    @apply mt-8 max-w-xl;
+  }
+
+  .upa-snglblg-content img {
+    @apply w-full h-auto rounded-upa-lg;
+  }
+
+  /* ---------- Featured course card (B3 promo) ---------- */
+  .upa-snglblg-course {
+    @apply flex gap-4 w-full max-w-lg border border-upa-green rounded-upa-lg p-2;
+  }
+
+  .upa-snglblg-course-image {
+    @apply w-2/5 shrink-0 overflow-hidden rounded-upa-md;
+  }
+
+  .upa-snglblg-course-image img {
+    @apply w-full h-full object-cover;
+  }
+
+  .upa-snglblg-course-body {
+    @apply flex flex-col items-start gap-2 min-w-0 py-2 pr-2;
+  }
+
+  .upa-snglblg-course-title {
+    @apply text-normal font-bold text-upa-navy;
+  }
+
+  .upa-snglblg-course-text {
+    @apply text-sm text-upa-navy;
+  }
+
+  /* ---------- Sidebar ---------- */
+  .upa-snglblg-aside-promo {
+    @apply block w-full max-w-sm mx-auto lg:sticky lg:top-6 transition-transform hover:-translate-y-1;
+  }
+
+  .upa-snglblg-aside-promo img {
+    @apply w-full h-auto;
+  }
+}

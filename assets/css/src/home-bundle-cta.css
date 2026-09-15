@@ -1,0 +1,87 @@
+/* ============================================
+   HOME BUNDLE COURSES CTA (upa-hmbndlcta-*)
+   Left: heading/copy/CTA (34%).
+   Right: always-on Swiper slider (66%) - stacked below md
+   (.upa-stack-swiper, components.css), then a row of
+   1 (md), 2 (lg), 3 (xl) per view.
+   ============================================ */
+
+@layer components {
+  .upa-hmbndlcta-card {
+    @apply flex flex-col border border-upa-green rounded-upa-lg overflow-hidden bg-white h-full p-2;
+  }
+
+  .upa-hmbndlcta-image-wrap {
+    @apply relative w-full aspect-[4/3] overflow-hidden rounded-xl;
+  }
+
+  .upa-hmbndlcta-image-wrap img {
+    @apply w-full h-full object-cover;
+  }
+
+  /* "N Courses" count pill, top-left corner of the image */
+  .upa-hmbndlcta-count-badge {
+    @apply absolute top-3 left-3 z-10 bg-upa-peach text-white text-xs font-bold rounded-full px-3 py-1;
+  }
+
+  /* Diagonal "SALE" ribbon - conditional, only on discounted bundles */
+  .upa-hmbndlcta-sale-clip {
+    @apply absolute top-0 right-0 w-24 h-24 overflow-hidden pointer-events-none;
+  }
+
+  .upa-hmbndlcta-sale-ribbon {
+    @apply absolute top-[18px] right-[-34px] w-[140px] rotate-45 bg-upa-red text-white text-xs font-bold text-center py-1 uppercase;
+  }
+
+  .upa-hmbndlcta-body {
+    @apply flex flex-col gap-2 pt-4 px-2 pb-2 flex-1;
+  }
+
+  /* Countdown timer pill - bundle cards always have one; ticked by
+     assets/js/bundle-timer.js via data-bundle-timer */
+  .upa-hmbndlcta-timer {
+    @apply inline-flex items-center gap-0.5 w-fit border-x-4 border-y border-upa-green  rounded-full px-3 py-1.5;
+  }
+
+  .upa-hmbndlcta-timer-unit {
+    @apply flex flex-row items-center leading-none text-upa-navy;
+  }
+
+  /* tabular-nums stops the digits jiggling as bundle-timer.js ticks them */
+  .upa-hmbndlcta-timer-unit span:first-child {
+    @apply text-xs font-bold tabular-nums;
+  }
+
+  .upa-hmbndlcta-timer-unit sub:last-child {
+    @apply text-[8px] uppercase text-gray-700 tracking-wide mt-0.5;
+  }
+
+  .upa-hmbndlcta-timer-sep {
+    @apply text-gray-300 font-bold text-xs;
+  }
+
+  .upa-hmbndlcta-stars {
+    @apply flex items-center gap-0.5;
+  }
+
+  .upa-hmbndlcta-price-row {
+    @apply flex items-center justify-between gap-2 mt-auto pt-2;
+  }
+
+  .upa-hmbndlcta-price-new {
+    @apply text-upa-navy font-bold text-2xl;
+  }
+
+  .upa-hmbndlcta-price-old {
+    @apply text-upa-red line-through text-normal;
+  }
+
+  /* Swiper pagination dots */
+  .upa-hmbndlcta-dot {
+    @apply w-2 h-2 rounded-full bg-gray-300 cursor-pointer transition-all;
+  }
+
+  .upa-hmbndlcta-dot-active {
+    @apply w-5 rounded-full bg-upa-green;
+  }
+}

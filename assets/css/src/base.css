@@ -1,0 +1,22 @@
+/* ============================================
+   GLOBAL BASE STYLES
+   Element-level defaults only (no classes).
+   Lives in @layer base so Tailwind utilities in
+   the markup always win over these.
+   ============================================ */
+
+@layer base {
+  body {
+    font-family: var(--font-sans);
+    font-weight: var(--font-weight-normal);
+    font-style: normal;
+    font-size: var(--text-normal);
+    min-width: 320px;
+    color: var(--color-upa-navy);
+    background-color: var(--color-upa-primary);
+  }
+
+  a {
+    text-decoration: none;
+  }
+}

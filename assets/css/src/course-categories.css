@@ -1,0 +1,20 @@
+/* ============================================
+   COURSE CATEGORIES (upa-crcat-*)
+   Component classes for the "Explore Our Popular
+   Course Categories" card grid.
+   ============================================ */
+
+@layer components {
+
+  .upa-crcat-card {
+    @apply flex items-center gap-3 border border-upa-green rounded-upa-lg p-4 bg-white hover:shadow-upa-sm transition-shadow;
+  }
+
+  .upa-crcat-icon {
+    @apply flex items-center justify-center flex-shrink-0 w-12 h-12 rounded-upa-md bg-upa-green-2 border border-upa-green;
+  }
+
+  .upa-crcat-arrow {
+    @apply flex items-center justify-center flex-shrink-0 w-7 h-7 rounded-full bg-upa-green text-white ml-auto;
+  }
+}

@@ -1,0 +1,27 @@
+/* ============================================
+   CERTIFICATE CTA (upa-crtifi-cta-*)
+   "Certificate for Success at Every Step".
+   md+: heading/benefits/CTA left, certificate image right.
+   Mobile: heading, benefits, image, then CTA - centred.
+   Shared by Home, Single course and Bundle single.
+   ============================================ */
+
+@layer components {
+
+  /* Centred block with left-aligned text on mobile, like the design */
+  .upa-crtifi-cta-list {
+    @apply list-disc w-fit mx-auto md:mx-0 pl-5 space-y-2 marker:text-upa-navy;
+  }
+
+  .upa-crtifi-cta-list li {
+    @apply text-normal text-upa-navy;
+  }
+
+  .upa-crtifi-cta-image-wrap {
+    @apply w-full max-w-md mx-auto md:max-w-none;
+  }
+
+  .upa-crtifi-cta-image-wrap img {
+    @apply w-full h-auto;
+  }
+}

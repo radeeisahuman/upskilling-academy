@@ -1,0 +1,14 @@
+/* ============================================
+   WHY CHOOSE US (upa-wcu-*)
+   ============================================ */
+
+@layer components {
+
+  .upa-wcu-card {
+    @apply flex items-start gap-4 border border-upa-green rounded-upa-md bg-upa-green-2 p-4;
+  }
+
+  .upa-wcu-icon {
+    @apply flex-shrink-0 w-10 h-10;
+  }
+}

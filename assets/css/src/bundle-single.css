@@ -1,0 +1,76 @@
+/* ============================================
+   SINGLE BUNDLE PAGE (upa-sglbndl-*)
+   The page is the single course shell (upa-snglcrs-*: layout, hero,
+   purchase card, tabs, strip, learn, desc, who, rev, faq) - INVENTORY
+   "Detail-page shell". Only what differs from a course lives here:
+     -card    purchase card variant: bundle title, one button (no gift),
+              includes list before the button
+     -count   "8 Courses" badge on the bundle image
+     -inside  "Courses inside this Bundle" slider panel
+   Learners also bought uses the bundle card (upa-albndl-card-*).
+   ============================================ */
+
+@layer components {
+
+  /* ---------- Purchase card variant ----------
+     Same element as .upa-snglcrs-card with this class added; only the
+     grid areas change. */
+  .upa-snglcrs-card.upa-sglbndl-card {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas:
+      "price"
+      "title"
+      "list"
+      "guarantee"
+      "accred"
+      "get";
+
+    @variant lg {
+      grid-template-areas:
+        "image"
+        "price"
+        "title"
+        "guarantee"
+        "accred"
+        "list"
+        "get";
+    }
+  }
+
+  .upa-sglbndl-card-title {
+    grid-area: title;
+    @apply text-normal font-bold text-upa-navy;
+  }
+
+  /* "8 Courses" pill, top-left of the bundle image (hero and card) */
+  .upa-sglbndl-count {
+    @apply absolute top-3 left-3 z-10 bg-upa-peach text-white text-xs font-bold rounded-full px-3 py-1;
+  }
+
+  /* ---------- Courses inside this Bundle ----------
+     Mint panel. md+: arrows either side of a 2-card row (3 from 1536).
+     Below md: the stacked slider, swipe + dots, no arrows. */
+  .upa-sglbndl-inside {
+    @apply bg-upa-green-2 rounded-upa-lg px-4 py-6 md:px-6 overflow-hidden;
+  }
+
+  .upa-sglbndl-inside > h2 {
+    @apply text-center;
+  }
+
+  .upa-sglbndl-inside-slider {
+    @apply flex items-center gap-2;
+  }
+
+  .upa-sglbndl-inside-swiper {
+    @apply min-w-0 md:flex-1;
+  }
+
+  .upa-sglbndl-inside-btn {
+    @apply hidden md:flex items-center justify-center shrink-0 w-7 h-7 rounded-full bg-upa-green text-white cursor-pointer hover:bg-upa-navy transition-colors;
+  }
+
+  .upa-sglbndl-inside-btn svg {
+    @apply w-4 h-4;
+  }
+}

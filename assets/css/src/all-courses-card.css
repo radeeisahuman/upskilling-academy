@@ -1,0 +1,186 @@
+/* ============================================
+   ALL COURSES - LISTING (upa-alcrs-card-*)
+   Page layout, search, result count, sort dropdown,
+   course card grid and pagination.
+   The card is B1 - same design as upa-popcrs-card (home),
+   renamed for this page. Never a countdown timer.
+   ============================================ */
+
+@layer components {
+
+  /* ---------- Page layout ----------
+     Named areas so the order is readable.
+     Below lg: search, count, the two dropdowns side by side, grid, pages.
+     lg+: the categories sidebar spans every row. The last row is 1fr so a
+     sidebar taller than the results adds space below the pagination
+     instead of stretching the rows between. */
+  .upa-alcrs-card-layout {
+    @apply grid gap-x-3 gap-y-5 lg:gap-x-6;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-areas:
+      "search search"
+      "count  count"
+      "cats   sort"
+      "grid   grid"
+      "pages  pages";
+
+    @variant lg {
+      grid-template-columns: 17rem minmax(0, 1fr) auto;
+      grid-template-rows: auto auto auto 1fr;
+      grid-template-areas:
+        "cats search sort"
+        "cats count  count"
+        "cats grid   grid"
+        "cats pages  pages";
+    }
+  }
+
+  .upa-alcrs-card-layout > .upa-alcrs-cats {
+    grid-area: cats;
+    @apply lg:self-start;
+  }
+
+  /* ---------- Search ---------- */
+  .upa-alcrs-card-search {
+    grid-area: search;
+    @apply flex items-center gap-2 w-full bg-white border border-upa-navy rounded-upa-md p-1 focus-within:ring-2 focus-within:ring-upa-green;
+  }
+
+  .upa-alcrs-card-search-input {
+    @apply flex-1 min-w-0 bg-transparent px-3 py-1.5 text-sm text-upa-navy outline-none placeholder:text-upa-navy/60;
+  }
+
+  .upa-alcrs-card-search-btn {
+    @apply flex items-center justify-center shrink-0 w-9 h-9 rounded-upa-sm bg-upa-navy text-white cursor-pointer hover:bg-upa-green transition-colors;
+  }
+
+  /* ---------- Result count ---------- */
+  .upa-alcrs-card-count {
+    grid-area: count;
+    @apply text-sm text-upa-navy text-center lg:text-left;
+  }
+
+  /* ---------- Sort dropdown ----------
+     Open state is .is-open on .upa-alcrs-card-sort, set by the page script. */
+  .upa-alcrs-card-sort {
+    grid-area: sort;
+    @apply relative;
+  }
+
+  .upa-alcrs-card-sort-toggle {
+    @apply flex items-center gap-2 w-full h-full lg:min-w-48 bg-upa-green-2 border border-upa-navy rounded-upa-md px-2 py-1.5 text-xs sm:text-sm font-medium text-upa-navy cursor-pointer;
+  }
+
+  /* Small outlined box holding the filter icon */
+  .upa-alcrs-card-sort-icon {
+    @apply flex items-center justify-center shrink-0 w-7 h-7 border border-upa-navy rounded-upa-sm;
+  }
+
+  .upa-alcrs-card-sort-label {
+    @apply flex-1 text-center;
+  }
+
+  .upa-alcrs-card-sort-chevron {
+    @apply w-4 h-4 shrink-0 transition-transform;
+  }
+
+  .upa-alcrs-card-sort-toggle[aria-expanded="true"] .upa-alcrs-card-sort-chevron {
+    @apply rotate-180;
+  }
+
+  .upa-alcrs-card-sort-panel {
+    @apply hidden absolute top-full right-0 z-20 mt-1 w-full min-w-44 bg-upa-green-2 border border-upa-navy rounded-upa-md overflow-hidden shadow-upa-md;
+  }
+
+  .upa-alcrs-card-sort.is-open .upa-alcrs-card-sort-panel {
+    @apply block;
+  }
+
+  .upa-alcrs-card-sort-option {
+    @apply block px-3 py-2 text-sm text-center text-upa-navy border-b border-upa-navy/40 hover:bg-upa-green/20 transition-colors;
+  }
+
+  .upa-alcrs-card-sort-panel li:last-child .upa-alcrs-card-sort-option {
+    @apply border-b-0;
+  }
+
+  /* Current order */
+  .upa-alcrs-card-sort-option[aria-current="true"] {
+    @apply bg-upa-green;
+  }
+
+  /* ---------- Card grid ---------- */
+  .upa-alcrs-card-grid {
+    grid-area: grid;
+    @apply grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6;
+  }
+
+  /* ---------- Course card (B1) ---------- */
+  .upa-alcrs-card {
+    @apply flex flex-col border border-upa-green rounded-upa-lg overflow-hidden bg-white h-full p-2;
+  }
+
+  .upa-alcrs-card-image-wrap {
+    @apply relative w-full aspect-[4/3] overflow-hidden rounded-xl;
+  }
+
+  .upa-alcrs-card-image-wrap img {
+    @apply w-full h-full object-cover;
+  }
+
+  /* Diagonal "SALE" ribbon - conditional, only on discounted courses */
+  .upa-alcrs-card-sale-clip {
+    @apply absolute top-0 right-0 w-24 h-24 overflow-hidden pointer-events-none;
+  }
+
+  .upa-alcrs-card-sale-ribbon {
+    @apply absolute top-[18px] right-[-34px] w-[140px] rotate-45 bg-upa-red text-white text-xs font-bold text-center py-1 uppercase;
+  }
+
+  .upa-alcrs-card-body {
+    @apply flex flex-col gap-2 pt-4 px-2 pb-2 flex-1;
+  }
+
+  .upa-alcrs-card-badge {
+    @apply inline-block w-fit bg-upa-peach/20 text-upa-navy text-xs font-bold rounded-full px-3 py-1;
+  }
+
+  .upa-alcrs-card-stars {
+    @apply flex items-center gap-0.5;
+  }
+
+  .upa-alcrs-card-price-row {
+    @apply flex items-center justify-between gap-2 mt-auto pt-2;
+  }
+
+  .upa-alcrs-card-price-new {
+    @apply text-upa-navy font-bold text-2xl;
+  }
+
+  .upa-alcrs-card-price-old {
+    @apply text-upa-red line-through text-normal;
+  }
+
+  /* ---------- Pagination ----------
+     self-start: on lg the pages row is 1fr, don't centre in it */
+  .upa-alcrs-card-pages {
+    grid-area: pages;
+    @apply flex flex-wrap items-center justify-center gap-1 self-start pt-4;
+  }
+
+  .upa-alcrs-card-page {
+    @apply flex items-center justify-center min-w-7 h-7 px-1.5 rounded-upa-sm text-sm font-bold text-upa-navy hover:bg-upa-green-2 transition-colors;
+  }
+
+  .upa-alcrs-card-page[aria-current="page"] {
+    @apply bg-upa-green text-white;
+  }
+
+  .upa-alcrs-card-page-dots {
+    @apply px-1 text-sm text-upa-navy;
+  }
+
+  .upa-alcrs-card-page-next {
+    @apply border border-upa-navy ml-1;
+  }
+}

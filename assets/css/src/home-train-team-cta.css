@@ -1,0 +1,16 @@
+/* ============================================
+   TRAIN YOUR TEAM WITH US (upa-trtmcta-*)
+   Left: image with offset navy/green corner accents.
+   Right: heading/copy/CTA.
+   ============================================ */
+
+@layer components {
+
+  .upa-trtmcta-image-wrap {
+    @apply relative w-full;
+  }
+
+  .upa-trtmcta-image-wrap img {
+    @apply relative z-10 w-full rounded-upa-lg object-cover;
+  }
+}

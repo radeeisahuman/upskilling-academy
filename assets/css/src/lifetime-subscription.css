@@ -1,0 +1,205 @@
+/* ============================================
+   LIFETIME SUBSCRIPTION PAGE (upa-lftsub-*)
+   One file for the page; each block has its own sub-prefix:
+     -hi     hero: package graphic, benefits, stats, plan card + countdown
+     -steps  how to start (3 steps with arrows between)
+     -grnt   14 day money back guarantee
+     -cta    ready to start band
+     -form   question form beside the illustration
+   Reused as-is from other pages: course categories (upa-crcat-*),
+   learner reviews (upa-reviews-*), FAQ (upa-snglcrs-faq-*).
+   ============================================ */
+
+@layer components {
+
+  /* ---------- Hero: left ---------- */
+  .upa-lftsub-hi-intro {
+    @apply flex flex-col items-center gap-4 text-center;
+  }
+
+  .upa-lftsub-hi-badge img {
+    @apply w-full max-w-xs md:max-w-sm h-auto mx-auto;
+  }
+
+  .upa-lftsub-hi-benefits {
+    @apply flex flex-col items-start gap-2 text-sm text-upa-navy;
+  }
+
+  .upa-lftsub-hi-benefits li {
+    @apply flex items-center gap-2;
+  }
+
+  .upa-lftsub-hi-benefits svg {
+    @apply w-4 h-4 shrink-0 text-upa-green;
+  }
+
+  .upa-lftsub-hi-stats {
+    @apply flex items-stretch divide-x divide-upa-navy/40 mt-2;
+  }
+
+  /* nowrap: "CPD-IQ" would otherwise break at the hyphen in a narrow column */
+  .upa-lftsub-hi-stats li {
+    @apply flex flex-col px-3 lg:px-6 text-center whitespace-nowrap;
+  }
+
+  .upa-lftsub-hi-stat-num {
+    @apply text-normal md:text-sec-header font-medium text-upa-navy;
+  }
+
+  .upa-lftsub-hi-stat-label {
+    @apply text-xs text-upa-navy/70;
+  }
+
+  /* ---------- Hero: plan card (F3) ---------- */
+  .upa-lftsub-hi-plan {
+    @apply relative overflow-hidden w-full max-w-sm mx-auto bg-linear-to-br from-white to-upa-gray border border-gray-200 rounded-upa-lg shadow-upa-md p-6;
+  }
+
+  /* "Special Offer" corner ribbon */
+  .upa-lftsub-hi-plan-ribbon-clip {
+    @apply absolute top-0 right-0 w-28 h-28 overflow-hidden pointer-events-none;
+  }
+
+  .upa-lftsub-hi-plan-ribbon {
+    @apply absolute top-6 -right-10 w-40 rotate-45 bg-upa-red text-white text-xs font-bold text-center py-1 uppercase;
+  }
+
+  /* pr keeps the title clear of the ribbon */
+  .upa-lftsub-hi-plan-title {
+    @apply pr-16 text-sec-header font-bold leading-tight text-upa-navy;
+  }
+
+  .upa-lftsub-hi-plan-price {
+    @apply flex items-baseline gap-1 mt-3;
+  }
+
+  .upa-lftsub-hi-plan-amount {
+    @apply text-6xl font-extrabold leading-none text-upa-green;
+  }
+
+  .upa-lftsub-hi-plan-per {
+    @apply text-normal text-upa-navy;
+  }
+
+  .upa-lftsub-hi-plan-regular {
+    @apply mt-2 text-sm text-upa-navy/60;
+  }
+
+  .upa-lftsub-hi-plan-guarantee {
+    @apply mt-1 text-sm font-bold text-upa-navy;
+  }
+
+  .upa-lftsub-hi-plan-offer {
+    @apply mt-5 text-center text-normal font-bold text-upa-navy;
+  }
+
+  .upa-lftsub-hi-timer {
+    @apply flex justify-center gap-3 mt-3;
+  }
+
+  .upa-lftsub-hi-timer-unit {
+    @apply flex flex-col items-center gap-1;
+  }
+
+  /* tabular-nums stops the digits jiggling as they tick */
+  .upa-lftsub-hi-timer-num {
+    @apply flex items-center justify-center w-12 h-12 md:w-14 md:h-14 rounded-upa-md bg-upa-navy text-white text-normal md:text-xl font-bold tabular-nums;
+  }
+
+  .upa-lftsub-hi-timer-label {
+    @apply text-xs text-upa-navy;
+  }
+
+  .upa-lftsub-hi-plan-btn {
+    @apply block w-fit mx-auto mt-5;
+  }
+
+  /* ---------- How to start ----------
+     Stacked (max-w-md) below lg, three across on lg. gap-12 leaves room
+     for the arrow, which sits centred in the gap after each step. */
+  .upa-lftsub-steps {
+    @apply grid gap-12 lg:grid-cols-3 max-w-md lg:max-w-none mx-auto mt-8;
+  }
+
+  .upa-lftsub-steps-item {
+    @apply relative flex flex-col bg-upa-green-2 border border-upa-green rounded-upa-lg p-2;
+  }
+
+  .upa-lftsub-steps-image {
+    @apply aspect-video overflow-hidden rounded-upa-md;
+  }
+
+  .upa-lftsub-steps-image img {
+    @apply w-full h-full object-cover;
+  }
+
+  .upa-lftsub-steps-body {
+    @apply flex flex-col gap-3 px-3 pt-4 pb-3;
+  }
+
+  .upa-lftsub-steps-title {
+    @apply text-normal font-bold text-upa-navy;
+  }
+
+  .upa-lftsub-steps-list {
+    @apply list-disc pl-5 space-y-1 text-sm text-upa-navy marker:text-upa-navy;
+  }
+
+  /* Right-pointing chevron: turned down and placed below the card on
+     mobile, placed to the right of the card on lg */
+  .upa-lftsub-steps-arrow {
+    @apply absolute z-10 flex items-center justify-center w-7 h-7 rounded-full bg-upa-green text-white left-1/2 -bottom-9.5 -translate-x-1/2 rotate-90 lg:left-auto lg:bottom-auto lg:top-1/2 lg:-right-9.5 lg:translate-x-0 lg:-translate-y-1/2 lg:rotate-0;
+  }
+
+  .upa-lftsub-steps-arrow svg {
+    @apply w-4 h-4;
+  }
+
+  /* ---------- 14 day guarantee ---------- */
+  .upa-lftsub-grnt {
+    @apply grid gap-6 md:gap-10 md:grid-cols-[auto_1fr] items-center max-w-4xl mx-auto text-center md:text-left;
+  }
+
+  .upa-lftsub-grnt img {
+    @apply w-48 md:w-60 h-auto mx-auto;
+  }
+
+  /* ---------- Ready to start CTA ---------- */
+  .upa-lftsub-cta-title {
+    @apply text-sec-header font-normal text-upa-navy;
+  }
+
+  .upa-lftsub-cta-title strong {
+    @apply font-bold;
+  }
+
+  /* ---------- Question form ---------- */
+  .upa-lftsub-form {
+    @apply flex gap-8 justify-center items-center z-10 relative max-w-4xl mx-auto;
+  }
+
+  /* Illustration: md+ only */
+  .upa-lftsub-form-graphic {
+    @apply hidden md:block;
+  }
+
+  .upa-lftsub-form-graphic img {
+    @apply w-full max-w-sm h-auto;
+  }
+
+  .upa-lftsub-form-body {
+    @apply flex flex-col gap-4 w-full max-w-lg;
+  }
+
+  .upa-lftsub-form-title {
+    @apply text-normal font-bold text-upa-navy;
+  }
+
+  .upa-lftsub-form-field {
+    @apply w-full bg-white border border-upa-green rounded-upa-md px-4 py-3 text-sm text-upa-navy outline-none placeholder:text-upa-navy/60 focus:ring-2 focus:ring-upa-green/40;
+  }
+
+  textarea.upa-lftsub-form-field {
+    @apply resize-y;
+  }
+}

@@ -1,0 +1,351 @@
+/* ============================================
+   SINGLE COURSE PAGE (upa-snglcrs-*)
+   One file for the page; each block has its own sub-prefix:
+     -layout  main column + sticky purchase card column
+     -hi      hero (mint band)
+     -card    purchase card (sticky on lg, pulled up into the hero)
+     -tabs    in-page section links
+     -strip   membership upsell strip
+     -learn   what you will learn
+     -desc    description with Show More
+     -curr    course curriculum accordion
+     -who     who should take the course
+     -rev     course reviews (D3 cards)
+     -faq     FAQ accordion
+     -fbt     frequently bought together (bundle cards)
+   Shared bits: -sale-* ribbon, -chev circle, -dot pagination.
+   ============================================ */
+
+@layer components {
+
+  /* ---------- Layout ----------
+     Aside comes first in the DOM so the card sits right after the hero on
+     mobile; lg+ moves it to column 2. -mt-72 pulls it up into the hero
+     band, and the stretched aside is the sticky card's travel range. */
+  .upa-snglcrs-layout {
+    @apply grid grid-cols-1 gap-10 lg:grid-cols-[minmax(0,1fr)_20rem] xl:grid-cols-[minmax(0,1fr)_22rem];
+  }
+
+  .upa-snglcrs-aside {
+    @apply relative z-10 lg:col-start-2 lg:row-start-1 lg:-mt-72;
+  }
+
+  .upa-snglcrs-main {
+    @apply flex flex-col gap-10 lg:gap-12 min-w-0 lg:col-start-1 lg:row-start-1;
+  }
+
+  /* Each titled block in the main column; scroll-mt keeps the heading
+     clear of the top edge when jumped to from the tabs */
+  .upa-snglcrs-block {
+    @apply scroll-mt-6;
+  }
+
+  .upa-snglcrs-block > h2 {
+    @apply mb-4;
+  }
+
+  /* ---------- Shared ---------- */
+  .upa-snglcrs-sale-clip {
+    @apply absolute top-0 right-0 w-24 h-24 overflow-hidden pointer-events-none;
+  }
+
+  .upa-snglcrs-sale-ribbon {
+    @apply absolute top-4.5 -right-8.5 w-35 rotate-45 bg-upa-red text-white text-xs font-bold text-center py-1 uppercase;
+  }
+
+  /* Navy circle with a chevron - Show More and curriculum rows */
+  .upa-snglcrs-chev {
+    @apply flex items-center justify-center shrink-0 w-6 h-6 rounded-full bg-upa-navy text-white transition-transform;
+  }
+
+  .upa-snglcrs-dot {
+    @apply w-2 h-2 rounded-full bg-gray-300 cursor-pointer transition-all;
+  }
+
+  .upa-snglcrs-dot-active {
+    @apply w-5 rounded-full bg-upa-green;
+  }
+
+  /* ---------- Hero ----------
+     lg+: right padding keeps the text clear of the pulled-up card
+     (card column + layout gap). */
+  .upa-snglcrs-hi-wrap {
+    @apply lg:pr-[22.5rem] xl:pr-[24.5rem];
+  }
+
+  /* Mobile only - on lg the image lives in the purchase card */
+  .upa-snglcrs-hi-image {
+    @apply relative aspect-16/10 md:aspect-2/1 overflow-hidden rounded-upa-lg mb-6 lg:hidden;
+  }
+
+  .upa-snglcrs-hi-image img,
+  .upa-snglcrs-card-image img {
+    @apply w-full h-full object-cover;
+  }
+
+  .upa-snglcrs-hi-cpd {
+    @apply inline-flex items-center w-fit bg-upa-peach text-upa-navy text-xs font-bold rounded-full px-3 py-1;
+  }
+
+  .upa-snglcrs-hi-image .upa-snglcrs-hi-cpd {
+    @apply absolute top-3 left-3 z-10;
+  }
+
+  .upa-snglcrs-hi-rating {
+    @apply flex flex-wrap items-center gap-2 mt-4;
+  }
+
+  .upa-snglcrs-hi-badge {
+    @apply inline-block text-white text-xs font-bold rounded-upa-sm px-2 py-1;
+  }
+
+  .upa-snglcrs-hi-meta {
+    @apply flex flex-wrap items-center gap-x-4 gap-y-2 mt-4 text-sm text-upa-navy;
+  }
+
+  .upa-snglcrs-hi-meta-item {
+    @apply flex items-center gap-1.5;
+  }
+
+  /* Separators only at xl, where the row fits on one line - below that it
+     wraps and a separator would start the second line */
+  .upa-snglcrs-hi-meta-item + .upa-snglcrs-hi-meta-item {
+    @apply xl:border-l xl:border-upa-navy/30 xl:pl-4;
+  }
+
+  .upa-snglcrs-hi-meta-item svg {
+    @apply w-4 h-4 shrink-0;
+  }
+
+  /* ---------- Purchase card ----------
+     One markup block, reordered by grid areas.
+     Below lg: price, includes, guarantee, accreditation, then
+     Get / Gift side by side (image is in the hero instead).
+     lg+: the design's order, sticky in the aside. */
+  .upa-snglcrs-card {
+    @apply grid gap-3 bg-white border border-upa-green rounded-upa-lg p-4 lg:sticky lg:shadow-upa-md;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-areas:
+      "price     price"
+      "list      list"
+      "guarantee guarantee"
+      "accred    accred"
+      "get       gift";
+
+    @variant lg {
+      /* Sticks 1.5rem from the top. If the card is taller than the window,
+         top goes negative so it sticks by its bottom edge instead and the
+         buttons stay in view. --upa-snglcrs-card-h is set by the page script. */
+      top: min(1.5rem, calc(100vh - var(--upa-snglcrs-card-h, 0px) - 1.5rem));
+      grid-template-columns: minmax(0, 1fr);
+      grid-template-areas:
+        "image"
+        "price"
+        "guarantee"
+        "accred"
+        "get"
+        "list"
+        "gift";
+    }
+  }
+
+  .upa-snglcrs-card-image {
+    grid-area: image;
+    @apply relative hidden lg:block aspect-video overflow-hidden rounded-upa-md;
+  }
+
+  .upa-snglcrs-card-price {
+    grid-area: price;
+    @apply flex flex-col gap-1;
+  }
+
+  .upa-snglcrs-card-price-old {
+    @apply text-upa-red line-through text-normal font-bold;
+  }
+
+  .upa-snglcrs-card-price-new {
+    @apply text-upa-navy font-bold text-3xl;
+  }
+
+  /* Pill with thick green ends, same shape as the bundle timer */
+  .upa-snglcrs-card-guarantee {
+    grid-area: guarantee;
+    @apply flex items-center justify-center gap-2 border-x-4 border-y border-upa-green rounded-full px-3 py-1.5 text-sm lg:text-xs xl:text-sm font-medium text-upa-navy;
+  }
+
+  .upa-snglcrs-card-guarantee svg {
+    @apply w-4 h-4 shrink-0;
+  }
+
+  .upa-snglcrs-card-accred {
+    grid-area: accred;
+  }
+
+  /* The accreditation logos (same images as .upa-accred) - one row of 4
+     at every size, the sticky sidebar card included. Each logo sits in a
+     small version of the .upa-accred-card frame. */
+  .upa-snglcrs-card-accred-logos {
+    @apply grid grid-cols-4 gap-2;
+  }
+
+  .upa-snglcrs-card-accred-logos li {
+    @apply flex items-center justify-center aspect-15/8 bg-white border border-upa-green rounded-upa-md p-1;
+  }
+
+  .upa-snglcrs-card-accred-logos img {
+    @apply max-w-full max-h-full object-contain;
+  }
+
+  .upa-snglcrs-card-get {
+    grid-area: get;
+    @apply text-center;
+  }
+
+  .upa-snglcrs-card-gift {
+    grid-area: gift;
+    @apply text-center;
+  }
+
+  .upa-snglcrs-card-list {
+    grid-area: list;
+    @apply list-disc pl-5 space-y-1 text-sm text-upa-navy marker:text-upa-navy;
+  }
+
+  /* ---------- Tabs ---------- */
+  .upa-snglcrs-tabs {
+    @apply hidden md:flex gap-8 border-b border-upa-navy/15;
+  }
+
+  .upa-snglcrs-tabs a {
+    @apply -mb-px py-2 border-b-2 border-transparent text-sm font-medium text-upa-navy hover:border-upa-green hover:text-upa-green transition-colors;
+  }
+
+  /* ---------- Membership strip ---------- */
+  .upa-snglcrs-strip {
+    @apply bg-upa-green text-white text-sm text-center rounded-upa-md px-4 py-3;
+  }
+
+  .upa-snglcrs-strip strong {
+    @apply text-upa-peach;
+  }
+
+  .upa-snglcrs-strip a {
+    @apply ml-1 font-bold underline underline-offset-2 hover:text-upa-navy;
+  }
+
+  /* ---------- What you will learn ---------- */
+  .upa-snglcrs-learn-list {
+    @apply grid md:grid-cols-2 gap-x-10 gap-y-3 list-disc border border-upa-green rounded-upa-lg py-6 pr-6 pl-10 text-normal text-upa-navy marker:text-upa-navy;
+  }
+
+  /* ---------- Description ----------
+     Collapsed to max-h-56 with a fade; the script adds .is-expanded, and
+     hides the button when the text is short enough not to need it. */
+  .upa-snglcrs-desc-body {
+    @apply relative max-h-56 overflow-hidden space-y-4 text-normal text-upa-navy after:absolute after:inset-x-0 after:bottom-0 after:h-16 after:bg-linear-to-t after:from-white after:to-transparent;
+  }
+
+  .upa-snglcrs-desc-body.is-expanded {
+    @apply max-h-none after:hidden;
+  }
+
+  .upa-snglcrs-desc-more {
+    @apply flex items-center gap-2 mt-4 text-sm font-bold text-upa-navy cursor-pointer;
+  }
+
+  .upa-snglcrs-desc-more[aria-expanded="true"] .upa-snglcrs-chev {
+    @apply rotate-180;
+  }
+
+  /* ---------- Curriculum (native <details>, no script) ---------- */
+  .upa-snglcrs-curr {
+    @apply border border-upa-green rounded-upa-lg px-4 md:px-6 py-2;
+  }
+
+  .upa-snglcrs-curr-item {
+    @apply border-b border-upa-navy/15 last:border-b-0;
+  }
+
+  .upa-snglcrs-curr-item summary {
+    @apply flex items-center justify-between gap-4 py-3 cursor-pointer list-none text-sm font-bold text-upa-navy;
+  }
+
+  .upa-snglcrs-curr-item summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .upa-snglcrs-curr-details {
+    @apply flex items-center gap-2 shrink-0 font-medium;
+  }
+
+  .upa-snglcrs-curr-item[open] .upa-snglcrs-chev {
+    @apply rotate-180;
+  }
+
+  .upa-snglcrs-curr-lessons {
+    @apply flex flex-col gap-2 pb-4 pl-4 text-sm text-upa-navy;
+  }
+
+  .upa-snglcrs-curr-lessons li {
+    @apply flex items-center gap-2;
+  }
+
+  .upa-snglcrs-curr-lessons svg {
+    @apply w-4 h-4 shrink-0 text-upa-green;
+  }
+
+  /* ---------- Who should take the course ---------- */
+  .upa-snglcrs-who-list {
+    @apply list-disc pl-5 space-y-1.5 text-normal text-upa-navy marker:text-upa-navy;
+  }
+
+  /* ---------- Course reviews (D3) ---------- */
+  .upa-snglcrs-rev-card {
+    @apply flex flex-col h-full bg-upa-green-2 rounded-upa-lg p-5;
+  }
+
+  .upa-snglcrs-rev-name {
+    @apply text-normal font-bold text-upa-navy;
+  }
+
+  .upa-snglcrs-rev-time {
+    @apply text-xs text-upa-navy/60;
+  }
+
+  .upa-snglcrs-rev-text {
+    @apply mt-3 text-sm text-upa-navy;
+  }
+
+  .upa-snglcrs-rev-all {
+    @apply text-sm font-bold text-upa-navy underline underline-offset-2 hover:text-upa-green transition-colors;
+  }
+
+  /* ---------- FAQ (native <details name>, one open at a time) ---------- */
+  .upa-snglcrs-faq-list {
+    @apply flex flex-col gap-2;
+  }
+
+  .upa-snglcrs-faq-item summary {
+    @apply flex items-center justify-between gap-4 bg-upa-green-2 rounded-upa-md px-4 py-3 cursor-pointer list-none text-normal font-medium text-upa-navy;
+  }
+
+  .upa-snglcrs-faq-item summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .upa-snglcrs-faq-icon {
+    @apply shrink-0 w-4 text-center text-xl leading-none font-bold text-upa-navy;
+  }
+
+  .upa-snglcrs-faq-icon::before {
+    content: "+";
+  }
+
+  .upa-snglcrs-faq-item[open] .upa-snglcrs-faq-icon::before {
+    content: "\2212";
+  }
+
+  .upa-snglcrs-faq-answer {
+    @apply mt-2 border border-upa-green/30 rounded-upa-md px-4 md:px-6 py-4 text-sm text-upa-navy;
+  }
+}

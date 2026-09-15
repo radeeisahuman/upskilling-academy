@@ -1,0 +1,31 @@
+/* ============================================
+   HOME NEWSLETTER LEAD FORM (upa-hmleadfrm-*)
+   "Subscribe to Our Newsletters" - green box inside the
+   container. lg+: heading left, form right. Below lg: stacked
+   (side by side at md squeezes the email field to nothing).
+   The submit button sits inside the white email field.
+   ============================================ */
+
+@layer components {
+
+  /* grid-cols-1 is minmax(0, 1fr): lets the column shrink below the
+     input's intrinsic width, which otherwise overflows small phones */
+  .upa-hmleadfrm-box {
+    @apply grid grid-cols-1 gap-6 lg:grid-cols-2 lg:items-center bg-upa-green px-6 py-8 md:px-12 md:py-10 lg:px-16;
+  }
+
+  /* White field wrapping input + button; ring shows keyboard focus
+     since the input itself has no outline */
+  .upa-hmleadfrm-form {
+    @apply flex items-center gap-2 w-full md:max-w-lg lg:justify-self-end bg-white rounded-upa-sm p-1.5 focus-within:ring-2 focus-within:ring-upa-navy;
+  }
+
+  .upa-hmleadfrm-input {
+    @apply flex-1 min-w-0 bg-transparent px-3 py-2 text-normal text-upa-navy outline-none placeholder:text-gray-400;
+  }
+
+  /* Squared-off version of .upa-btn - keeps its hover sweep */
+  .upa-hmleadfrm-btn {
+    @apply shrink-0 rounded-upa-sm px-4 sm:px-5 py-2.5;
+  }
+}

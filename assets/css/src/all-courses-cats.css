@@ -1,0 +1,68 @@
+/* ============================================
+   ALL COURSES - CATEGORY FILTER (upa-alcrs-cats-*)
+   One markup block, two presentations:
+   - below lg: a dropdown button (like the sort select); the list
+     opens as an overlay with a capped height and its own scroll.
+   - lg+: an always-visible sidebar with a green title bar.
+   Open state is .is-open on .upa-alcrs-cats, set by the page script.
+   Its grid position lives in all-courses-card.css (.upa-alcrs-card-layout).
+   ============================================ */
+
+@layer components {
+
+  /* Positioning context for the dropdown panel */
+  .upa-alcrs-cats {
+    @apply relative;
+  }
+
+  /* Below lg: dropdown button. text-xs below sm keeps the label on one
+     line in a half-width button on phones. */
+  .upa-alcrs-cats-toggle {
+    @apply flex items-center justify-between gap-2 w-full h-full bg-upa-green text-white text-xs sm:text-sm font-bold rounded-upa-md px-3 py-2.5 cursor-pointer lg:hidden;
+  }
+
+  .upa-alcrs-cats-toggle svg {
+    @apply w-4 h-4 shrink-0 transition-transform;
+  }
+
+  .upa-alcrs-cats-toggle[aria-expanded="true"] svg {
+    @apply rotate-180;
+  }
+
+  /* lg+: static sidebar title */
+  .upa-alcrs-cats-title {
+    @apply hidden lg:block bg-upa-green text-white text-normal font-bold text-center rounded-t-upa-lg px-4 py-3;
+  }
+
+  /* Below lg: hidden overlay until opened, capped height + scroll.
+     min-w-64 lets names sit on one line even when the button is narrow.
+     lg+: plain sidebar body, always shown, no cap. */
+  .upa-alcrs-cats-panel {
+    @apply hidden absolute top-full left-0 z-20 mt-1 w-full min-w-64 max-h-72 overflow-y-auto bg-upa-green-2 border border-upa-green rounded-upa-md shadow-upa-md lg:block lg:static lg:mt-0 lg:min-w-0 lg:max-h-none lg:overflow-visible lg:border-0 lg:shadow-none lg:rounded-none lg:rounded-b-upa-lg;
+  }
+
+  .upa-alcrs-cats.is-open .upa-alcrs-cats-panel {
+    @apply block;
+  }
+
+  .upa-alcrs-cats-list {
+    @apply flex flex-col px-3 py-1 lg:px-4 lg:py-2;
+  }
+
+  /* Whole row is the label, so the text toggles the checkbox too */
+  .upa-alcrs-cats-item {
+    @apply flex items-start gap-2.5 py-4 border-b-2 border-upa-navy/20 text-sm text-upa-navy cursor-pointer hover:text-upa-green transition-colors;
+  }
+
+  .upa-alcrs-cats-list li:last-child .upa-alcrs-cats-item {
+    @apply border-b-0;
+  }
+
+  .upa-alcrs-cats-check {
+    @apply mt-0.5 w-4 h-4 shrink-0 accent-upa-green cursor-pointer;
+  }
+
+  .upa-alcrs-cats-count {
+    @apply text-upa-navy/60;
+  }
+}

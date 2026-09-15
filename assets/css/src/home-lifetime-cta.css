@@ -1,0 +1,45 @@
+/* ============================================
+   HOME LIFETIME MEMBERSHIP CTA (upa-hmlftcta-*)
+   ============================================ */
+
+@layer components {
+
+  .upa-hmlftcta-check {
+    @apply flex items-center gap-2 text-white text-sm;
+  }
+
+  .upa-hmlftcta-check-icon {
+    @apply flex items-center justify-center w-5 h-5 rounded-full border-2 border-white flex-shrink-0;
+  }
+
+  /* Offer card */
+  .upa-hmlftcta-card {
+    @apply relative bg-white rounded-upa-lg shadow-upa-md overflow-hidden p-8 pr-12 w-full max-w-sm;
+  }
+
+  /* Diagonal "SPECIAL OFFER" ribbon, top-right corner */
+  .upa-hmlftcta-ribbon-clip {
+    @apply absolute top-0 right-0 w-28 h-28 overflow-hidden pointer-events-none;
+  }
+
+  .upa-hmlftcta-ribbon {
+    @apply absolute top-[22px] right-[-38px] w-[160px] rotate-45 bg-upa-red text-white text-[10px] font-bold text-center py-1 uppercase tracking-wide;
+  }
+
+  /* Vertical "90% OFF" running down the right edge */
+  .upa-hmlftcta-off-badge {
+    @apply absolute top-1/2 right-3 -translate-y-1/2 rotate-90 origin-center text-upa-green font-bold text-sm whitespace-nowrap;
+  }
+
+  .upa-hmlftcta-price {
+    @apply text-upa-green font-bold text-page-header leading-none;
+  }
+
+  .upa-hmlftcta-price-unit {
+    @apply text-gray-400 text-sm font-normal;
+  }
+
+  .upa-hmlftcta-price-old {
+    @apply text-gray-400 line-through;
+  }
+}

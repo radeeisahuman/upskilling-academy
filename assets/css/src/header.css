@@ -1,0 +1,43 @@
+/* ============================================
+   SITE HEADER / NAVIGATION
+   Global base styles moved to base.css.
+   ============================================ */
+
+@layer components {
+  /* Navigation link */
+  .upa-nav-link {
+      position: relative;
+      display: inline-block;
+      padding-bottom: 4px;
+  }
+
+  /* Hover underline */
+  .upa-nav-link::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 3px;
+      background: var(--color-upa-green);
+
+      transform: scaleX(0);
+      transform-origin: right;
+      transition: transform 0.35s ease;
+  }
+
+  /* Show underline only on hover */
+  .upa-nav-link:hover::after {
+      transform: scaleX(1);
+  }
+
+  /* Active = green text only */
+  .upa-nav-link.active {
+      color: var(--color-upa-green);
+  }
+
+  /* Make absolutely sure active does NOT have an underline */
+  .upa-nav-link.active::after {
+      transform: scaleX(0);
+  }
+}

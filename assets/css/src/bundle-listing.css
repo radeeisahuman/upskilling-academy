@@ -1,0 +1,131 @@
+/* ============================================
+   BUNDLE LISTING PAGE (upa-albndl-*)
+   Sub-prefixes:
+     -hi    hero: image, title, copyable coupon strip
+     -card  bundle card (C2) - the home bundle CTA card renamed for the
+            bundle pages. Always has the count badge and the timer.
+     -cta   membership banner, last item of the card grid
+   The listing shell (search, count, category filter, sort, grid,
+   pagination) reuses the all-courses classes (upa-alcrs-card-*,
+   upa-alcrs-cats-*) - one component, see INVENTORY "Listing-page shell".
+   ============================================ */
+
+@layer components {
+
+  /* ---------- Hero ---------- */
+  .upa-albndl-hi {
+    @apply grid grid-cols-1 md:grid-cols-[2fr_3fr] gap-8 md:gap-12 items-center;
+  }
+
+  .upa-albndl-hi-image img {
+    @apply w-full max-w-sm md:max-w-md h-auto mx-auto;
+  }
+
+  .upa-albndl-hi-text {
+    @apply flex flex-col items-center gap-4 text-center md:items-start md:text-left;
+  }
+
+  /* "Get 20% OFF ... | Use Coupon [BUNDLE]" - the code is a copy button */
+  .upa-albndl-hi-coupon {
+    @apply flex flex-wrap items-center justify-center gap-x-3 gap-y-2 bg-upa-green-2 rounded-upa-md py-1.5 pl-4 pr-1.5 text-sm text-upa-navy;
+  }
+
+  /* "Use Coupon" + code stay together when the strip wraps. The divider
+     only shows from lg, where the strip fits on one line - wrapped, it
+     would start the second line. */
+  .upa-albndl-hi-coupon-use {
+    @apply inline-flex items-center gap-3 lg:border-l lg:border-upa-navy lg:pl-3;
+  }
+
+  .upa-albndl-hi-code {
+    @apply bg-upa-green text-white font-bold tracking-wider rounded-upa-sm px-3 py-1.5 cursor-pointer hover:bg-upa-navy transition-colors;
+  }
+
+  /* ---------- Bundle card (C2) ---------- */
+  .upa-albndl-card {
+    @apply flex flex-col border border-upa-green rounded-upa-lg overflow-hidden bg-white h-full p-2;
+  }
+
+  .upa-albndl-card-image-wrap {
+    @apply relative w-full aspect-4/3 overflow-hidden rounded-xl;
+  }
+
+  .upa-albndl-card-image-wrap img {
+    @apply w-full h-full object-cover;
+  }
+
+  /* "N Courses" pill, top-left of the image */
+  .upa-albndl-card-count-badge {
+    @apply absolute top-3 left-3 z-10 bg-upa-peach text-white text-xs font-bold rounded-full px-3 py-1;
+  }
+
+  /* Diagonal "SALE" ribbon - conditional, only on discounted bundles */
+  .upa-albndl-card-sale-clip {
+    @apply absolute top-0 right-0 w-24 h-24 overflow-hidden pointer-events-none;
+  }
+
+  .upa-albndl-card-sale-ribbon {
+    @apply absolute top-4.5 -right-8.5 w-35 rotate-45 bg-upa-red text-white text-xs font-bold text-center py-1 uppercase;
+  }
+
+  .upa-albndl-card-body {
+    @apply flex flex-col gap-2 pt-4 px-2 pb-2 flex-1;
+  }
+
+  /* Countdown pill - bundle cards always have one */
+  .upa-albndl-card-timer {
+    @apply inline-flex items-center gap-0.5 w-fit border-x-4 border-y border-upa-green rounded-full px-3 py-1.5;
+  }
+
+  .upa-albndl-card-timer-unit {
+    @apply flex flex-row items-center leading-none text-upa-navy;
+  }
+
+  /* tabular-nums stops the digits jiggling as bundle-timer.js ticks them */
+  .upa-albndl-card-timer-unit span:first-child {
+    @apply text-xs font-bold tabular-nums;
+  }
+
+  .upa-albndl-card-timer-unit sub:last-child {
+    @apply text-[8px] uppercase text-gray-700 tracking-wide mt-0.5;
+  }
+
+  .upa-albndl-card-timer-sep {
+    @apply text-gray-300 font-bold text-xs;
+  }
+
+  .upa-albndl-card-stars {
+    @apply flex items-center gap-0.5;
+  }
+
+  .upa-albndl-card-price-row {
+    @apply flex items-center justify-between gap-2 mt-auto pt-2;
+  }
+
+  .upa-albndl-card-price-new {
+    @apply text-upa-navy font-bold text-2xl;
+  }
+
+  .upa-albndl-card-price-old {
+    @apply text-upa-red line-through text-normal;
+  }
+
+  /* ---------- Membership banner ----------
+     Sits inside the card grid as its last item and spans every column,
+     so it stays between the cards and the pagination. */
+  .upa-albndl-cta {
+    @apply col-span-full flex flex-col md:flex-row md:items-center md:justify-between gap-4 bg-upa-green rounded-upa-lg px-6 py-6 md:px-8 text-center md:text-left;
+  }
+
+  .upa-albndl-cta-title {
+    @apply text-sec-header font-bold text-upa-navy;
+  }
+
+  .upa-albndl-cta-text {
+    @apply mt-1 max-w-2xl text-sm text-upa-navy;
+  }
+
+  .upa-albndl-cta-btn {
+    @apply shrink-0 self-center;
+  }
+}

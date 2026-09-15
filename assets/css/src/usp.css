@@ -1,0 +1,28 @@
+/* ============================================
+   USP TICKER (mobile marquee)
+   Continuous horizontal scroll - the content is
+   duplicated once in the HTML so that translating
+   by -50% loops seamlessly back to the start.
+   ============================================ */
+
+@layer components {
+  .upa-marquee {
+    animation: upa-marquee-scroll 18s linear infinite;
+  }
+
+  /* Respect users who've asked for less motion */
+  @media (prefers-reduced-motion: reduce) {
+    .upa-marquee {
+      animation: none;
+    }
+  }
+}
+
+@keyframes upa-marquee-scroll {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}

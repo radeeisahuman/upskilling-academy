@@ -1,0 +1,60 @@
+/* ============================================
+   LEARNER REVIEWS (upa-reviews-*)
+   "Check Our Learners Reviews" - centred header +
+   always-on Swiper slider of D1 testimonial cards.
+   Below md: stacked slider (.upa-stack-swiper, components.css).
+   md and up: plain row of 2 (md), 3 (lg), 4 (xl) per view.
+   Shared by Home, Pricing/Offers and Lifetime membership.
+   ============================================ */
+
+@layer components {
+
+  /* D1 card: green strip holds the rating, white body overlaps its
+     bottom edge so the green shows behind the body's rounded top corners.
+     Green stays on the strip only - on the card it bleeds at the bottom corners. */
+  .upa-reviews-card {
+    @apply flex flex-col h-full rounded-upa-lg overflow-hidden;
+  }
+
+  .upa-reviews-rating {
+    @apply flex items-center gap-2 bg-upa-green px-6 pt-2.5 pb-6;
+  }
+
+  /* Five stars drawn by a mask; the fill child's width is the rating
+     as a percentage (4.8 / 5 = 96%), so fractional ratings just work */
+  .upa-reviews-stars {
+    @apply relative block shrink-0 w-22.5 h-4 bg-gray-200;
+    -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath d='M10 1.5l2.6 5.6 6.1.6-4.5 4.1 1.3 6-5.5-3.1-5.5 3.1 1.3-6L1.3 7.7l6.1-.6z'/%3E%3C/svg%3E");
+    mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath d='M10 1.5l2.6 5.6 6.1.6-4.5 4.1 1.3 6-5.5-3.1-5.5 3.1 1.3-6L1.3 7.7l6.1-.6z'/%3E%3C/svg%3E");
+    -webkit-mask-size: 1.125rem 1rem;
+    mask-size: 1.125rem 1rem;
+    -webkit-mask-repeat: repeat-x;
+    mask-repeat: repeat-x;
+  }
+
+  .upa-reviews-stars-fill {
+    @apply absolute inset-y-0 left-0 bg-upa-peach;
+  }
+
+  .upa-reviews-score {
+    @apply text-xs font-medium text-white;
+  }
+
+  .upa-reviews-body {
+    @apply relative flex flex-col gap-3 flex-1 bg-white rounded-t-upa-lg -mt-4 p-6;
+  }
+
+  /* Pushes the reviewer to the bottom so names line up across cards */
+  .upa-reviews-author {
+    @apply mt-auto pt-4;
+  }
+
+  /* Swiper pagination dots */
+  .upa-reviews-dot {
+    @apply w-2 h-2 rounded-full bg-gray-300 cursor-pointer transition-all;
+  }
+
+  .upa-reviews-dot-active {
+    @apply w-5 rounded-full bg-upa-green;
+  }
+}

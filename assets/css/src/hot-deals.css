@@ -1,0 +1,117 @@
+/* ============================================
+   HOT DEALS PAGE (upa-htdl-*)
+   One file for the page; each block has its own sub-prefix:
+     -hi     hero: background image, coupon block, sale graphic
+     -crs    course library header + category chips
+   Page order: hero, accreditation, course library, reviews,
+   lifetime CTA, course categories.
+   Reused as-is from other pages: accreditation (upa-accred-*),
+   course card (upa-popcrs-*), learner reviews (upa-reviews-*),
+   lifetime CTA (upa-hmlftcta-*), course categories (upa-crcat-*).
+   ============================================ */
+
+@layer components {
+
+  /* ---------- Hero ---------- */
+
+  /* Full-bleed background photo behind the hero content */
+  .upa-htdl-hi-bg {
+    @apply absolute inset-0 w-full h-full object-cover;
+  }
+
+  /* Left block: a centred stack; sits in the left column from md */
+  .upa-htdl-hi-content {
+    @apply flex flex-col items-center gap-4 w-fit max-w-full mx-auto text-center md:mx-0;
+  }
+
+  .upa-htdl-hi-title {
+    @apply flex flex-col items-center gap-4 text-page-header font-extrabold uppercase text-upa-navy;
+  }
+
+  /* £9.99 in a hexagon: ::before is the green edge, ::after the pale fill.
+     isolate keeps the negative z-index pseudos behind the text only. */
+  .upa-htdl-hi-price {
+    @apply relative isolate px-12 py-2 text-6xl md:text-7xl leading-none font-extrabold normal-case text-upa-peach text-shadow-md text-shadow-upa-navy/30 ;
+  }
+
+  .upa-htdl-hi-price::before,
+  .upa-htdl-hi-price::after {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    clip-path: polygon(10% 0, 90% 0, 100% 50%, 90% 100%, 10% 100%, 0 50%);
+  }
+
+  .upa-htdl-hi-price::before {
+    inset: 0;
+    background: var(--color-upa-green);
+  }
+
+  .upa-htdl-hi-price::after {
+    inset: 3px;
+    background: var(--color-upa-green-2);
+  }
+
+  .upa-htdl-hi-label {
+    @apply inline-block bg-upa-navy text-white text-xs font-bold rounded-full px-3 py-1;
+  }
+
+  /* Coupon field: read-only code + Copy button inside a white pill */
+  .upa-htdl-hi-coupon {
+    @apply flex items-center gap-2 w-full max-w-xs bg-white border-2 border-upa-green rounded-full p-1 pl-5;
+  }
+
+  .upa-htdl-hi-code {
+    @apply flex-1 min-w-0 bg-transparent text-normal font-bold tracking-wider text-upa-navy outline-none;
+  }
+
+  /* Sized-down .upa-btn (navy variant) */
+  .upa-htdl-hi-copy {
+    @apply shrink-0 text-sm px-5 py-2;
+  }
+
+  .upa-htdl-hi-sale {
+    @apply flex justify-center;
+  }
+
+  .upa-htdl-hi-sale img {
+    @apply w-full max-w-sm md:max-w-md h-auto;
+  }
+
+  /* ---------- Course library ---------- */
+  .upa-htdl-crs-head {
+    @apply flex flex-col items-center gap-4 text-center md:flex-row md:justify-between md:text-left;
+  }
+
+  /* Mobile: 3-column grid, first 6 chips until "Show All Categories"
+     adds .is-expanded. md+: one wrapping row, all chips shown. */
+  .upa-htdl-crs-chips {
+    @apply grid grid-cols-3 gap-2 mt-6 md:flex md:flex-wrap;
+  }
+
+  .upa-htdl-crs-chips:not(.is-expanded) > li:nth-child(n+7) {
+    @apply max-md:hidden;
+  }
+
+  .upa-htdl-crs-chip {
+    @apply block h-full text-center bg-upa-green-2 border border-upa-green/30 rounded-upa-md px-2 py-2 md:px-3 md:py-1.5 text-xs font-medium text-upa-navy hover:border-upa-green transition-colors;
+  }
+
+  /* Current category */
+  .upa-htdl-crs-chip[aria-current="true"] {
+    @apply bg-upa-peach border-upa-peach font-bold;
+  }
+
+  /* .upa-btn with a chevron */
+  .upa-htdl-crs-more {
+    @apply inline-flex items-center gap-2;
+  }
+
+  .upa-htdl-crs-more svg {
+    @apply w-4 h-4 transition-transform;
+  }
+
+  .upa-htdl-crs-more[aria-expanded="true"] svg {
+    @apply rotate-180;
+  }
+}
