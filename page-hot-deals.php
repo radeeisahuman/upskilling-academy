@@ -31,7 +31,7 @@
                         <!-- Screen-reader announcement for the copy result -->
                         <p class="sr-only" aria-live="polite" data-htdl-copy-status></p>
 
-                        <a href="#" class="upa-btn upa-btn-navy_green">Browse Courses</a>
+                        <a href="<?php echo home_url('our-courses'); ?>" class="upa-btn upa-btn-navy_green">Browse Courses</a>
                     </div>
 
                     <!-- Right: sale graphic (on top on mobile) -->
@@ -85,28 +85,15 @@
 
                 <!-- Category chips. Mobile shows the first 6 until "Show All Categories". -->
                 <ul id="upa-htdl-crs-chips" class="upa-htdl-crs-chips">
+                    <?php
+                    $terms = get_terms(['taxonomy' => 'course-category']);
+                    ?>
                     <!-- DYNAMIC: aria-current="true" on the current category -->
                     <li><a href="#" class="upa-htdl-crs-chip" aria-current="true">All</a></li>
                     <!-- LOOP START: course category -->
-                    <li><a href="#" class="upa-htdl-crs-chip">Food Hygiene</a></li>
-                    <!-- LOOP END -->
-                    <li><a href="#" class="upa-htdl-crs-chip">Food Hygiene</a></li>
-                    <li><a href="#" class="upa-htdl-crs-chip">Food Hygiene</a></li>
-                    <li><a href="#" class="upa-htdl-crs-chip">Food Hygiene</a></li>
-                    <li><a href="#" class="upa-htdl-crs-chip">Food Hygiene</a></li>
-                    <li><a href="#" class="upa-htdl-crs-chip">Food Hygiene</a></li>
-                    <li><a href="#" class="upa-htdl-crs-chip">Food Hygiene</a></li>
-                    <li><a href="#" class="upa-htdl-crs-chip">Food Hygiene</a></li>
-                    <li><a href="#" class="upa-htdl-crs-chip">Food Hygiene</a></li>
-                    <li><a href="#" class="upa-htdl-crs-chip">Food Hygiene</a></li>
-                    <li><a href="#" class="upa-htdl-crs-chip">Food Hygiene</a></li>
-                    <li><a href="#" class="upa-htdl-crs-chip">Food Hygiene</a></li>
-                    <li><a href="#" class="upa-htdl-crs-chip">Food Hygiene</a></li>
-                    <li><a href="#" class="upa-htdl-crs-chip">Food Hygiene</a></li>
-                    <li><a href="#" class="upa-htdl-crs-chip">Food Hygiene</a></li>
-                    <li><a href="#" class="upa-htdl-crs-chip">Food Hygiene</a></li>
-                    <li><a href="#" class="upa-htdl-crs-chip">Food Hygiene</a></li>
-                    <li><a href="#" class="upa-htdl-crs-chip">Food Hygiene</a></li>
+                     <?php foreach($terms as $term): ?>
+                    <li><a href="<?php echo get_term_link($term); ?>" class="upa-htdl-crs-chip"><?php echo $term->name; ?></a></li>
+                    <?php endforeach; ?>
                 </ul>
                 <div class="flex justify-center mt-4 md:hidden">
                     <button type="button" class="upa-btn upa-htdl-crs-more" aria-expanded="false"
@@ -119,13 +106,25 @@
                     </button>
                 </div>
 
+                <?php
+                $courses = new WP_Query([
+                    'post_type' => 'courses',
+                    'post_status' => 'publish',
+                    'posts_per_page' => 12
+                ]);
+                ?>
+
                 <!-- md+: grid -->
                 <div class="hidden md:grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mt-8">
+                    <?php
+                    while($courses->have_posts()):
+                        $courses->the_post();
+                    ?>
                     <!-- LOOP START: course card -->
                     <div class="upa-popcrs-card">
                         <div class="upa-popcrs-image-wrap">
                             <!-- DYNAMIC: course_thumbnail -->
-                            <img src="<?php echo get_stylesheet_directory_uri() . '/assets/img/course-food-hygiene.jpg'; ?>" alt="Food Hygiene course">
+                            <img src="<?php echo get_the_post_thumbnail_url(); ?>" alt="<?php echo get_the_title(); ?> Thumbnail">
                             <!-- CONDITIONAL: sale ribbon, discounted courses only -->
                             <div class="upa-popcrs-sale-clip">
                                 <div class="upa-popcrs-sale-ribbon">Sale</div>
@@ -133,9 +132,9 @@
                         </div>
                         <div class="upa-popcrs-body">
                             <!-- DYNAMIC: course_title -->
-                            <h3 class="text-upa-green font-bold upa-txt-normal">Food Hygiene</h3>
+                            <h3 class="text-upa-green font-bold upa-txt-normal"><?php echo get_the_title(); ?></h3>
                             <!-- DYNAMIC: course_excerpt -->
-                            <p class="upa-txt-sm">Essential food handling, Hygiene, safety and nutrition training</p>
+                            <p class="upa-txt-sm"><?php echo wp_trim_words(get_the_excerpt(), 7); ?></p>
                             <!-- DYNAMIC: course_rating -->
                             <div class="upa-popcrs-stars">
                                 <svg class="w-3.5 h-3.5 fill-upa-peach" viewBox="0 0 20 20">
@@ -151,33 +150,46 @@
                                 </svg>
                             </div>
                             <div class="upa-popcrs-price-row">
+                                <?php
+                                $product_id = tutor_utils()->get_course_product_id();
+                                if($product_id):
+                                    $product = wc_get_product($product_id);
+                                ?>
                                 <div class="flex items-center gap-2">
                                     <!-- DYNAMIC: sale_price, regular_price -->
-                                    <span class="upa-popcrs-price-new">£29</span>
-                                    <span class="upa-popcrs-price-old">£115</span>
+                                    <span class="upa-popcrs-price-new"><?php echo wc_price($product->get_price()); ?></span>
+                                    <span class="upa-popcrs-price-old"><?php if($product->get_sale_price()) echo wc_price($product->get_regular_price()); ?></span>
                                 </div>
-                                <a href="#" class="upa-btn text-sm! py-2! px-4!">View Course</a>
+                                <?php
+                                endif;
+                                ?>
+                                <a href="<?php echo get_the_permalink(); ?>" class="upa-btn text-sm! py-2! px-4!">View Course</a>
                             </div>
                         </div>
                     </div>
                     <!-- LOOP END -->
+                     <?php endwhile; wp_reset_postdata(); ?>
                 </div>
 
                 <!-- Mobile: stacked Swiper, same card markup -->
                 <div class="md:hidden mt-8">
                     <div class="swiper upa-stack-swiper upa-htdl-crs-swiper">
                         <div class="swiper-wrapper">
+                            <?php
+                            while($courses->have_posts()):
+                                $courses->the_post();
+                            ?>
                             <div class="swiper-slide">
                                 <div class="upa-popcrs-card">
                                     <div class="upa-popcrs-image-wrap">
-                                        <img src="<?php echo get_stylesheet_directory_uri() . '/assets/img/course-food-hygiene.jpg'; ?>" alt="Food Hygiene course">
+                                        <img src="<?php echo get_the_post_thumbnail_url(); ?>" alt="<?php echo get_the_title(); ?> Thumbnail">
                                         <div class="upa-popcrs-sale-clip">
                                             <div class="upa-popcrs-sale-ribbon">Sale</div>
                                         </div>
                                     </div>
                                     <div class="upa-popcrs-body">
-                                        <h3 class="text-upa-green font-bold upa-txt-normal">Food Hygiene</h3>
-                                        <p class="upa-txt-sm">Essential food handling, Hygiene, safety and nutrition training</p>
+                                        <h3 class="text-upa-green font-bold upa-txt-normal"><?php echo get_the_title(); ?></h3>
+                                        <p class="upa-txt-sm"><?php wp_trim_words(get_the_excerpt(), 7); ?></p>
                                         <div class="upa-popcrs-stars">
                                             <svg class="w-3.5 h-3.5 fill-upa-peach" viewBox="0 0 20 20">
                                                 <path d="M10 1.5l2.6 5.6 6.1.6-4.5 4.1 1.3 6-5.5-3.1-5.5 3.1 1.3-6L1.3 7.7l6.1-.6z"></path>
@@ -192,22 +204,32 @@
                                             </svg>
                                         </div>
                                         <div class="upa-popcrs-price-row">
+                                            <?php
+                                            $product_id = tutor_utils()->get_course_product_id();
+                                            if($product_id):
+                                                $product = wc_get_product($product_id);
+                                            ?>
                                             <div class="flex items-center gap-2">
-                                                <span class="upa-popcrs-price-new">£29</span>
-                                                <span class="upa-popcrs-price-old">£115</span>
+                                                <span class="upa-popcrs-price-new"><?php echo wc_price($product->get_price()); ?></span>
+                                                <span class="upa-popcrs-price-old"><?php if($product->get_sale_price()) echo wc_price($product->get_regular_price()); ?></span>
                                             </div>
-                                            <a href="#" class="upa-btn text-sm! py-2! px-4!">View Course</a>
+                                            <?php endif; ?>
+                                            <a href="<?php echo get_the_permalink(); ?>" class="upa-btn text-sm! py-2! px-4!">View Course</a>
                                         </div>
                                     </div>
                                 </div>
                             </div>
+                            <?php
+                            endwhile;
+                            wp_reset_postdata();
+                            ?>
                         </div>
                     </div>
                     <div class="upa-htdl-crs-pagination flex justify-center gap-1.5 mt-4"></div>
                 </div>
 
                 <div class="flex justify-center mt-8">
-                    <a href="#" class="upa-btn">View All Courses</a>
+                    <a href="<?php echo home_url('our-courses'); ?>" class="upa-btn">View All Courses</a>
                 </div>
             </div>
             <script>
@@ -282,20 +304,127 @@
                                     <span class="upa-reviews-stars" role="img" aria-label="Rated 4.8 out of 5">
                                         <span class="upa-reviews-stars-fill" style="width: 96%"></span>
                                     </span>
-                                    <span class="upa-reviews-score" aria-hidden="true">4.8</span>
+                                    <span class="upa-reviews-score" aria-hidden="true">5</span>
                                 </div>
                                 <div class="upa-reviews-body">
-                                    <!-- DYNAMIC: course_title -->
+                                    <!-- DYNAMIC: course_title 
                                     <h3 class="upa-txt-normal font-bold">Moving and Handling People in Health and
-                                        Social Care</h3>
+                                        Social Care</h3>-->
                                     <!-- DYNAMIC: review_text -->
-                                    <blockquote class="upa-txt-normal">Brilliant course, it was really helpful and
-                                        engaging content</blockquote>
+                                    <blockquote class="upa-txt-normal">My experience with you was fantastic and easy to navigate. I'm looking forward to taking the course.</blockquote>
                                     <div class="upa-reviews-author">
                                         <!-- DYNAMIC: reviewer_name -->
-                                        <p class="upa-txt-normal font-bold">Emma Chapman</p>
-                                        <!-- DYNAMIC: reviewer_role -->
-                                        <p class="upa-txt-sm">Social Care Worker</p>
+                                        <p class="upa-txt-normal font-bold">Christine Ferguson</p>
+                                        <!-- DYNAMIC: reviewer_role 
+                                        <p class="upa-txt-sm">Social Care Worker</p>-->
+                                    </div>
+                                </div>
+                            </article>
+                        </div>
+                        <!-- LOOP END -->
+
+                        <!-- LOOP START: review card -->
+                        <div class="swiper-slide">
+                            <article class="upa-reviews-card">
+                                <div class="upa-reviews-rating">
+                                    <!-- DYNAMIC: rating - fill width = rating / 5 * 100% -->
+                                    <span class="upa-reviews-stars" role="img" aria-label="Rated 4.8 out of 5">
+                                        <span class="upa-reviews-stars-fill" style="width: 96%"></span>
+                                    </span>
+                                    <span class="upa-reviews-score" aria-hidden="true">5</span>
+                                </div>
+                                <div class="upa-reviews-body">
+                                    <!-- DYNAMIC: course_title 
+                                    <h3 class="upa-txt-normal font-bold">Moving and Handling People in Health and
+                                        Social Care</h3>-->
+                                    <!-- DYNAMIC: review_text -->
+                                    <blockquote class="upa-txt-normal">Provided highly informative and helpful responses, with quick and efficient replies.</blockquote>
+                                    <div class="upa-reviews-author">
+                                        <!-- DYNAMIC: reviewer_name -->
+                                        <p class="upa-txt-normal font-bold">Jesse Harding</p>
+                                        <!-- DYNAMIC: reviewer_role 
+                                        <p class="upa-txt-sm">Social Care Worker</p>-->
+                                    </div>
+                                </div>
+                            </article>
+                        </div>
+                        <!-- LOOP END -->
+
+                        <!-- LOOP START: review card -->
+                        <div class="swiper-slide">
+                            <article class="upa-reviews-card">
+                                <div class="upa-reviews-rating">
+                                    <!-- DYNAMIC: rating - fill width = rating / 5 * 100% -->
+                                    <span class="upa-reviews-stars" role="img" aria-label="Rated 4.8 out of 5">
+                                        <span class="upa-reviews-stars-fill" style="width: 96%"></span>
+                                    </span>
+                                    <span class="upa-reviews-score" aria-hidden="true">5</span>
+                                </div>
+                                <div class="upa-reviews-body">
+                                    <!-- DYNAMIC: course_title 
+                                    <h3 class="upa-txt-normal font-bold">Moving and Handling People in Health and
+                                        Social Care</h3>-->
+                                    <!-- DYNAMIC: review_text -->
+                                    <blockquote class="upa-txt-normal">The course selection is broad, engaging, easy to follow, and offers a good challenge.</blockquote>
+                                    <div class="upa-reviews-author">
+                                        <!-- DYNAMIC: reviewer_name -->
+                                        <p class="upa-txt-normal font-bold">Gary Schwartz</p>
+                                        <!-- DYNAMIC: reviewer_role 
+                                        <p class="upa-txt-sm">Social Care Worker</p>-->
+                                    </div>
+                                </div>
+                            </article>
+                        </div>
+                        <!-- LOOP END -->
+
+                        <!-- LOOP START: review card -->
+                        <div class="swiper-slide">
+                            <article class="upa-reviews-card">
+                                <div class="upa-reviews-rating">
+                                    <!-- DYNAMIC: rating - fill width = rating / 5 * 100% -->
+                                    <span class="upa-reviews-stars" role="img" aria-label="Rated 4.8 out of 5">
+                                        <span class="upa-reviews-stars-fill" style="width: 96%"></span>
+                                    </span>
+                                    <span class="upa-reviews-score" aria-hidden="true">5</span>
+                                </div>
+                                <div class="upa-reviews-body">
+                                    <!-- DYNAMIC: course_title 
+                                    <h3 class="upa-txt-normal font-bold">Moving and Handling People in Health and
+                                        Social Care</h3>-->
+                                    <!-- DYNAMIC: review_text -->
+                                    <blockquote class="upa-txt-normal">Excellent course with user-friendly website navigation, making it easy to follow. I'm really enjoying the experience.</blockquote>
+                                    <div class="upa-reviews-author">
+                                        <!-- DYNAMIC: reviewer_name -->
+                                        <p class="upa-txt-normal font-bold">Bailey Burrows</p>
+                                        <!-- DYNAMIC: reviewer_role 
+                                        <p class="upa-txt-sm">Social Care Worker</p>-->
+                                    </div>
+                                </div>
+                            </article>
+                        </div>
+                        <!-- LOOP END -->
+
+                        <!-- LOOP START: review card -->
+                        <div class="swiper-slide">
+                            <article class="upa-reviews-card">
+                                <div class="upa-reviews-rating">
+                                    <!-- DYNAMIC: rating - fill width = rating / 5 * 100% -->
+                                    <span class="upa-reviews-stars" role="img" aria-label="Rated 4.8 out of 5">
+                                        <span class="upa-reviews-stars-fill" style="width: 96%"></span>
+                                    </span>
+                                    <span class="upa-reviews-score" aria-hidden="true">5</span>
+                                </div>
+                                <div class="upa-reviews-body">
+                                    <!-- DYNAMIC: course_title 
+                                    <h3 class="upa-txt-normal font-bold">Moving and Handling People in Health and
+                                        Social Care</h3>-->
+                                    <!-- DYNAMIC: review_text -->
+                                    <blockquote class="upa-txt-normal">Great course with valuable information. Easy to follow, and I appreciated the flexibility to work at my own pace.</blockquote>
+                                    <div class="upa-reviews-author">
+                                        <!-- DYNAMIC: reviewer_name -->
+                                        <p class="upa-txt-normal font-bold">Benjamin Moreno</p>
+                                        <!-- DYNAMIC: reviewer_role 
+                                        <p class="upa-txt-sm">Social Care Worker</p>-->
                                     </div>
                                 </div>
                             </article>
@@ -413,7 +542,7 @@
 
                     <!-- Offer card -->
                     <div class="flex justify-center lg:justify-end">
-                        <a href="#" class="flex justify-center items-center no-underline text-inherit max-w-sm">
+                        <a href="<?php echo home_url('lifetime-membership'); ?>" class="flex justify-center items-center no-underline text-inherit max-w-sm">
                             <img src="<?php echo get_stylesheet_directory_uri() . '/assets/img/lifetime-cta.png'; ?>" alt="Lifetime Membership Plan"
                                 class="upa-hmlftcta-card-img h-full w-auto object-cover rounded-lg shadow-lg">
                         </a>
@@ -456,7 +585,8 @@
                     personal and professional skills</p>
 
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6 mt-8">
-                    <a href="#" class="upa-crcat-card">
+                    <?php foreach($terms as $term): ?>
+                    <a href="<?php echo get_term_link($term); ?>" class="upa-crcat-card">
                         <div class="upa-crcat-icon">
                             <svg class="w-6 h-6 text-upa-green" viewBox="0 0 24 24" fill="none"
                                 xmlns="http://www.w3.org/2000/svg">
@@ -467,9 +597,8 @@
                             </svg>
                         </div>
                         <div>
-                            <p class="upa-txt-normal font-bold text-upa-navy">Food Hygiene</p>
-                            <p class="hidden md:block upa-txt-sm">Essential food handling, Hygiene, safety and nutrition
-                                training</p>
+                            <p class="upa-txt-normal font-bold text-upa-navy"><?php echo $term->name; ?></p>
+                            <p class="hidden md:block upa-txt-sm"><?php echo $term->description; ?></p>
                         </div>
                         <span class="upa-crcat-arrow">
                             <svg class="w-3 h-3" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -478,248 +607,7 @@
                             </svg>
                         </span>
                     </a>
-                    <a href="#" class="upa-crcat-card">
-                        <div class="upa-crcat-icon">
-                            <svg class="w-6 h-6 text-upa-green" viewBox="0 0 24 24" fill="none"
-                                xmlns="http://www.w3.org/2000/svg">
-                                <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.5" />
-                                <path
-                                    d="M12 7v10M8.5 9c0-1.5 1.5-2.5 3.5-2.5s3.5 1 3.5 2.5-1.5 2-3.5 2.5-3.5 1-3.5 2.5 1.5 2.5 3.5 2.5 3.5-1 3.5-2.5"
-                                    stroke="currentColor" stroke-width="1.3" stroke-linecap="round" />
-                            </svg>
-                        </div>
-                        <div>
-                            <p class="upa-txt-normal font-bold text-upa-navy">Food Hygiene</p>
-                            <p class="hidden md:block upa-txt-sm">Essential food handling, Hygiene, safety and nutrition
-                                training</p>
-                        </div>
-                        <span class="upa-crcat-arrow">
-                            <svg class="w-3 h-3" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M4.5 2.5L8 6L4.5 9.5" stroke="currentColor" stroke-width="1.5"
-                                    stroke-linecap="round" stroke-linejoin="round" />
-                            </svg>
-                        </span>
-                    </a>
-                    <a href="#" class="upa-crcat-card">
-                        <div class="upa-crcat-icon">
-                            <svg class="w-6 h-6 text-upa-green" viewBox="0 0 24 24" fill="none"
-                                xmlns="http://www.w3.org/2000/svg">
-                                <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.5" />
-                                <path
-                                    d="M12 7v10M8.5 9c0-1.5 1.5-2.5 3.5-2.5s3.5 1 3.5 2.5-1.5 2-3.5 2.5-3.5 1-3.5 2.5 1.5 2.5 3.5 2.5 3.5-1 3.5-2.5"
-                                    stroke="currentColor" stroke-width="1.3" stroke-linecap="round" />
-                            </svg>
-                        </div>
-                        <div>
-                            <p class="upa-txt-normal font-bold text-upa-navy">Food Hygiene</p>
-                            <p class="hidden md:block upa-txt-sm">Essential food handling, Hygiene, safety and nutrition
-                                training</p>
-                        </div>
-                        <span class="upa-crcat-arrow">
-                            <svg class="w-3 h-3" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M4.5 2.5L8 6L4.5 9.5" stroke="currentColor" stroke-width="1.5"
-                                    stroke-linecap="round" stroke-linejoin="round" />
-                            </svg>
-                        </span>
-                    </a>
-                    <a href="#" class="upa-crcat-card">
-                        <div class="upa-crcat-icon">
-                            <svg class="w-6 h-6 text-upa-green" viewBox="0 0 24 24" fill="none"
-                                xmlns="http://www.w3.org/2000/svg">
-                                <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.5" />
-                                <path
-                                    d="M12 7v10M8.5 9c0-1.5 1.5-2.5 3.5-2.5s3.5 1 3.5 2.5-1.5 2-3.5 2.5-3.5 1-3.5 2.5 1.5 2.5 3.5 2.5 3.5-1 3.5-2.5"
-                                    stroke="currentColor" stroke-width="1.3" stroke-linecap="round" />
-                            </svg>
-                        </div>
-                        <div>
-                            <p class="upa-txt-normal font-bold text-upa-navy">Food Hygiene</p>
-                            <p class="hidden md:block upa-txt-sm">Essential food handling, Hygiene, safety and nutrition
-                                training</p>
-                        </div>
-                        <span class="upa-crcat-arrow">
-                            <svg class="w-3 h-3" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M4.5 2.5L8 6L4.5 9.5" stroke="currentColor" stroke-width="1.5"
-                                    stroke-linecap="round" stroke-linejoin="round" />
-                            </svg>
-                        </span>
-                    </a>
-                    <a href="#" class="upa-crcat-card">
-                        <div class="upa-crcat-icon">
-                            <svg class="w-6 h-6 text-upa-green" viewBox="0 0 24 24" fill="none"
-                                xmlns="http://www.w3.org/2000/svg">
-                                <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.5" />
-                                <path
-                                    d="M12 7v10M8.5 9c0-1.5 1.5-2.5 3.5-2.5s3.5 1 3.5 2.5-1.5 2-3.5 2.5-3.5 1-3.5 2.5 1.5 2.5 3.5 2.5 3.5-1 3.5-2.5"
-                                    stroke="currentColor" stroke-width="1.3" stroke-linecap="round" />
-                            </svg>
-                        </div>
-                        <div>
-                            <p class="upa-txt-normal font-bold text-upa-navy">Food Hygiene</p>
-                            <p class="hidden md:block upa-txt-sm">Essential food handling, Hygiene, safety and nutrition
-                                training</p>
-                        </div>
-                        <span class="upa-crcat-arrow">
-                            <svg class="w-3 h-3" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M4.5 2.5L8 6L4.5 9.5" stroke="currentColor" stroke-width="1.5"
-                                    stroke-linecap="round" stroke-linejoin="round" />
-                            </svg>
-                        </span>
-                    </a>
-                    <a href="#" class="upa-crcat-card">
-                        <div class="upa-crcat-icon">
-                            <svg class="w-6 h-6 text-upa-green" viewBox="0 0 24 24" fill="none"
-                                xmlns="http://www.w3.org/2000/svg">
-                                <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.5" />
-                                <path
-                                    d="M12 7v10M8.5 9c0-1.5 1.5-2.5 3.5-2.5s3.5 1 3.5 2.5-1.5 2-3.5 2.5-3.5 1-3.5 2.5 1.5 2.5 3.5 2.5 3.5-1 3.5-2.5"
-                                    stroke="currentColor" stroke-width="1.3" stroke-linecap="round" />
-                            </svg>
-                        </div>
-                        <div>
-                            <p class="upa-txt-normal font-bold text-upa-navy">Food Hygiene</p>
-                            <p class="hidden md:block upa-txt-sm">Essential food handling, Hygiene, safety and nutrition
-                                training</p>
-                        </div>
-                        <span class="upa-crcat-arrow">
-                            <svg class="w-3 h-3" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M4.5 2.5L8 6L4.5 9.5" stroke="currentColor" stroke-width="1.5"
-                                    stroke-linecap="round" stroke-linejoin="round" />
-                            </svg>
-                        </span>
-                    </a>
-                    <a href="#" class="upa-crcat-card">
-                        <div class="upa-crcat-icon">
-                            <svg class="w-6 h-6 text-upa-green" viewBox="0 0 24 24" fill="none"
-                                xmlns="http://www.w3.org/2000/svg">
-                                <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.5" />
-                                <path
-                                    d="M12 7v10M8.5 9c0-1.5 1.5-2.5 3.5-2.5s3.5 1 3.5 2.5-1.5 2-3.5 2.5-3.5 1-3.5 2.5 1.5 2.5 3.5 2.5 3.5-1 3.5-2.5"
-                                    stroke="currentColor" stroke-width="1.3" stroke-linecap="round" />
-                            </svg>
-                        </div>
-                        <div>
-                            <p class="upa-txt-normal font-bold text-upa-navy">Food Hygiene</p>
-                            <p class="hidden md:block upa-txt-sm">Essential food handling, Hygiene, safety and nutrition
-                                training</p>
-                        </div>
-                        <span class="upa-crcat-arrow">
-                            <svg class="w-3 h-3" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M4.5 2.5L8 6L4.5 9.5" stroke="currentColor" stroke-width="1.5"
-                                    stroke-linecap="round" stroke-linejoin="round" />
-                            </svg>
-                        </span>
-                    </a>
-                    <a href="#" class="upa-crcat-card">
-                        <div class="upa-crcat-icon">
-                            <svg class="w-6 h-6 text-upa-green" viewBox="0 0 24 24" fill="none"
-                                xmlns="http://www.w3.org/2000/svg">
-                                <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.5" />
-                                <path
-                                    d="M12 7v10M8.5 9c0-1.5 1.5-2.5 3.5-2.5s3.5 1 3.5 2.5-1.5 2-3.5 2.5-3.5 1-3.5 2.5 1.5 2.5 3.5 2.5 3.5-1 3.5-2.5"
-                                    stroke="currentColor" stroke-width="1.3" stroke-linecap="round" />
-                            </svg>
-                        </div>
-                        <div>
-                            <p class="upa-txt-normal font-bold text-upa-navy">Food Hygiene</p>
-                            <p class="hidden md:block upa-txt-sm">Essential food handling, Hygiene, safety and nutrition
-                                training</p>
-                        </div>
-                        <span class="upa-crcat-arrow">
-                            <svg class="w-3 h-3" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M4.5 2.5L8 6L4.5 9.5" stroke="currentColor" stroke-width="1.5"
-                                    stroke-linecap="round" stroke-linejoin="round" />
-                            </svg>
-                        </span>
-                    </a>
-                    <a href="#" class="upa-crcat-card">
-                        <div class="upa-crcat-icon">
-                            <svg class="w-6 h-6 text-upa-green" viewBox="0 0 24 24" fill="none"
-                                xmlns="http://www.w3.org/2000/svg">
-                                <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.5" />
-                                <path
-                                    d="M12 7v10M8.5 9c0-1.5 1.5-2.5 3.5-2.5s3.5 1 3.5 2.5-1.5 2-3.5 2.5-3.5 1-3.5 2.5 1.5 2.5 3.5 2.5 3.5-1 3.5-2.5"
-                                    stroke="currentColor" stroke-width="1.3" stroke-linecap="round" />
-                            </svg>
-                        </div>
-                        <div>
-                            <p class="upa-txt-normal font-bold text-upa-navy">Food Hygiene</p>
-                            <p class="hidden md:block upa-txt-sm">Essential food handling, Hygiene, safety and nutrition
-                                training</p>
-                        </div>
-                        <span class="upa-crcat-arrow">
-                            <svg class="w-3 h-3" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M4.5 2.5L8 6L4.5 9.5" stroke="currentColor" stroke-width="1.5"
-                                    stroke-linecap="round" stroke-linejoin="round" />
-                            </svg>
-                        </span>
-                    </a>
-                    <a href="#" class="upa-crcat-card">
-                        <div class="upa-crcat-icon">
-                            <svg class="w-6 h-6 text-upa-green" viewBox="0 0 24 24" fill="none"
-                                xmlns="http://www.w3.org/2000/svg">
-                                <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.5" />
-                                <path
-                                    d="M12 7v10M8.5 9c0-1.5 1.5-2.5 3.5-2.5s3.5 1 3.5 2.5-1.5 2-3.5 2.5-3.5 1-3.5 2.5 1.5 2.5 3.5 2.5 3.5-1 3.5-2.5"
-                                    stroke="currentColor" stroke-width="1.3" stroke-linecap="round" />
-                            </svg>
-                        </div>
-                        <div>
-                            <p class="upa-txt-normal font-bold text-upa-navy">Food Hygiene</p>
-                            <p class="hidden md:block upa-txt-sm">Essential food handling, Hygiene, safety and nutrition
-                                training</p>
-                        </div>
-                        <span class="upa-crcat-arrow">
-                            <svg class="w-3 h-3" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M4.5 2.5L8 6L4.5 9.5" stroke="currentColor" stroke-width="1.5"
-                                    stroke-linecap="round" stroke-linejoin="round" />
-                            </svg>
-                        </span>
-                    </a>
-                    <a href="#" class="upa-crcat-card">
-                        <div class="upa-crcat-icon">
-                            <svg class="w-6 h-6 text-upa-green" viewBox="0 0 24 24" fill="none"
-                                xmlns="http://www.w3.org/2000/svg">
-                                <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.5" />
-                                <path
-                                    d="M12 7v10M8.5 9c0-1.5 1.5-2.5 3.5-2.5s3.5 1 3.5 2.5-1.5 2-3.5 2.5-3.5 1-3.5 2.5 1.5 2.5 3.5 2.5 3.5-1 3.5-2.5"
-                                    stroke="currentColor" stroke-width="1.3" stroke-linecap="round" />
-                            </svg>
-                        </div>
-                        <div>
-                            <p class="upa-txt-normal font-bold text-upa-navy">Food Hygiene</p>
-                            <p class="hidden md:block upa-txt-sm">Essential food handling, Hygiene, safety and nutrition
-                                training</p>
-                        </div>
-                        <span class="upa-crcat-arrow">
-                            <svg class="w-3 h-3" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M4.5 2.5L8 6L4.5 9.5" stroke="currentColor" stroke-width="1.5"
-                                    stroke-linecap="round" stroke-linejoin="round" />
-                            </svg>
-                        </span>
-                    </a>
-                    <a href="#" class="upa-crcat-card">
-                        <div class="upa-crcat-icon">
-                            <svg class="w-6 h-6 text-upa-green" viewBox="0 0 24 24" fill="none"
-                                xmlns="http://www.w3.org/2000/svg">
-                                <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.5" />
-                                <path
-                                    d="M12 7v10M8.5 9c0-1.5 1.5-2.5 3.5-2.5s3.5 1 3.5 2.5-1.5 2-3.5 2.5-3.5 1-3.5 2.5 1.5 2.5 3.5 2.5 3.5-1 3.5-2.5"
-                                    stroke="currentColor" stroke-width="1.3" stroke-linecap="round" />
-                            </svg>
-                        </div>
-                        <div>
-                            <p class="upa-txt-normal font-bold text-upa-navy">Food Hygiene</p>
-                            <p class="hidden md:block upa-txt-sm">Essential food handling, Hygiene, safety and nutrition
-                                training</p>
-                        </div>
-                        <span class="upa-crcat-arrow">
-                            <svg class="w-3 h-3" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M4.5 2.5L8 6L4.5 9.5" stroke="currentColor" stroke-width="1.5"
-                                    stroke-linecap="round" stroke-linejoin="round" />
-                            </svg>
-                        </span>
-                    </a>
+                    <?php endforeach; ?>
                 </div>
             </div>
         </section>

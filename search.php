@@ -6,8 +6,8 @@
         ============================================ -->
         <section class="w-full bg-upa-green-2">
             <div class="max-w-[1280px] mx-auto px-4 md:px-8 py-12 lg:py-16 text-center">
-                <h1 class="upa-page-header">Learn Skills That Matter</h1>
-                <p class="upa-txt-normal mt-2">1500+ UK-Focused Courses. Skills for Today's Job Market.</p>
+                <h1 class="upa-page-header">Searching for <?php echo sanitize_text_field($_GET['s']); ?></h1>
+                <!--<p class="upa-txt-normal mt-2">1500+ UK-Focused Courses. Skills for Today's Job Market.</p>-->
             </div>
         </section>
 
@@ -23,7 +23,7 @@
 
                     <!-- Search -->
                     <!-- DYNAMIC: course search form - action/name for the course archive search -->
-                    <form role="search" action="<?php echo home_url(); ?>" method="get" class="upa-alcrs-card-search">
+                    <form role="search" action="<?php echo home_url(); ?>" method="GET" class="upa-alcrs-card-search">
                         <label for="upa-alcrs-card-search-input" class="sr-only">Search courses</label>
                         <input type="search" id="upa-alcrs-card-search-input" name="s"
                             class="upa-alcrs-card-search-input" placeholder="e.g. food hygiene">
@@ -38,11 +38,16 @@
 
                     <?php
                     $paged = intval(get_query_var('paged')) ?? 1;
-                    $courses = new WP_Query([
+                    $args= [
                         'post_type' => 'courses',
                         'posts_per_page' => 15,
                         'paged' => $paged
-                    ]);
+                    ];
+
+                    if(isset($_GET['s'])):
+                        $args['s'] = sanitize_text_field($_GET['s']);
+                    endif;
+                    $courses = new WP_Query($args);
 
                     $first_course = (15 * intval($paged)) + 1;
                     $page_count = $courses->post_count;
@@ -76,8 +81,8 @@
                                 <!-- LOOP START: course category -->
                                 <li>
                                     <label class="upa-alcrs-cats-item">
-                                        <a href="<?php echo get_term_link($term); ?>"><!-- DYNAMIC: category_slug -->
-                                        <input type="checkbox" name="course_category[]" value="admin-secretarial-pa"
+                                        <!-- DYNAMIC: category_slug -->
+                                        <a href="<?php echo get_term_link($term); ?>"><input type="checkbox" name="course_category[]" value="admin-secretarial-pa"
                                             class="upa-alcrs-cats-check">
                                         <!-- DYNAMIC: category_name, course_count -->
                                         <span><?php echo $term->name; ?><span

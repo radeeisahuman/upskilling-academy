@@ -1,0 +1,21 @@
+#cert_voucher_form{
+    width: 50%;
+    border: 1px solid rgba(0,0,0,0.6);
+    border-radius: 15px;
+}
+
+#cert_voucher_form input{
+    margin-top: 5px;
+}
+
+@media screen and (max-width: 768px){
+    #cert_voucher_form{
+        width: 75%;
+    }
+}
+
+@media screen and (max-width: 426px){
+    #cert_voucher_form{
+        width: 100%;
+    }
+}

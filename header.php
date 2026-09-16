@@ -135,11 +135,11 @@
                         </div>
                     </div>
 
-                    <a href="#" class="upa-nav-link active">
+                    <a href="<?php echo home_url('hot-deals'); ?>" class="upa-nav-link <?php if(is_page('hot-deals')) echo "active"; ?>">
                         Hot Deals 🔥
                     </a>
 
-                    <a href="#" class="upa-nav-link">
+                    <a href="<?php echo home_url('lifetime-membership'); ?>" class="upa-nav-link <?php if(is_page('lifetime-membership')) echo "active"; ?>">
                         Lifetime Membership
                     </a>
                 </nav>
@@ -163,7 +163,7 @@
 
                     <div class="hidden lg:block w-px h-8 bg-gray-200"></div>
 
-                    <a href="#" class="relative flex-shrink-0" aria-label="Cart">
+                    <a href="<?php echo home_url('cart'); ?>" class="relative flex-shrink-0" aria-label="Cart">
                         <svg class="w-6 h-6 text-upa-navy" viewBox="0 0 24 24" fill="none"
                             xmlns="http://www.w3.org/2000/svg">
                             <path
@@ -173,11 +173,11 @@
                             <circle cx="9" cy="21" r="1.3" fill="currentColor" />
                             <circle cx="18" cy="21" r="1.3" fill="currentColor" />
                         </svg>
-                        <span
-                            class="absolute -top-2 -right-2 bg-upa-red text-white text-[11px] leading-none font-bold w-5 h-5 rounded-full flex items-center justify-center">3</span>
+                        <!--<span
+                            class="absolute -top-2 -right-2 bg-upa-red text-white text-[11px] leading-none font-bold w-5 h-5 rounded-full flex items-center justify-center">3</span>-->
                     </a>
 
-                    <a href="#" class="upa-btn upa-btn-navy_green text-sm! !py-2 !px-5 flex-shrink-0">Log in</a>
+                    <a href="<?php echo home_url('dashboard'); ?>" class="upa-btn upa-btn-navy_green text-sm! !py-2 !px-5 flex-shrink-0">Log in</a>
 
                     <!-- Hamburger (mobile only) -->
                     <button id="hamburger-btn" class="lg:hidden flex-shrink-0" aria-label="Toggle menu"
@@ -240,7 +240,7 @@
                                 million
                                 learners and ideal for training you and your team.
                             </p>
-                            <a href="#" class="upa-btn upa-btn-peach_green !text-sm w-fit">See all courses</a>
+                            <a href="<?php echo home_url('our-courses'); ?>" class="upa-btn upa-btn-peach_green !text-sm w-fit">See all courses</a>
                         </div>
 
                         <!-- Course links -->
@@ -289,9 +289,9 @@
                     </div>
 
                     <!-- active item — move this "upa-nav-active" styling to whichever item is current -->
-                    <a href="#" class="px-4 py-4 bg-upa-green text-white upa-txt-normal font-medium">Hot Deals 🔥</a>
+                    <a href="<?php echo home_url('hot-deals'); ?>" class="px-4 py-4 bg-upa-green text-white upa-txt-normal font-medium">Hot Deals 🔥</a>
 
-                    <a href="#" class="px-4 py-4 text-upa-navy upa-txt-normal font-medium">Lifetime Membership</a>
+                    <a href="<?php echo home_url('lifetime-membership'); ?>" class="px-4 py-4 text-upa-navy upa-txt-normal font-medium">Lifetime Membership</a>
                 </div>
             </div>
             <script>

@@ -21,9 +21,9 @@ while(have_posts()):
                     <!-- Mobile only: course image -->
                     <div class="upa-snglcrs-hi-image">
                         <!-- DYNAMIC: course_thumbnail (also in the purchase card) -->
-                        <img src="<?php echo get_the_post_thumbnail_url(); ?>" alt="Food Hygiene course">
+                        <img src="<?php echo get_the_post_thumbnail_url(); ?>" alt="<?php echo get_the_title(); ?> Thumbnail">
                         <!-- DYNAMIC: cpd_points -->
-                        <span class="upa-snglcrs-hi-cpd">5 CPD Points</span>
+                        <span class="upa-snglcrs-hi-cpd">Lifetime Access</span>
                         <!-- CONDITIONAL: sale ribbon, discounted courses only -->
                         <div class="upa-snglcrs-sale-clip">
                             <div class="upa-snglcrs-sale-ribbon">Sale</div>
@@ -31,10 +31,9 @@ while(have_posts()):
                     </div>
 
                     <!-- DYNAMIC: course_title -->
-                    <h1 class="upa-page-header">Food Hygiene</h1>
+                    <h1 class="upa-page-header"><?php echo get_the_title(); ?></h1>
                     <!-- DYNAMIC: course_excerpt -->
-                    <p class="upa-txt-normal mt-2">This CPD-accredited Fire Safety Training course provides you with
-                        vital knowledge to prevent, identify, and respond to fire emergencies.</p>
+                    <p class="upa-txt-normal mt-2"><?php echo wp_trim_words(get_the_excerpt(), 18); ?></p>
 
                     <div class="upa-snglcrs-hi-rating">
                         <!-- DYNAMIC: course_rating -->
@@ -65,7 +64,7 @@ while(have_posts()):
                                 <circle cx="12" cy="12" r="9" />
                                 <path d="M12 8v.01M12 11v5" />
                             </svg>
-                            <span><strong>Last Updated</strong> 26th January 2026</span>
+                            <span><strong>Last Updated</strong> <?php echo get_the_modified_date('d M Y'); ?></span>
                         </span>
                         <!-- DYNAMIC: enrolled_count -->
                         <span class="upa-snglcrs-hi-meta-item">
@@ -94,7 +93,7 @@ while(have_posts()):
                             Flexible Schedule
                         </span>
                         <!-- DYNAMIC: cpd_points (lg+; on mobile it sits on the image) -->
-                        <span class="upa-snglcrs-hi-cpd hidden lg:inline-flex">5 CPD Points</span>
+                        <span class="upa-snglcrs-hi-cpd hidden lg:inline-flex">Lifetime Access</span>
                     </div>
 
                 </div>
@@ -123,18 +122,24 @@ while(have_posts()):
                             <!-- lg+ only: course image -->
                             <div class="upa-snglcrs-card-image">
                                 <!-- DYNAMIC: course_thumbnail -->
-                                <img src="assets/imgs/course-food-hygiene.jpg" alt="Food Hygiene course" loading="lazy">
+                                <img src="<?php echo get_the_post_thumbnail_url(); ?>" alt="Food Hygiene course" loading="lazy">
                                 <!-- CONDITIONAL: sale ribbon, discounted courses only -->
                                 <div class="upa-snglcrs-sale-clip">
                                     <div class="upa-snglcrs-sale-ribbon">Sale</div>
                                 </div>
                             </div>
 
+                            <?php 
+                            $product_id = tutor_utils()->get_course_product_id();
+                            $product = wc_get_product($product_id);
+                            ?>
                             <div class="upa-snglcrs-card-price">
                                 <div class="flex items-baseline gap-2">
                                     <!-- DYNAMIC: regular_price, sale_price -->
-                                    <span class="upa-snglcrs-card-price-old">£115</span>
-                                    <span class="upa-snglcrs-card-price-new">£29</span>
+                                     <?php if($product): ?>
+                                    <span class="upa-snglcrs-card-price-old"><?php if($product->get_sale_price()) echo wc_price($product->get_regular_price()); ?></span>
+                                    <span class="upa-snglcrs-card-price-new"><?php echo wc_price($product->get_price()); ?></span>
+                                    <?php endif; ?>
                                 </div>
                             </div>
 
@@ -149,27 +154,25 @@ while(have_posts()):
 
                             <div class="upa-snglcrs-card-accred">
                                 <ul class="upa-snglcrs-card-accred-logos" aria-label="Accreditations">
-                                    <li><img src="assets/imgs/accred-incensu.png" alt="incensu Registered Education Supplier" loading="lazy"></li>
-                                    <li><img src="assets/imgs/accred-aoht.png" alt="Association of Healthcare Trainers member" loading="lazy"></li>
-                                    <li><img src="assets/imgs/accred-cpd.png" alt="The CPD Group approved provider #790985" loading="lazy"></li>
-                                    <li><img src="assets/imgs/accred-disability-confident.png" alt="Disability Confident Committed" loading="lazy"></li>
+                                    <li><img src="<?php echo get_stylesheet_directory_uri() . '/assets/img/accred-incensu.png'; ?>" alt="incensu Registered Education Supplier" loading="lazy"></li>
+                                    <li><img src="<?php echo get_stylesheet_directory_uri() . '/assets/img/accred-aoht.png'; ?>" alt="Association of Healthcare Trainers member" loading="lazy"></li>
+                                    <li><img src="<?php echo get_stylesheet_directory_uri() . '/assets/img/accred-cpd.png'; ?>" alt="The CPD Group approved provider #790985" loading="lazy"></li>
+                                    <li><img src="<?php echo get_stylesheet_directory_uri() . '/assets/img/accred-disability-confident.png'; ?>" alt="Disability Confident Committed" loading="lazy"></li>
                                 </ul>
                             </div>
 
                             <!-- DYNAMIC: add-to-cart URL -->
-                            <a href="#" class="upa-btn upa-snglcrs-card-get">Get this Course</a>
+                            <a href="<?php echo home_url() . "?add-to-cart=" . $product_id; ?>" class="upa-btn upa-snglcrs-card-get">Get this Course</a>
 
                             <!-- DYNAMIC: course includes -->
                             <ul class="upa-snglcrs-card-list">
-                                <li>100% online training</li>
-                                <li>5 Hours on-demand video</li>
-                                <li>Pay by invoice</li>
-                                <li>Instant assessment and result</li>
-                                <li>Accredited Certificate &amp; Transcript</li>
+                                <?php foreach(tutor_course_benefits() as $benefit): ?>
+                                <li><?php echo esc_html($benefit); ?></li>
+                                <?php endforeach; ?>
                             </ul>
 
                             <!-- DYNAMIC: gift URL -->
-                            <a href="#" class="upa-btn upa-btn-navy_green upa-snglcrs-card-gift">Gift this Course</a>
+                            <!--<a href="#" class="upa-btn upa-btn-navy_green upa-snglcrs-card-gift">Gift this Course</a>-->
                         </div>
                     </aside>
 
@@ -185,7 +188,7 @@ while(have_posts()):
 
                         <!-- Membership upsell strip -->
                         <p class="upa-snglcrs-strip">Access to 1500+ Courses with free CPD Certificates for
-                            <strong>Only £99</strong> <a href="#">Get Now</a></p>
+                            <strong>Only £99</strong> <a href="<?php echo home_url('lifetime-membership'); ?>">Get Now</a></p>
 
                         <!-- ============================================
                             WHAT YOU WILL LEARN (upa-snglcrs-learn-*)
@@ -194,12 +197,9 @@ while(have_posts()):
                             <h2 class="upa-sec-header">What you will learn</h2>
                             <!-- DYNAMIC: learning outcomes -->
                             <ul class="upa-snglcrs-learn-list">
-                                <li>The value and functionality of fire detection systems</li>
-                                <li>Procedures for fire safety in commercial and industrial settings</li>
-                                <li>Use and operate various kinds of fire extinguishers correctly</li>
-                                <li>Fire safety guidelines for technological environments and transportation</li>
-                                <li>Electrical fire management and prevention techniques</li>
-                                <li>Psychological aspects impact people's actions during fire situations</li>
+                                <?php foreach(tutor_course_benefits() as $benefit): ?>
+                                <li><?php echo esc_html($benefit); ?></li>
+                                <?php endforeach; ?>
                             </ul>
                         </section>
 
@@ -210,20 +210,7 @@ while(have_posts()):
                             <h2 class="upa-sec-header">Description</h2>
                             <!-- DYNAMIC: course_description -->
                             <div id="snglcrs-desc-body" class="upa-snglcrs-desc-body">
-                                <p>Fire safety involves measures and practices that prevent the outbreak of fires. A
-                                    fire safety training course is essential to gain the critical knowledge and skills
-                                    needed to prevent, identify, and respond to fire emergencies effectively. This
-                                    course from Care Skills Training will empower you to safeguard lives and property,
-                                    whether you are a business owner, manager, safety officer or anyone responsible for
-                                    safe precautions. Our fire safety training online will be beneficial in building a
-                                    proactive culture of fire safety in workplaces and communities across the UK.</p>
-                                <p>This fire safety training course begins with a thorough introduction to key fire
-                                    safety principles, including the fire triangle, common fire causes, and strategies
-                                    for risk prevention. It offers in-depth fire safe training on assessing fire hazards
-                                    and implementing tailored fire prevention measures across various settings, from
-                                    homes to industrial workplaces. You'll also gain experience using essential
-                                    equipment like fire extinguishers and fire blankets, while mastering the operation
-                                    of fire detection systems and alarms.</p>
+                                <?php the_content(); ?>
                             </div>
                             <button type="button" class="upa-snglcrs-desc-more" aria-expanded="false"
                                 aria-controls="snglcrs-desc-body" data-snglcrs-more>
@@ -245,156 +232,7 @@ while(have_posts()):
                         <section id="snglcrs-curriculum" class="upa-snglcrs-block">
                             <h2 class="upa-sec-header">Course Curriculum</h2>
                             <div class="upa-snglcrs-curr">
-                                <!-- LOOP START: curriculum topic -->
-                                <details class="upa-snglcrs-curr-item" open>
-                                    <summary>
-                                        <!-- DYNAMIC: topic_title -->
-                                        <span>An overview of Food hygiene</span>
-                                        <span class="upa-snglcrs-curr-details">Details
-                                            <span class="upa-snglcrs-chev" aria-hidden="true">
-                                                <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none"
-                                                    stroke="currentColor" stroke-width="3" stroke-linecap="round"
-                                                    stroke-linejoin="round">
-                                                    <path d="M6 9l6 6 6-6" />
-                                                </svg>
-                                            </span>
-                                        </span>
-                                    </summary>
-                                    <ul class="upa-snglcrs-curr-lessons">
-                                        <!-- LOOP START: lesson -->
-                                        <li>
-                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                                stroke-width="2" aria-hidden="true">
-                                                <circle cx="12" cy="12" r="9" />
-                                                <path d="M10 8.5l5 3.5-5 3.5z" fill="currentColor" />
-                                            </svg>
-                                            <!-- DYNAMIC: lesson_title -->
-                                            An overview of Food hygiene
-                                        </li>
-                                        <!-- LOOP END -->
-                                    </ul>
-                                </details>
-                                <!-- LOOP END -->
-                                <details class="upa-snglcrs-curr-item">
-                                    <summary>
-                                        <span>An overview of Food hygiene</span>
-                                        <span class="upa-snglcrs-curr-details">Details
-                                            <span class="upa-snglcrs-chev" aria-hidden="true">
-                                                <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none"
-                                                    stroke="currentColor" stroke-width="3" stroke-linecap="round"
-                                                    stroke-linejoin="round">
-                                                    <path d="M6 9l6 6 6-6" />
-                                                </svg>
-                                            </span>
-                                        </span>
-                                    </summary>
-                                    <ul class="upa-snglcrs-curr-lessons">
-                                        <li>
-                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                                stroke-width="2" aria-hidden="true">
-                                                <circle cx="12" cy="12" r="9" />
-                                                <path d="M10 8.5l5 3.5-5 3.5z" fill="currentColor" />
-                                            </svg>
-                                            An overview of Food hygiene
-                                        </li>
-                                    </ul>
-                                </details>
-                                <details class="upa-snglcrs-curr-item">
-                                    <summary>
-                                        <span>An overview of Food hygiene</span>
-                                        <span class="upa-snglcrs-curr-details">Details
-                                            <span class="upa-snglcrs-chev" aria-hidden="true">
-                                                <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none"
-                                                    stroke="currentColor" stroke-width="3" stroke-linecap="round"
-                                                    stroke-linejoin="round">
-                                                    <path d="M6 9l6 6 6-6" />
-                                                </svg>
-                                            </span>
-                                        </span>
-                                    </summary>
-                                    <ul class="upa-snglcrs-curr-lessons">
-                                        <li>
-                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                                stroke-width="2" aria-hidden="true">
-                                                <circle cx="12" cy="12" r="9" />
-                                                <path d="M10 8.5l5 3.5-5 3.5z" fill="currentColor" />
-                                            </svg>
-                                            An overview of Food hygiene
-                                        </li>
-                                    </ul>
-                                </details>
-                                <details class="upa-snglcrs-curr-item">
-                                    <summary>
-                                        <span>An overview of Food hygiene</span>
-                                        <span class="upa-snglcrs-curr-details">Details
-                                            <span class="upa-snglcrs-chev" aria-hidden="true">
-                                                <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none"
-                                                    stroke="currentColor" stroke-width="3" stroke-linecap="round"
-                                                    stroke-linejoin="round">
-                                                    <path d="M6 9l6 6 6-6" />
-                                                </svg>
-                                            </span>
-                                        </span>
-                                    </summary>
-                                    <ul class="upa-snglcrs-curr-lessons">
-                                        <li>
-                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                                stroke-width="2" aria-hidden="true">
-                                                <circle cx="12" cy="12" r="9" />
-                                                <path d="M10 8.5l5 3.5-5 3.5z" fill="currentColor" />
-                                            </svg>
-                                            An overview of Food hygiene
-                                        </li>
-                                    </ul>
-                                </details>
-                                <details class="upa-snglcrs-curr-item">
-                                    <summary>
-                                        <span>An overview of Food hygiene</span>
-                                        <span class="upa-snglcrs-curr-details">Details
-                                            <span class="upa-snglcrs-chev" aria-hidden="true">
-                                                <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none"
-                                                    stroke="currentColor" stroke-width="3" stroke-linecap="round"
-                                                    stroke-linejoin="round">
-                                                    <path d="M6 9l6 6 6-6" />
-                                                </svg>
-                                            </span>
-                                        </span>
-                                    </summary>
-                                    <ul class="upa-snglcrs-curr-lessons">
-                                        <li>
-                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                                stroke-width="2" aria-hidden="true">
-                                                <circle cx="12" cy="12" r="9" />
-                                                <path d="M10 8.5l5 3.5-5 3.5z" fill="currentColor" />
-                                            </svg>
-                                            An overview of Food hygiene
-                                        </li>
-                                    </ul>
-                                </details>
-                                <details class="upa-snglcrs-curr-item">
-                                    <summary>
-                                        <span>An overview of Food hygiene</span>
-                                        <span class="upa-snglcrs-curr-details">Details
-                                            <span class="upa-snglcrs-chev" aria-hidden="true">
-                                                <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none"
-                                                    stroke="currentColor" stroke-width="3" stroke-linecap="round"
-                                                    stroke-linejoin="round">
-                                                    <path d="M6 9l6 6 6-6" />
-                                                </svg>
-                                            </span>
-                                        </span>
-                                    </summary>
-                                    <ul class="upa-snglcrs-curr-lessons">
-                                        <li>
-                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                                stroke-width="2" aria-hidden="true">
-                                                <circle cx="12" cy="12" r="9" />
-                                                <path d="M10 8.5l5 3.5-5 3.5z" fill="currentColor" />
-                                            </svg>
-                                            An overview of Food hygiene
-                                        </li>
-                                    </ul>
-                                </details>
+                                <?php tutor_course_topics(); ?>
                             </div>
                         </section>
 
@@ -405,14 +243,9 @@ while(have_posts()):
                             <h2 class="upa-sec-header">Who should take the course</h2>
                             <!-- DYNAMIC: target audience -->
                             <ul class="upa-snglcrs-who-list">
-                                <li>Business owners responsible for workplace safety</li>
-                                <li>Managers and supervisors overseeing teams or operations</li>
-                                <li>Safety officers and fire wardens</li>
-                                <li>Employees across all sectors responsible for fire safety procedures</li>
-                                <li>Individuals interested in enhancing their fire safety knowledge</li>
-                                <li>Facility managers in charge of maintaining safe environments</li>
-                                <li>Health and safety professionals seeking specialized training in fire safety</li>
-                                <li>Caregivers or those working in environments with vulnerable individuals</li>
+                                <?php foreach(tutor_course_target_audience() as $audience): ?>
+                                <li><?php echo esc_html($audience); ?></li>
+                                <?php endforeach; ?>
                             </ul>
                         </section>
 
@@ -434,11 +267,11 @@ while(have_posts()):
                                     </ul>
                                 </div>
                                 <div class="upa-crtifi-cta-image-wrap @2xl:col-start-2 @2xl:row-start-1 @2xl:row-span-2">
-                                    <img src="assets/imgs/upa-certificate.png"
+                                    <img src="<?php echo get_stylesheet_directory_uri() . '/assets/img/upa-certificate.png'; ?>"
                                         alt="Framed Upskilling Academy certificates of completion" loading="lazy">
                                 </div>
                                 <div class="@2xl:col-start-1 @2xl:self-start">
-                                    <a href="#" class="upa-btn upa-btn-peach_green">Get Your Certificate</a>
+                                    <a href="<?php echo home_url('certificate-order'); ?>" class="upa-btn upa-btn-peach_green">Get Your Certificate</a>
                                 </div>
                             </div>
                         </section>
@@ -456,32 +289,28 @@ while(have_posts()):
                                 <!-- LOOP START: course review -->
                                 <article class="upa-snglcrs-rev-card">
                                     <!-- DYNAMIC: reviewer_name -->
-                                    <h3 class="upa-snglcrs-rev-name">Emmanuel Olufemi</h3>
-                                    <!-- DYNAMIC: review_date (relative) -->
-                                    <p class="upa-snglcrs-rev-time">8 months ago</p>
+                                    <h3 class="upa-snglcrs-rev-name">Christine Ferguson</h3>
+                                    <!-- DYNAMIC: review_date (relative)
+                                    <p class="upa-snglcrs-rev-time">8 months ago</p> -->
                                     <!-- DYNAMIC: review_text -->
-                                    <p class="upa-snglcrs-rev-text">Good course so far</p>
+                                    <p class="upa-snglcrs-rev-text">My experience with you was fantastic and easy to navigate. I'm looking forward to taking the course.</p>
                                 </article>
                                 <!-- LOOP END -->
                                 <article class="upa-snglcrs-rev-card">
-                                    <h3 class="upa-snglcrs-rev-name">Emmanuel Olufemi</h3>
-                                    <p class="upa-snglcrs-rev-time">8 months ago</p>
-                                    <p class="upa-snglcrs-rev-text">Good course so far</p>
+                                    <h3 class="upa-snglcrs-rev-name">Jesse Harding</h3>
+                                    <p class="upa-snglcrs-rev-text">Provided highly informative and helpful responses, with quick and efficient replies.</p>
                                 </article>
                                 <article class="upa-snglcrs-rev-card">
-                                    <h3 class="upa-snglcrs-rev-name">Emmanuel Olufemi</h3>
-                                    <p class="upa-snglcrs-rev-time">8 months ago</p>
-                                    <p class="upa-snglcrs-rev-text">Good course so far</p>
+                                    <h3 class="upa-snglcrs-rev-name">Gary Schwartz</h3>
+                                    <p class="upa-snglcrs-rev-text">The course selection is broad, engaging, easy to follow, and offers a good challenge.</p>
                                 </article>
                                 <article class="upa-snglcrs-rev-card">
-                                    <h3 class="upa-snglcrs-rev-name">Emmanuel Olufemi</h3>
-                                    <p class="upa-snglcrs-rev-time">8 months ago</p>
-                                    <p class="upa-snglcrs-rev-text">Good course so far</p>
+                                    <h3 class="upa-snglcrs-rev-name">Bailey Burrows</h3>
+                                    <p class="upa-snglcrs-rev-text">Excellent course with user-friendly website navigation, making it easy to follow. I'm really enjoying the experience.</p>
                                 </article>
                                 <article class="upa-snglcrs-rev-card">
-                                    <h3 class="upa-snglcrs-rev-name">Emmanuel Olufemi</h3>
-                                    <p class="upa-snglcrs-rev-time">8 months ago</p>
-                                    <p class="upa-snglcrs-rev-text">Good course so far</p>
+                                    <h3 class="upa-snglcrs-rev-name">Benjamin Moreno</h3>
+                                    <p class="upa-snglcrs-rev-text">Great course with valuable information. Easy to follow, and I appreciated the flexibility to work at my own pace.</p>
                                 </article>
                             </div>
 
@@ -491,37 +320,37 @@ while(have_posts()):
                                     <div class="swiper-wrapper">
                                         <div class="swiper-slide">
                                             <article class="upa-snglcrs-rev-card">
-                                                <h3 class="upa-snglcrs-rev-name">Emmanuel Olufemi</h3>
-                                                <p class="upa-snglcrs-rev-time">8 months ago</p>
-                                                <p class="upa-snglcrs-rev-text">Good course so far</p>
+                                                <h3 class="upa-snglcrs-rev-name">Christine Ferguson</h3>
+                                                <!--<p class="upa-snglcrs-rev-time">8 months ago</p>-->
+                                                <p class="upa-snglcrs-rev-text">My experience with you was fantastic and easy to navigate. I'm looking forward to taking the course.</p>
                                             </article>
                                         </div>
                                         <div class="swiper-slide">
                                             <article class="upa-snglcrs-rev-card">
-                                                <h3 class="upa-snglcrs-rev-name">Emmanuel Olufemi</h3>
-                                                <p class="upa-snglcrs-rev-time">8 months ago</p>
-                                                <p class="upa-snglcrs-rev-text">Good course so far</p>
+                                                <h3 class="upa-snglcrs-rev-name">Jesse Harding</h3>
+                                                <!--<p class="upa-snglcrs-rev-time">8 months ago</p>-->
+                                                <p class="upa-snglcrs-rev-text">Provided highly informative and helpful responses, with quick and efficient replies.</p>
                                             </article>
                                         </div>
                                         <div class="swiper-slide">
                                             <article class="upa-snglcrs-rev-card">
-                                                <h3 class="upa-snglcrs-rev-name">Emmanuel Olufemi</h3>
-                                                <p class="upa-snglcrs-rev-time">8 months ago</p>
-                                                <p class="upa-snglcrs-rev-text">Good course so far</p>
+                                                <h3 class="upa-snglcrs-rev-name">Gary Schwartz</h3>
+                                                <!--<p class="upa-snglcrs-rev-time">8 months ago</p>-->
+                                                <p class="upa-snglcrs-rev-text">The course selection is broad, engaging, easy to follow, and offers a good challenge.</p>
                                             </article>
                                         </div>
                                         <div class="swiper-slide">
                                             <article class="upa-snglcrs-rev-card">
-                                                <h3 class="upa-snglcrs-rev-name">Emmanuel Olufemi</h3>
-                                                <p class="upa-snglcrs-rev-time">8 months ago</p>
-                                                <p class="upa-snglcrs-rev-text">Good course so far</p>
+                                                <h3 class="upa-snglcrs-rev-name">Bailey Burrows</h3>
+                                                <!--<p class="upa-snglcrs-rev-time">8 months ago</p>-->
+                                                <p class="upa-snglcrs-rev-text">Excellent course with user-friendly website navigation, making it easy to follow. I'm really enjoying the experience.</p>
                                             </article>
                                         </div>
                                         <div class="swiper-slide">
                                             <article class="upa-snglcrs-rev-card">
-                                                <h3 class="upa-snglcrs-rev-name">Emmanuel Olufemi</h3>
-                                                <p class="upa-snglcrs-rev-time">8 months ago</p>
-                                                <p class="upa-snglcrs-rev-text">Good course so far</p>
+                                                <h3 class="upa-snglcrs-rev-name">Benjamin Moreno</h3>
+                                                <!--<p class="upa-snglcrs-rev-time">8 months ago</p>-->
+                                                <p class="upa-snglcrs-rev-text">Great course with valuable information. Easy to follow, and I appreciated the flexibility to work at my own pace.</p>
                                             </article>
                                         </div>
                                     </div>
@@ -531,7 +360,7 @@ while(have_posts()):
 
                             <div class="flex justify-center md:justify-end mt-4">
                                 <!-- DYNAMIC: all reviews URL -->
-                                <a href="#" class="upa-snglcrs-rev-all">Show All Reviews</a>
+                                <a href="https://www.reviews.io/company-reviews/store/upskillingacademy.co.uk" class="upa-snglcrs-rev-all">Show All Reviews</a>
                             </div>
                         </section>
 
@@ -539,10 +368,10 @@ while(have_posts()):
                         <section class="upa-snglcrs-block upa-accred upa-accred-panel">
                             <h2 class="upa-sec-header text-center">Quality Accreditation</h2>
                             <ul class="upa-accred-grid">
-                                <li class="upa-accred-card"><img src="assets/imgs/accred-incensu.png" alt="incensu Registered Education Supplier" loading="lazy"></li>
-                                <li class="upa-accred-card"><img src="assets/imgs/accred-aoht.png" alt="Association of Healthcare Trainers member" loading="lazy"></li>
-                                <li class="upa-accred-card"><img src="assets/imgs/accred-cpd.png" alt="The CPD Group approved provider #790985" loading="lazy"></li>
-                                <li class="upa-accred-card"><img src="assets/imgs/accred-disability-confident.png" alt="Disability Confident Committed" loading="lazy"></li>
+                                <li class="upa-accred-card"><img src="<?php echo get_stylesheet_directory_uri() . '/assets/img/accred-incensu.png'; ?>" alt="incensu Registered Education Supplier" loading="lazy"></li>
+                                <li class="upa-accred-card"><img src="<?php echo get_stylesheet_directory_uri() . '/assets/img/accred-aoht.png'; ?>" alt="Association of Healthcare Trainers member" loading="lazy"></li>
+                                <li class="upa-accred-card"><img src="<?php echo get_stylesheet_directory_uri() . '/assets/img/accred-cpd.png'; ?>" alt="The CPD Group approved provider #790985" loading="lazy"></li>
+                                <li class="upa-accred-card"><img src="<?php echo get_stylesheet_directory_uri() . '/assets/img/accred-disability-confident.png'; ?>" alt="Disability Confident Committed" loading="lazy"></li>
                             </ul>
                         </section>
 
@@ -553,300 +382,57 @@ while(have_posts()):
                         ============================================ -->
                         <section id="snglcrs-faq" class="upa-snglcrs-block">
                             <!-- DYNAMIC: course_title in heading -->
-                            <h2 class="upa-sec-header">FAQ for Food Hygiene Course</h2>
+                            <h2 class="upa-sec-header">FAQ for <?php echo get_the_title(); ?></h2>
                             <div class="upa-snglcrs-faq-list">
                                 <!-- LOOP START: faq -->
                                 <details class="upa-snglcrs-faq-item" name="snglcrs-faq" open>
                                     <summary>
                                         <!-- DYNAMIC: question -->
-                                        How often is the course content updated?
+                                        How do I access my course?
                                         <span class="upa-snglcrs-faq-icon" aria-hidden="true"></span>
                                     </summary>
                                     <!-- DYNAMIC: answer -->
                                     <div class="upa-snglcrs-faq-answer">
-                                        <p>The course content is regularly updated to ensure relevance and accuracy.
-                                            Updates occur periodically to incorporate new information, developments, or
-                                            improvements in the subject matter.</p>
+                                        <p>Once you complete your purchase, you’ll receive access to your course through your Upskilling Academy account. You can log in and access your learning materials online at any time.</p>
                                     </div>
                                 </details>
                                 <!-- LOOP END -->
                                 <details class="upa-snglcrs-faq-item" name="snglcrs-faq">
                                     <summary>
-                                        How often is the course content updated?
+                                        How long do I have access to the course?
                                         <span class="upa-snglcrs-faq-icon" aria-hidden="true"></span>
                                     </summary>
                                     <div class="upa-snglcrs-faq-answer">
-                                        <p>The course content is regularly updated to ensure relevance and accuracy.
-                                            Updates occur periodically to incorporate new information, developments, or
-                                            improvements in the subject matter.</p>
+                                        <p>Your access period depends on the course and the package you purchase. Please check the course details or your order information for the applicable access period.</p>
                                     </div>
                                 </details>
                                 <details class="upa-snglcrs-faq-item" name="snglcrs-faq">
                                     <summary>
-                                        How often is the course content updated?
+                                        Can I study at my own pace?
                                         <span class="upa-snglcrs-faq-icon" aria-hidden="true"></span>
                                     </summary>
                                     <div class="upa-snglcrs-faq-answer">
-                                        <p>The course content is regularly updated to ensure relevance and accuracy.
-                                            Updates occur periodically to incorporate new information, developments, or
-                                            improvements in the subject matter.</p>
+                                        <p>Yes. Upskilling Academy courses are designed to provide flexible online learning, allowing you to study at a pace that suits your schedule.</p>
                                     </div>
                                 </details>
                                 <details class="upa-snglcrs-faq-item" name="snglcrs-faq">
                                     <summary>
-                                        How often is the course content updated?
+                                        Will I receive a certificate?
                                         <span class="upa-snglcrs-faq-icon" aria-hidden="true"></span>
                                     </summary>
                                     <div class="upa-snglcrs-faq-answer">
-                                        <p>The course content is regularly updated to ensure relevance and accuracy.
-                                            Updates occur periodically to incorporate new information, developments, or
-                                            improvements in the subject matter.</p>
+                                        <p>Certificate availability varies by course. Where a certificate is included, you’ll receive information about the requirements and how to obtain it within the course or upon completion.</p>
                                     </div>
                                 </details>
                                 <details class="upa-snglcrs-faq-item" name="snglcrs-faq">
                                     <summary>
-                                        How often is the course content updated?
+                                        Are the courses suitable for beginners?
                                         <span class="upa-snglcrs-faq-icon" aria-hidden="true"></span>
                                     </summary>
                                     <div class="upa-snglcrs-faq-answer">
-                                        <p>The course content is regularly updated to ensure relevance and accuracy.
-                                            Updates occur periodically to incorporate new information, developments, or
-                                            improvements in the subject matter.</p>
+                                        <p>Many courses are suitable for beginners, while others may assume some previous knowledge. Please review the individual course description for information about the recommended level and prerequisites.</p>
                                     </div>
                                 </details>
-                                <details class="upa-snglcrs-faq-item" name="snglcrs-faq">
-                                    <summary>
-                                        How often is the course content updated?
-                                        <span class="upa-snglcrs-faq-icon" aria-hidden="true"></span>
-                                    </summary>
-                                    <div class="upa-snglcrs-faq-answer">
-                                        <p>The course content is regularly updated to ensure relevance and accuracy.
-                                            Updates occur periodically to incorporate new information, developments, or
-                                            improvements in the subject matter.</p>
-                                    </div>
-                                </details>
-                            </div>
-                        </section>
-
-                        <!-- ============================================
-                            FREQUENTLY BOUGHT TOGETHER (upa-snglcrs-fbt-*)
-                            Up to 3 courses, course card (B1, upa-alcrs-card-*).
-                            md+: grid. Mobile: stacked Swiper.
-                        ============================================ -->
-                        <section class="upa-snglcrs-block">
-                            <h2 class="upa-sec-header">Frequently Bought Together</h2>
-
-                            <!-- md+: grid -->
-                            <div class="hidden md:grid md:grid-cols-2 xl:grid-cols-3 gap-6">
-                                <!-- LOOP START: course card (max 3) -->
-                                <div class="upa-alcrs-card">
-                                    <div class="upa-alcrs-card-image-wrap">
-                                        <!-- DYNAMIC: course_thumbnail -->
-                                        <img src="assets/imgs/course-food-hygiene.jpg" alt="Food Hygiene course">
-                                        <!-- CONDITIONAL: sale ribbon, discounted courses only -->
-                                        <div class="upa-alcrs-card-sale-clip">
-                                            <div class="upa-alcrs-card-sale-ribbon">Sale</div>
-                                        </div>
-                                    </div>
-                                    <div class="upa-alcrs-card-body">
-                                        <!-- DYNAMIC: course_title -->
-                                        <h3 class="text-upa-green font-bold upa-txt-normal">Food Hygiene</h3>
-                                        <!-- DYNAMIC: course_excerpt -->
-                                        <p class="upa-txt-sm">Essential food handling, Hygiene, safety and nutrition training</p>
-                                        <!-- DYNAMIC: course_rating -->
-                                        <div class="upa-alcrs-card-stars">
-                                            <svg class="w-3.5 h-3.5 fill-upa-peach" viewBox="0 0 20 20">
-                                                <path d="M10 1.5l2.6 5.6 6.1.6-4.5 4.1 1.3 6-5.5-3.1-5.5 3.1 1.3-6L1.3 7.7l6.1-.6z"></path>
-                                            </svg><svg class="w-3.5 h-3.5 fill-upa-peach" viewBox="0 0 20 20">
-                                                <path d="M10 1.5l2.6 5.6 6.1.6-4.5 4.1 1.3 6-5.5-3.1-5.5 3.1 1.3-6L1.3 7.7l6.1-.6z"></path>
-                                            </svg><svg class="w-3.5 h-3.5 fill-upa-peach" viewBox="0 0 20 20">
-                                                <path d="M10 1.5l2.6 5.6 6.1.6-4.5 4.1 1.3 6-5.5-3.1-5.5 3.1 1.3-6L1.3 7.7l6.1-.6z"></path>
-                                            </svg><svg class="w-3.5 h-3.5 fill-upa-peach" viewBox="0 0 20 20">
-                                                <path d="M10 1.5l2.6 5.6 6.1.6-4.5 4.1 1.3 6-5.5-3.1-5.5 3.1 1.3-6L1.3 7.7l6.1-.6z"></path>
-                                            </svg><svg class="w-3.5 h-3.5 fill-gray-300" viewBox="0 0 20 20">
-                                                <path d="M10 1.5l2.6 5.6 6.1.6-4.5 4.1 1.3 6-5.5-3.1-5.5 3.1 1.3-6L1.3 7.7l6.1-.6z"></path>
-                                            </svg>
-                                        </div>
-                                        <div class="upa-alcrs-card-price-row">
-                                            <div class="flex items-center gap-2">
-                                                <!-- DYNAMIC: sale_price, regular_price -->
-                                                <span class="upa-alcrs-card-price-new">£29</span>
-                                                <span class="upa-alcrs-card-price-old">£115</span>
-                                            </div>
-                                            <a href="#" class="upa-btn text-sm! py-2! px-4!">View Course</a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- LOOP END -->
-                                <div class="upa-alcrs-card">
-                                    <div class="upa-alcrs-card-image-wrap">
-                                        <img src="assets/imgs/course-food-hygiene.jpg" alt="Food Hygiene course">
-                                    </div>
-                                    <div class="upa-alcrs-card-body">
-                                        <h3 class="text-upa-green font-bold upa-txt-normal">Food Hygiene</h3>
-                                        <p class="upa-txt-sm">Essential food handling, Hygiene, safety and nutrition training</p>
-                                        <div class="upa-alcrs-card-stars">
-                                            <svg class="w-3.5 h-3.5 fill-upa-peach" viewBox="0 0 20 20">
-                                                <path d="M10 1.5l2.6 5.6 6.1.6-4.5 4.1 1.3 6-5.5-3.1-5.5 3.1 1.3-6L1.3 7.7l6.1-.6z"></path>
-                                            </svg><svg class="w-3.5 h-3.5 fill-upa-peach" viewBox="0 0 20 20">
-                                                <path d="M10 1.5l2.6 5.6 6.1.6-4.5 4.1 1.3 6-5.5-3.1-5.5 3.1 1.3-6L1.3 7.7l6.1-.6z"></path>
-                                            </svg><svg class="w-3.5 h-3.5 fill-upa-peach" viewBox="0 0 20 20">
-                                                <path d="M10 1.5l2.6 5.6 6.1.6-4.5 4.1 1.3 6-5.5-3.1-5.5 3.1 1.3-6L1.3 7.7l6.1-.6z"></path>
-                                            </svg><svg class="w-3.5 h-3.5 fill-upa-peach" viewBox="0 0 20 20">
-                                                <path d="M10 1.5l2.6 5.6 6.1.6-4.5 4.1 1.3 6-5.5-3.1-5.5 3.1 1.3-6L1.3 7.7l6.1-.6z"></path>
-                                            </svg><svg class="w-3.5 h-3.5 fill-gray-300" viewBox="0 0 20 20">
-                                                <path d="M10 1.5l2.6 5.6 6.1.6-4.5 4.1 1.3 6-5.5-3.1-5.5 3.1 1.3-6L1.3 7.7l6.1-.6z"></path>
-                                            </svg>
-                                        </div>
-                                        <div class="upa-alcrs-card-price-row">
-                                            <div class="flex items-center gap-2">
-                                                <span class="upa-alcrs-card-price-new">£29</span>
-                                                <span class="upa-alcrs-card-price-old">£115</span>
-                                            </div>
-                                            <a href="#" class="upa-btn text-sm! py-2! px-4!">View Course</a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="upa-alcrs-card">
-                                    <div class="upa-alcrs-card-image-wrap">
-                                        <img src="assets/imgs/course-food-hygiene.jpg" alt="Food Hygiene course">
-                                        <div class="upa-alcrs-card-sale-clip">
-                                            <div class="upa-alcrs-card-sale-ribbon">Sale</div>
-                                        </div>
-                                    </div>
-                                    <div class="upa-alcrs-card-body">
-                                        <h3 class="text-upa-green font-bold upa-txt-normal">Food Hygiene</h3>
-                                        <p class="upa-txt-sm">Essential food handling, Hygiene, safety and nutrition training</p>
-                                        <div class="upa-alcrs-card-stars">
-                                            <svg class="w-3.5 h-3.5 fill-upa-peach" viewBox="0 0 20 20">
-                                                <path d="M10 1.5l2.6 5.6 6.1.6-4.5 4.1 1.3 6-5.5-3.1-5.5 3.1 1.3-6L1.3 7.7l6.1-.6z"></path>
-                                            </svg><svg class="w-3.5 h-3.5 fill-upa-peach" viewBox="0 0 20 20">
-                                                <path d="M10 1.5l2.6 5.6 6.1.6-4.5 4.1 1.3 6-5.5-3.1-5.5 3.1 1.3-6L1.3 7.7l6.1-.6z"></path>
-                                            </svg><svg class="w-3.5 h-3.5 fill-upa-peach" viewBox="0 0 20 20">
-                                                <path d="M10 1.5l2.6 5.6 6.1.6-4.5 4.1 1.3 6-5.5-3.1-5.5 3.1 1.3-6L1.3 7.7l6.1-.6z"></path>
-                                            </svg><svg class="w-3.5 h-3.5 fill-upa-peach" viewBox="0 0 20 20">
-                                                <path d="M10 1.5l2.6 5.6 6.1.6-4.5 4.1 1.3 6-5.5-3.1-5.5 3.1 1.3-6L1.3 7.7l6.1-.6z"></path>
-                                            </svg><svg class="w-3.5 h-3.5 fill-gray-300" viewBox="0 0 20 20">
-                                                <path d="M10 1.5l2.6 5.6 6.1.6-4.5 4.1 1.3 6-5.5-3.1-5.5 3.1 1.3-6L1.3 7.7l6.1-.6z"></path>
-                                            </svg>
-                                        </div>
-                                        <div class="upa-alcrs-card-price-row">
-                                            <div class="flex items-center gap-2">
-                                                <span class="upa-alcrs-card-price-new">£29</span>
-                                                <span class="upa-alcrs-card-price-old">£115</span>
-                                            </div>
-                                            <a href="#" class="upa-btn text-sm! py-2! px-4!">View Course</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Mobile: stacked Swiper -->
-                            <div class="md:hidden">
-                                <div class="swiper upa-stack-swiper upa-snglcrs-fbt-swiper">
-                                    <div class="swiper-wrapper">
-                                        <div class="swiper-slide">
-                                            <div class="upa-alcrs-card">
-                                                <div class="upa-alcrs-card-image-wrap">
-                                                    <img src="assets/imgs/course-food-hygiene.jpg" alt="Food Hygiene course">
-                                                    <div class="upa-alcrs-card-sale-clip">
-                                                        <div class="upa-alcrs-card-sale-ribbon">Sale</div>
-                                                    </div>
-                                                </div>
-                                                <div class="upa-alcrs-card-body">
-                                                    <h3 class="text-upa-green font-bold upa-txt-normal">Food Hygiene</h3>
-                                                    <p class="upa-txt-sm">Essential food handling, Hygiene, safety and nutrition training</p>
-                                                    <div class="upa-alcrs-card-stars">
-                                                        <svg class="w-3.5 h-3.5 fill-upa-peach" viewBox="0 0 20 20">
-                                                            <path d="M10 1.5l2.6 5.6 6.1.6-4.5 4.1 1.3 6-5.5-3.1-5.5 3.1 1.3-6L1.3 7.7l6.1-.6z"></path>
-                                                        </svg><svg class="w-3.5 h-3.5 fill-upa-peach" viewBox="0 0 20 20">
-                                                            <path d="M10 1.5l2.6 5.6 6.1.6-4.5 4.1 1.3 6-5.5-3.1-5.5 3.1 1.3-6L1.3 7.7l6.1-.6z"></path>
-                                                        </svg><svg class="w-3.5 h-3.5 fill-upa-peach" viewBox="0 0 20 20">
-                                                            <path d="M10 1.5l2.6 5.6 6.1.6-4.5 4.1 1.3 6-5.5-3.1-5.5 3.1 1.3-6L1.3 7.7l6.1-.6z"></path>
-                                                        </svg><svg class="w-3.5 h-3.5 fill-upa-peach" viewBox="0 0 20 20">
-                                                            <path d="M10 1.5l2.6 5.6 6.1.6-4.5 4.1 1.3 6-5.5-3.1-5.5 3.1 1.3-6L1.3 7.7l6.1-.6z"></path>
-                                                        </svg><svg class="w-3.5 h-3.5 fill-gray-300" viewBox="0 0 20 20">
-                                                            <path d="M10 1.5l2.6 5.6 6.1.6-4.5 4.1 1.3 6-5.5-3.1-5.5 3.1 1.3-6L1.3 7.7l6.1-.6z"></path>
-                                                        </svg>
-                                                    </div>
-                                                    <div class="upa-alcrs-card-price-row">
-                                                        <div class="flex items-center gap-2">
-                                                            <span class="upa-alcrs-card-price-new">£29</span>
-                                                            <span class="upa-alcrs-card-price-old">£115</span>
-                                                        </div>
-                                                        <a href="#" class="upa-btn text-sm! py-2! px-4!">View Course</a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="swiper-slide">
-                                            <div class="upa-alcrs-card">
-                                                <div class="upa-alcrs-card-image-wrap">
-                                                    <img src="assets/imgs/course-food-hygiene.jpg" alt="Food Hygiene course">
-                                                </div>
-                                                <div class="upa-alcrs-card-body">
-                                                    <h3 class="text-upa-green font-bold upa-txt-normal">Food Hygiene</h3>
-                                                    <p class="upa-txt-sm">Essential food handling, Hygiene, safety and nutrition training</p>
-                                                    <div class="upa-alcrs-card-stars">
-                                                        <svg class="w-3.5 h-3.5 fill-upa-peach" viewBox="0 0 20 20">
-                                                            <path d="M10 1.5l2.6 5.6 6.1.6-4.5 4.1 1.3 6-5.5-3.1-5.5 3.1 1.3-6L1.3 7.7l6.1-.6z"></path>
-                                                        </svg><svg class="w-3.5 h-3.5 fill-upa-peach" viewBox="0 0 20 20">
-                                                            <path d="M10 1.5l2.6 5.6 6.1.6-4.5 4.1 1.3 6-5.5-3.1-5.5 3.1 1.3-6L1.3 7.7l6.1-.6z"></path>
-                                                        </svg><svg class="w-3.5 h-3.5 fill-upa-peach" viewBox="0 0 20 20">
-                                                            <path d="M10 1.5l2.6 5.6 6.1.6-4.5 4.1 1.3 6-5.5-3.1-5.5 3.1 1.3-6L1.3 7.7l6.1-.6z"></path>
-                                                        </svg><svg class="w-3.5 h-3.5 fill-upa-peach" viewBox="0 0 20 20">
-                                                            <path d="M10 1.5l2.6 5.6 6.1.6-4.5 4.1 1.3 6-5.5-3.1-5.5 3.1 1.3-6L1.3 7.7l6.1-.6z"></path>
-                                                        </svg><svg class="w-3.5 h-3.5 fill-gray-300" viewBox="0 0 20 20">
-                                                            <path d="M10 1.5l2.6 5.6 6.1.6-4.5 4.1 1.3 6-5.5-3.1-5.5 3.1 1.3-6L1.3 7.7l6.1-.6z"></path>
-                                                        </svg>
-                                                    </div>
-                                                    <div class="upa-alcrs-card-price-row">
-                                                        <div class="flex items-center gap-2">
-                                                            <span class="upa-alcrs-card-price-new">£29</span>
-                                                            <span class="upa-alcrs-card-price-old">£115</span>
-                                                        </div>
-                                                        <a href="#" class="upa-btn text-sm! py-2! px-4!">View Course</a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="swiper-slide">
-                                            <div class="upa-alcrs-card">
-                                                <div class="upa-alcrs-card-image-wrap">
-                                                    <img src="assets/imgs/course-food-hygiene.jpg" alt="Food Hygiene course">
-                                                    <div class="upa-alcrs-card-sale-clip">
-                                                        <div class="upa-alcrs-card-sale-ribbon">Sale</div>
-                                                    </div>
-                                                </div>
-                                                <div class="upa-alcrs-card-body">
-                                                    <h3 class="text-upa-green font-bold upa-txt-normal">Food Hygiene</h3>
-                                                    <p class="upa-txt-sm">Essential food handling, Hygiene, safety and nutrition training</p>
-                                                    <div class="upa-alcrs-card-stars">
-                                                        <svg class="w-3.5 h-3.5 fill-upa-peach" viewBox="0 0 20 20">
-                                                            <path d="M10 1.5l2.6 5.6 6.1.6-4.5 4.1 1.3 6-5.5-3.1-5.5 3.1 1.3-6L1.3 7.7l6.1-.6z"></path>
-                                                        </svg><svg class="w-3.5 h-3.5 fill-upa-peach" viewBox="0 0 20 20">
-                                                            <path d="M10 1.5l2.6 5.6 6.1.6-4.5 4.1 1.3 6-5.5-3.1-5.5 3.1 1.3-6L1.3 7.7l6.1-.6z"></path>
-                                                        </svg><svg class="w-3.5 h-3.5 fill-upa-peach" viewBox="0 0 20 20">
-                                                            <path d="M10 1.5l2.6 5.6 6.1.6-4.5 4.1 1.3 6-5.5-3.1-5.5 3.1 1.3-6L1.3 7.7l6.1-.6z"></path>
-                                                        </svg><svg class="w-3.5 h-3.5 fill-upa-peach" viewBox="0 0 20 20">
-                                                            <path d="M10 1.5l2.6 5.6 6.1.6-4.5 4.1 1.3 6-5.5-3.1-5.5 3.1 1.3-6L1.3 7.7l6.1-.6z"></path>
-                                                        </svg><svg class="w-3.5 h-3.5 fill-gray-300" viewBox="0 0 20 20">
-                                                            <path d="M10 1.5l2.6 5.6 6.1.6-4.5 4.1 1.3 6-5.5-3.1-5.5 3.1 1.3-6L1.3 7.7l6.1-.6z"></path>
-                                                        </svg>
-                                                    </div>
-                                                    <div class="upa-alcrs-card-price-row">
-                                                        <div class="flex items-center gap-2">
-                                                            <span class="upa-alcrs-card-price-new">£29</span>
-                                                            <span class="upa-alcrs-card-price-old">£115</span>
-                                                        </div>
-                                                        <a href="#" class="upa-btn text-sm! py-2! px-4!">View Course</a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="upa-snglcrs-fbt-pagination flex justify-center gap-1.5 mt-4"></div>
                             </div>
                         </section>
 

@@ -6,7 +6,7 @@
         ============================================ -->
         <section class="w-full bg-upa-green-2">
             <div class="max-w-[1280px] mx-auto px-4 md:px-8 py-12 lg:py-16 text-center">
-                <h1 class="upa-page-header">Learn Skills That Matter</h1>
+                <h1 class="upa-page-header">All <?php echo get_the_archive_title()?> Courses</h1>
                 <p class="upa-txt-normal mt-2">1500+ UK-Focused Courses. Skills for Today's Job Market.</p>
             </div>
         </section>
@@ -23,7 +23,7 @@
 
                     <!-- Search -->
                     <!-- DYNAMIC: course search form - action/name for the course archive search -->
-                    <form role="search" action="#" method="get" class="upa-alcrs-card-search">
+                    <form role="search" action="<?php echo home_url(); ?>" method="GET" class="upa-alcrs-card-search">
                         <label for="upa-alcrs-card-search-input" class="sr-only">Search courses</label>
                         <input type="search" id="upa-alcrs-card-search-input" name="s"
                             class="upa-alcrs-card-search-input" placeholder="e.g. food hygiene">
@@ -36,8 +36,18 @@
                         </button>
                     </form>
 
+                    <?php
+                    global $wp_query;
+
+                    $paged = max(1, get_query_var('paged'));
+                    $page_count = $wp_query->post_count;
+                    $total = $wp_query->found_posts;
+
+                    $first_course = (($paged - 1) * 15) + 1;
+                    ?>
+
                     <!-- DYNAMIC: result count -->
-                    <p class="upa-alcrs-card-count">Showing 1-15 of 1500 Courses</p>
+                    <p class="upa-alcrs-card-count"><?php echo "Showing " . $first_course . "-" . $page_count . " of " . $total . " Courses"; ?></p>
 
                     <!-- ============================================
                         CATEGORY FILTER (upa-alcrs-cats-*)
@@ -54,142 +64,40 @@
                             </svg>
                         </button>
                         <h2 class="upa-alcrs-cats-title">Course Categories</h2>
+                        <?php
+                        
+                        $terms = get_terms(['taxonomy' => 'course-category']);
+                        $category_id = '';
+                        if(isset($_GET['tutor-course-filter-category'])):
+                            $category_id = intval($_GET['tutor-course-filter-category']);
+                            $tax_args = [
+                                [
+                                'taxonomy' => 'course-category',
+                                'field' => 'term_id',
+                                'terms' => $category_id
+                                ]
+                            ];
+                            $args['tax_query'] = $tax_args;
+                        endif;
+                        ?>
 
                         <!-- DYNAMIC: category filter form - submit/URL handling for the course archive -->
                         <form id="upa-alcrs-cats-panel" action="#" method="get" class="upa-alcrs-cats-panel">
                             <ul class="upa-alcrs-cats-list">
+                                <?php foreach($terms as $term): ?>
                                 <!-- LOOP START: course category -->
                                 <li>
                                     <label class="upa-alcrs-cats-item">
                                         <!-- DYNAMIC: category_slug -->
-                                        <input type="checkbox" name="course_category[]" value="admin-secretarial-pa"
-                                            class="upa-alcrs-cats-check">
+                                        <a href="<?php echo get_term_link($term); ?>"><input type="checkbox" name="course_category[]" value="admin-secretarial-pa"
+                                            class="upa-alcrs-cats-check" <?php if($term->term_id === $category_id) echo "checked"?>>
                                         <!-- DYNAMIC: category_name, course_count -->
-                                        <span>Admin, Secretarial &amp; PA <span
-                                                class="upa-alcrs-cats-count">(28)</span></span>
+                                        <span><?php echo $term->name; ?><span
+                                                class="upa-alcrs-cats-count">(<?php echo $term->count; ?>)</span></span></a>
                                     </label>
                                 </li>
                                 <!-- LOOP END -->
-                                <li>
-                                    <label class="upa-alcrs-cats-item">
-                                        <input type="checkbox" name="course_category[]" value="admin-secretarial-pa"
-                                            class="upa-alcrs-cats-check">
-                                        <span>Admin, Secretarial &amp; PA <span
-                                                class="upa-alcrs-cats-count">(28)</span></span>
-                                    </label>
-                                </li>
-                                <li>
-                                    <label class="upa-alcrs-cats-item">
-                                        <input type="checkbox" name="course_category[]" value="admin-secretarial-pa"
-                                            class="upa-alcrs-cats-check">
-                                        <span>Admin, Secretarial &amp; PA <span
-                                                class="upa-alcrs-cats-count">(28)</span></span>
-                                    </label>
-                                </li>
-                                <li>
-                                    <label class="upa-alcrs-cats-item">
-                                        <input type="checkbox" name="course_category[]" value="admin-secretarial-pa"
-                                            class="upa-alcrs-cats-check">
-                                        <span>Admin, Secretarial &amp; PA <span
-                                                class="upa-alcrs-cats-count">(28)</span></span>
-                                    </label>
-                                </li>
-                                <li>
-                                    <label class="upa-alcrs-cats-item">
-                                        <input type="checkbox" name="course_category[]" value="admin-secretarial-pa"
-                                            class="upa-alcrs-cats-check">
-                                        <span>Admin, Secretarial &amp; PA <span
-                                                class="upa-alcrs-cats-count">(28)</span></span>
-                                    </label>
-                                </li>
-                                <li>
-                                    <label class="upa-alcrs-cats-item">
-                                        <input type="checkbox" name="course_category[]" value="admin-secretarial-pa"
-                                            class="upa-alcrs-cats-check">
-                                        <span>Admin, Secretarial &amp; PA <span
-                                                class="upa-alcrs-cats-count">(28)</span></span>
-                                    </label>
-                                </li>
-                                <li>
-                                    <label class="upa-alcrs-cats-item">
-                                        <input type="checkbox" name="course_category[]" value="admin-secretarial-pa"
-                                            class="upa-alcrs-cats-check">
-                                        <span>Admin, Secretarial &amp; PA <span
-                                                class="upa-alcrs-cats-count">(28)</span></span>
-                                    </label>
-                                </li>
-                                <li>
-                                    <label class="upa-alcrs-cats-item">
-                                        <input type="checkbox" name="course_category[]" value="admin-secretarial-pa"
-                                            class="upa-alcrs-cats-check">
-                                        <span>Admin, Secretarial &amp; PA <span
-                                                class="upa-alcrs-cats-count">(28)</span></span>
-                                    </label>
-                                </li>
-                                <li>
-                                    <label class="upa-alcrs-cats-item">
-                                        <input type="checkbox" name="course_category[]" value="admin-secretarial-pa"
-                                            class="upa-alcrs-cats-check">
-                                        <span>Admin, Secretarial &amp; PA <span
-                                                class="upa-alcrs-cats-count">(28)</span></span>
-                                    </label>
-                                </li>
-                                <li>
-                                    <label class="upa-alcrs-cats-item">
-                                        <input type="checkbox" name="course_category[]" value="admin-secretarial-pa"
-                                            class="upa-alcrs-cats-check">
-                                        <span>Admin, Secretarial &amp; PA <span
-                                                class="upa-alcrs-cats-count">(28)</span></span>
-                                    </label>
-                                </li>
-                                <li>
-                                    <label class="upa-alcrs-cats-item">
-                                        <input type="checkbox" name="course_category[]" value="admin-secretarial-pa"
-                                            class="upa-alcrs-cats-check">
-                                        <span>Admin, Secretarial &amp; PA <span
-                                                class="upa-alcrs-cats-count">(28)</span></span>
-                                    </label>
-                                </li>
-                                <li>
-                                    <label class="upa-alcrs-cats-item">
-                                        <input type="checkbox" name="course_category[]" value="admin-secretarial-pa"
-                                            class="upa-alcrs-cats-check">
-                                        <span>Admin, Secretarial &amp; PA <span
-                                                class="upa-alcrs-cats-count">(28)</span></span>
-                                    </label>
-                                </li>
-                                <li>
-                                    <label class="upa-alcrs-cats-item">
-                                        <input type="checkbox" name="course_category[]" value="admin-secretarial-pa"
-                                            class="upa-alcrs-cats-check">
-                                        <span>Admin, Secretarial &amp; PA <span
-                                                class="upa-alcrs-cats-count">(28)</span></span>
-                                    </label>
-                                </li>
-                                <li>
-                                    <label class="upa-alcrs-cats-item">
-                                        <input type="checkbox" name="course_category[]" value="admin-secretarial-pa"
-                                            class="upa-alcrs-cats-check">
-                                        <span>Admin, Secretarial &amp; PA <span
-                                                class="upa-alcrs-cats-count">(28)</span></span>
-                                    </label>
-                                </li>
-                                <li>
-                                    <label class="upa-alcrs-cats-item">
-                                        <input type="checkbox" name="course_category[]" value="admin-secretarial-pa"
-                                            class="upa-alcrs-cats-check">
-                                        <span>Admin, Secretarial &amp; PA <span
-                                                class="upa-alcrs-cats-count">(28)</span></span>
-                                    </label>
-                                </li>
-                                <li>
-                                    <label class="upa-alcrs-cats-item">
-                                        <input type="checkbox" name="course_category[]" value="admin-secretarial-pa"
-                                            class="upa-alcrs-cats-check">
-                                        <span>Admin, Secretarial &amp; PA <span
-                                                class="upa-alcrs-cats-count">(28)</span></span>
-                                    </label>
-                                </li>
+                                 <?php endforeach; ?>
                             </ul>
                         </form>
                     </div>
@@ -227,11 +135,15 @@
 
                     <!-- Course card grid -->
                     <div class="upa-alcrs-card-grid">
+                        <?php
+                        while(have_posts()):
+                            the_post();
+                            ?>
                         <!-- LOOP START: course card -->
                         <div class="upa-alcrs-card">
                             <div class="upa-alcrs-card-image-wrap">
                                 <!-- DYNAMIC: course_thumbnail -->
-                                <img src="<?php echo get_stylesheet_directory_uri() . '/assets/img/course-food-hygiene.jpg'; ?>" alt="Food Hygiene course">
+                                <img src="<?php echo get_the_post_thumbnail_url(); ?>" alt="<?php echo get_the_title(); ?> thumbnail">
                                 <!-- CONDITIONAL: sale ribbon, discounted courses only -->
                                 <div class="upa-alcrs-card-sale-clip">
                                     <div class="upa-alcrs-card-sale-ribbon">Sale</div>
@@ -239,9 +151,9 @@
                             </div>
                             <div class="upa-alcrs-card-body">
                                 <!-- DYNAMIC: course_title -->
-                                <h3 class="text-upa-green font-bold upa-txt-normal">Food Hygiene</h3>
+                                <a href="<?php echo get_the_permalink(); ?>"><h3 class="text-upa-green font-bold upa-txt-normal"><?php echo get_the_title(); ?></h3></a>
                                 <!-- DYNAMIC: course_excerpt -->
-                                <p class="upa-txt-sm">Essential food handling, Hygiene, safety and nutrition training</p>
+                                <p class="upa-txt-sm"><?php echo wp_trim_words(get_the_excerpt(), 10); ?></p>
                                 <!-- DYNAMIC: course_rating -->
                                 <div class="upa-alcrs-card-stars">
                                     <svg class="w-3.5 h-3.5 fill-upa-peach" viewBox="0 0 20 20">
@@ -256,457 +168,35 @@
                                         <path d="M10 1.5l2.6 5.6 6.1.6-4.5 4.1 1.3 6-5.5-3.1-5.5 3.1 1.3-6L1.3 7.7l6.1-.6z"></path>
                                     </svg>
                                 </div>
+                                <?php
+                                $product_id = tutor_utils()->get_course_product_id();
+                                ?>
                                 <div class="upa-alcrs-card-price-row">
                                     <div class="flex items-center gap-2">
+                                        <?php if($product_id): $product = wc_get_product($product_id); ?>
                                         <!-- DYNAMIC: sale_price, regular_price -->
-                                        <span class="upa-alcrs-card-price-new">£29</span>
-                                        <span class="upa-alcrs-card-price-old">£115</span>
+                                        <span class="upa-alcrs-card-price-new"><?php echo wc_price($product->get_price()); ?></span>
+                                        <span class="upa-alcrs-card-price-old"><?php if($product->get_sale_price()) echo $product->get_regular_price(); ?></span>
+                                        <?php endif; ?>
                                     </div>
-                                    <a href="#" class="upa-btn text-sm! py-2! px-4!">View Course</a>
+                                    <a href="<?php echo get_the_permalink(); ?>" class="upa-btn text-sm! py-2! px-4!">View Course</a>
                                 </div>
                             </div>
                         </div>
                         <!-- LOOP END -->
-
-                        <!-- Cards 2-15: placeholder repeats of the loop above -->
-                        <div class="upa-alcrs-card">
-                            <div class="upa-alcrs-card-image-wrap">
-                                <img src="<?php echo get_stylesheet_directory_uri() . '/assets/img/course-food-hygiene.jpg'; ?>" alt="Food Hygiene course">
-                                <div class="upa-alcrs-card-sale-clip">
-                                    <div class="upa-alcrs-card-sale-ribbon">Sale</div>
-                                </div>
-                            </div>
-                            <div class="upa-alcrs-card-body">
-                                <h3 class="text-upa-green font-bold upa-txt-normal">Food Hygiene</h3>
-                                <p class="upa-txt-sm">Essential food handling, Hygiene, safety and nutrition training</p>
-                                <div class="upa-alcrs-card-stars">
-                                    <svg class="w-3.5 h-3.5 fill-upa-peach" viewBox="0 0 20 20">
-                                        <path d="M10 1.5l2.6 5.6 6.1.6-4.5 4.1 1.3 6-5.5-3.1-5.5 3.1 1.3-6L1.3 7.7l6.1-.6z"></path>
-                                    </svg><svg class="w-3.5 h-3.5 fill-upa-peach" viewBox="0 0 20 20">
-                                        <path d="M10 1.5l2.6 5.6 6.1.6-4.5 4.1 1.3 6-5.5-3.1-5.5 3.1 1.3-6L1.3 7.7l6.1-.6z"></path>
-                                    </svg><svg class="w-3.5 h-3.5 fill-upa-peach" viewBox="0 0 20 20">
-                                        <path d="M10 1.5l2.6 5.6 6.1.6-4.5 4.1 1.3 6-5.5-3.1-5.5 3.1 1.3-6L1.3 7.7l6.1-.6z"></path>
-                                    </svg><svg class="w-3.5 h-3.5 fill-upa-peach" viewBox="0 0 20 20">
-                                        <path d="M10 1.5l2.6 5.6 6.1.6-4.5 4.1 1.3 6-5.5-3.1-5.5 3.1 1.3-6L1.3 7.7l6.1-.6z"></path>
-                                    </svg><svg class="w-3.5 h-3.5 fill-gray-300" viewBox="0 0 20 20">
-                                        <path d="M10 1.5l2.6 5.6 6.1.6-4.5 4.1 1.3 6-5.5-3.1-5.5 3.1 1.3-6L1.3 7.7l6.1-.6z"></path>
-                                    </svg>
-                                </div>
-                                <div class="upa-alcrs-card-price-row">
-                                    <div class="flex items-center gap-2">
-                                        <span class="upa-alcrs-card-price-new">£29</span>
-                                        <span class="upa-alcrs-card-price-old">£115</span>
-                                    </div>
-                                    <a href="#" class="upa-btn text-sm! py-2! px-4!">View Course</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="upa-alcrs-card">
-                            <div class="upa-alcrs-card-image-wrap">
-                                <img src="<?php echo get_stylesheet_directory_uri() . '/assets/img/course-food-hygiene.jpg'; ?>" alt="Food Hygiene course">
-                            </div>
-                            <div class="upa-alcrs-card-body">
-                                <h3 class="text-upa-green font-bold upa-txt-normal">Food Hygiene</h3>
-                                <p class="upa-txt-sm">Essential food handling, Hygiene, safety and nutrition training</p>
-                                <div class="upa-alcrs-card-stars">
-                                    <svg class="w-3.5 h-3.5 fill-upa-peach" viewBox="0 0 20 20">
-                                        <path d="M10 1.5l2.6 5.6 6.1.6-4.5 4.1 1.3 6-5.5-3.1-5.5 3.1 1.3-6L1.3 7.7l6.1-.6z"></path>
-                                    </svg><svg class="w-3.5 h-3.5 fill-upa-peach" viewBox="0 0 20 20">
-                                        <path d="M10 1.5l2.6 5.6 6.1.6-4.5 4.1 1.3 6-5.5-3.1-5.5 3.1 1.3-6L1.3 7.7l6.1-.6z"></path>
-                                    </svg><svg class="w-3.5 h-3.5 fill-upa-peach" viewBox="0 0 20 20">
-                                        <path d="M10 1.5l2.6 5.6 6.1.6-4.5 4.1 1.3 6-5.5-3.1-5.5 3.1 1.3-6L1.3 7.7l6.1-.6z"></path>
-                                    </svg><svg class="w-3.5 h-3.5 fill-upa-peach" viewBox="0 0 20 20">
-                                        <path d="M10 1.5l2.6 5.6 6.1.6-4.5 4.1 1.3 6-5.5-3.1-5.5 3.1 1.3-6L1.3 7.7l6.1-.6z"></path>
-                                    </svg><svg class="w-3.5 h-3.5 fill-gray-300" viewBox="0 0 20 20">
-                                        <path d="M10 1.5l2.6 5.6 6.1.6-4.5 4.1 1.3 6-5.5-3.1-5.5 3.1 1.3-6L1.3 7.7l6.1-.6z"></path>
-                                    </svg>
-                                </div>
-                                <div class="upa-alcrs-card-price-row">
-                                    <div class="flex items-center gap-2">
-                                        <span class="upa-alcrs-card-price-new">£29</span>
-                                        <span class="upa-alcrs-card-price-old">£115</span>
-                                    </div>
-                                    <a href="#" class="upa-btn text-sm! py-2! px-4!">View Course</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="upa-alcrs-card">
-                            <div class="upa-alcrs-card-image-wrap">
-                                <img src="<?php echo get_stylesheet_directory_uri() . '/assets/img/course-food-hygiene.jpg'; ?>" alt="Food Hygiene course">
-                                <div class="upa-alcrs-card-sale-clip">
-                                    <div class="upa-alcrs-card-sale-ribbon">Sale</div>
-                                </div>
-                            </div>
-                            <div class="upa-alcrs-card-body">
-                                <h3 class="text-upa-green font-bold upa-txt-normal">Food Hygiene</h3>
-                                <p class="upa-txt-sm">Essential food handling, Hygiene, safety and nutrition training</p>
-                                <div class="upa-alcrs-card-stars">
-                                    <svg class="w-3.5 h-3.5 fill-upa-peach" viewBox="0 0 20 20">
-                                        <path d="M10 1.5l2.6 5.6 6.1.6-4.5 4.1 1.3 6-5.5-3.1-5.5 3.1 1.3-6L1.3 7.7l6.1-.6z"></path>
-                                    </svg><svg class="w-3.5 h-3.5 fill-upa-peach" viewBox="0 0 20 20">
-                                        <path d="M10 1.5l2.6 5.6 6.1.6-4.5 4.1 1.3 6-5.5-3.1-5.5 3.1 1.3-6L1.3 7.7l6.1-.6z"></path>
-                                    </svg><svg class="w-3.5 h-3.5 fill-upa-peach" viewBox="0 0 20 20">
-                                        <path d="M10 1.5l2.6 5.6 6.1.6-4.5 4.1 1.3 6-5.5-3.1-5.5 3.1 1.3-6L1.3 7.7l6.1-.6z"></path>
-                                    </svg><svg class="w-3.5 h-3.5 fill-upa-peach" viewBox="0 0 20 20">
-                                        <path d="M10 1.5l2.6 5.6 6.1.6-4.5 4.1 1.3 6-5.5-3.1-5.5 3.1 1.3-6L1.3 7.7l6.1-.6z"></path>
-                                    </svg><svg class="w-3.5 h-3.5 fill-gray-300" viewBox="0 0 20 20">
-                                        <path d="M10 1.5l2.6 5.6 6.1.6-4.5 4.1 1.3 6-5.5-3.1-5.5 3.1 1.3-6L1.3 7.7l6.1-.6z"></path>
-                                    </svg>
-                                </div>
-                                <div class="upa-alcrs-card-price-row">
-                                    <div class="flex items-center gap-2">
-                                        <span class="upa-alcrs-card-price-new">£29</span>
-                                        <span class="upa-alcrs-card-price-old">£115</span>
-                                    </div>
-                                    <a href="#" class="upa-btn text-sm! py-2! px-4!">View Course</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="upa-alcrs-card">
-                            <div class="upa-alcrs-card-image-wrap">
-                                <img src="<?php echo get_stylesheet_directory_uri() . '/assets/img/course-food-hygiene.jpg'; ?>" alt="Food Hygiene course">
-                                <div class="upa-alcrs-card-sale-clip">
-                                    <div class="upa-alcrs-card-sale-ribbon">Sale</div>
-                                </div>
-                            </div>
-                            <div class="upa-alcrs-card-body">
-                                <h3 class="text-upa-green font-bold upa-txt-normal">Food Hygiene</h3>
-                                <p class="upa-txt-sm">Essential food handling, Hygiene, safety and nutrition training</p>
-                                <div class="upa-alcrs-card-stars">
-                                    <svg class="w-3.5 h-3.5 fill-upa-peach" viewBox="0 0 20 20">
-                                        <path d="M10 1.5l2.6 5.6 6.1.6-4.5 4.1 1.3 6-5.5-3.1-5.5 3.1 1.3-6L1.3 7.7l6.1-.6z"></path>
-                                    </svg><svg class="w-3.5 h-3.5 fill-upa-peach" viewBox="0 0 20 20">
-                                        <path d="M10 1.5l2.6 5.6 6.1.6-4.5 4.1 1.3 6-5.5-3.1-5.5 3.1 1.3-6L1.3 7.7l6.1-.6z"></path>
-                                    </svg><svg class="w-3.5 h-3.5 fill-upa-peach" viewBox="0 0 20 20">
-                                        <path d="M10 1.5l2.6 5.6 6.1.6-4.5 4.1 1.3 6-5.5-3.1-5.5 3.1 1.3-6L1.3 7.7l6.1-.6z"></path>
-                                    </svg><svg class="w-3.5 h-3.5 fill-upa-peach" viewBox="0 0 20 20">
-                                        <path d="M10 1.5l2.6 5.6 6.1.6-4.5 4.1 1.3 6-5.5-3.1-5.5 3.1 1.3-6L1.3 7.7l6.1-.6z"></path>
-                                    </svg><svg class="w-3.5 h-3.5 fill-gray-300" viewBox="0 0 20 20">
-                                        <path d="M10 1.5l2.6 5.6 6.1.6-4.5 4.1 1.3 6-5.5-3.1-5.5 3.1 1.3-6L1.3 7.7l6.1-.6z"></path>
-                                    </svg>
-                                </div>
-                                <div class="upa-alcrs-card-price-row">
-                                    <div class="flex items-center gap-2">
-                                        <span class="upa-alcrs-card-price-new">£29</span>
-                                        <span class="upa-alcrs-card-price-old">£115</span>
-                                    </div>
-                                    <a href="#" class="upa-btn text-sm! py-2! px-4!">View Course</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="upa-alcrs-card">
-                            <div class="upa-alcrs-card-image-wrap">
-                                <img src="<?php echo get_stylesheet_directory_uri() . '/assets/img/course-food-hygiene.jpg'; ?>" alt="Food Hygiene course">
-                            </div>
-                            <div class="upa-alcrs-card-body">
-                                <h3 class="text-upa-green font-bold upa-txt-normal">Food Hygiene</h3>
-                                <p class="upa-txt-sm">Essential food handling, Hygiene, safety and nutrition training</p>
-                                <div class="upa-alcrs-card-stars">
-                                    <svg class="w-3.5 h-3.5 fill-upa-peach" viewBox="0 0 20 20">
-                                        <path d="M10 1.5l2.6 5.6 6.1.6-4.5 4.1 1.3 6-5.5-3.1-5.5 3.1 1.3-6L1.3 7.7l6.1-.6z"></path>
-                                    </svg><svg class="w-3.5 h-3.5 fill-upa-peach" viewBox="0 0 20 20">
-                                        <path d="M10 1.5l2.6 5.6 6.1.6-4.5 4.1 1.3 6-5.5-3.1-5.5 3.1 1.3-6L1.3 7.7l6.1-.6z"></path>
-                                    </svg><svg class="w-3.5 h-3.5 fill-upa-peach" viewBox="0 0 20 20">
-                                        <path d="M10 1.5l2.6 5.6 6.1.6-4.5 4.1 1.3 6-5.5-3.1-5.5 3.1 1.3-6L1.3 7.7l6.1-.6z"></path>
-                                    </svg><svg class="w-3.5 h-3.5 fill-upa-peach" viewBox="0 0 20 20">
-                                        <path d="M10 1.5l2.6 5.6 6.1.6-4.5 4.1 1.3 6-5.5-3.1-5.5 3.1 1.3-6L1.3 7.7l6.1-.6z"></path>
-                                    </svg><svg class="w-3.5 h-3.5 fill-gray-300" viewBox="0 0 20 20">
-                                        <path d="M10 1.5l2.6 5.6 6.1.6-4.5 4.1 1.3 6-5.5-3.1-5.5 3.1 1.3-6L1.3 7.7l6.1-.6z"></path>
-                                    </svg>
-                                </div>
-                                <div class="upa-alcrs-card-price-row">
-                                    <div class="flex items-center gap-2">
-                                        <span class="upa-alcrs-card-price-new">£29</span>
-                                        <span class="upa-alcrs-card-price-old">£115</span>
-                                    </div>
-                                    <a href="#" class="upa-btn text-sm! py-2! px-4!">View Course</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="upa-alcrs-card">
-                            <div class="upa-alcrs-card-image-wrap">
-                                <img src="<?php echo get_stylesheet_directory_uri() . '/assets/img/course-food-hygiene.jpg'; ?>" alt="Food Hygiene course">
-                                <div class="upa-alcrs-card-sale-clip">
-                                    <div class="upa-alcrs-card-sale-ribbon">Sale</div>
-                                </div>
-                            </div>
-                            <div class="upa-alcrs-card-body">
-                                <h3 class="text-upa-green font-bold upa-txt-normal">Food Hygiene</h3>
-                                <p class="upa-txt-sm">Essential food handling, Hygiene, safety and nutrition training</p>
-                                <div class="upa-alcrs-card-stars">
-                                    <svg class="w-3.5 h-3.5 fill-upa-peach" viewBox="0 0 20 20">
-                                        <path d="M10 1.5l2.6 5.6 6.1.6-4.5 4.1 1.3 6-5.5-3.1-5.5 3.1 1.3-6L1.3 7.7l6.1-.6z"></path>
-                                    </svg><svg class="w-3.5 h-3.5 fill-upa-peach" viewBox="0 0 20 20">
-                                        <path d="M10 1.5l2.6 5.6 6.1.6-4.5 4.1 1.3 6-5.5-3.1-5.5 3.1 1.3-6L1.3 7.7l6.1-.6z"></path>
-                                    </svg><svg class="w-3.5 h-3.5 fill-upa-peach" viewBox="0 0 20 20">
-                                        <path d="M10 1.5l2.6 5.6 6.1.6-4.5 4.1 1.3 6-5.5-3.1-5.5 3.1 1.3-6L1.3 7.7l6.1-.6z"></path>
-                                    </svg><svg class="w-3.5 h-3.5 fill-upa-peach" viewBox="0 0 20 20">
-                                        <path d="M10 1.5l2.6 5.6 6.1.6-4.5 4.1 1.3 6-5.5-3.1-5.5 3.1 1.3-6L1.3 7.7l6.1-.6z"></path>
-                                    </svg><svg class="w-3.5 h-3.5 fill-gray-300" viewBox="0 0 20 20">
-                                        <path d="M10 1.5l2.6 5.6 6.1.6-4.5 4.1 1.3 6-5.5-3.1-5.5 3.1 1.3-6L1.3 7.7l6.1-.6z"></path>
-                                    </svg>
-                                </div>
-                                <div class="upa-alcrs-card-price-row">
-                                    <div class="flex items-center gap-2">
-                                        <span class="upa-alcrs-card-price-new">£29</span>
-                                        <span class="upa-alcrs-card-price-old">£115</span>
-                                    </div>
-                                    <a href="#" class="upa-btn text-sm! py-2! px-4!">View Course</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="upa-alcrs-card">
-                            <div class="upa-alcrs-card-image-wrap">
-                                <img src="<?php echo get_stylesheet_directory_uri() . '/assets/img/course-food-hygiene.jpg'; ?>" alt="Food Hygiene course">
-                                <div class="upa-alcrs-card-sale-clip">
-                                    <div class="upa-alcrs-card-sale-ribbon">Sale</div>
-                                </div>
-                            </div>
-                            <div class="upa-alcrs-card-body">
-                                <h3 class="text-upa-green font-bold upa-txt-normal">Food Hygiene</h3>
-                                <p class="upa-txt-sm">Essential food handling, Hygiene, safety and nutrition training</p>
-                                <div class="upa-alcrs-card-stars">
-                                    <svg class="w-3.5 h-3.5 fill-upa-peach" viewBox="0 0 20 20">
-                                        <path d="M10 1.5l2.6 5.6 6.1.6-4.5 4.1 1.3 6-5.5-3.1-5.5 3.1 1.3-6L1.3 7.7l6.1-.6z"></path>
-                                    </svg><svg class="w-3.5 h-3.5 fill-upa-peach" viewBox="0 0 20 20">
-                                        <path d="M10 1.5l2.6 5.6 6.1.6-4.5 4.1 1.3 6-5.5-3.1-5.5 3.1 1.3-6L1.3 7.7l6.1-.6z"></path>
-                                    </svg><svg class="w-3.5 h-3.5 fill-upa-peach" viewBox="0 0 20 20">
-                                        <path d="M10 1.5l2.6 5.6 6.1.6-4.5 4.1 1.3 6-5.5-3.1-5.5 3.1 1.3-6L1.3 7.7l6.1-.6z"></path>
-                                    </svg><svg class="w-3.5 h-3.5 fill-upa-peach" viewBox="0 0 20 20">
-                                        <path d="M10 1.5l2.6 5.6 6.1.6-4.5 4.1 1.3 6-5.5-3.1-5.5 3.1 1.3-6L1.3 7.7l6.1-.6z"></path>
-                                    </svg><svg class="w-3.5 h-3.5 fill-gray-300" viewBox="0 0 20 20">
-                                        <path d="M10 1.5l2.6 5.6 6.1.6-4.5 4.1 1.3 6-5.5-3.1-5.5 3.1 1.3-6L1.3 7.7l6.1-.6z"></path>
-                                    </svg>
-                                </div>
-                                <div class="upa-alcrs-card-price-row">
-                                    <div class="flex items-center gap-2">
-                                        <span class="upa-alcrs-card-price-new">£29</span>
-                                        <span class="upa-alcrs-card-price-old">£115</span>
-                                    </div>
-                                    <a href="#" class="upa-btn text-sm! py-2! px-4!">View Course</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="upa-alcrs-card">
-                            <div class="upa-alcrs-card-image-wrap">
-                                <img src="<?php echo get_stylesheet_directory_uri() . '/assets/img/course-food-hygiene.jpg'; ?>" alt="Food Hygiene course">
-                            </div>
-                            <div class="upa-alcrs-card-body">
-                                <h3 class="text-upa-green font-bold upa-txt-normal">Food Hygiene</h3>
-                                <p class="upa-txt-sm">Essential food handling, Hygiene, safety and nutrition training</p>
-                                <div class="upa-alcrs-card-stars">
-                                    <svg class="w-3.5 h-3.5 fill-upa-peach" viewBox="0 0 20 20">
-                                        <path d="M10 1.5l2.6 5.6 6.1.6-4.5 4.1 1.3 6-5.5-3.1-5.5 3.1 1.3-6L1.3 7.7l6.1-.6z"></path>
-                                    </svg><svg class="w-3.5 h-3.5 fill-upa-peach" viewBox="0 0 20 20">
-                                        <path d="M10 1.5l2.6 5.6 6.1.6-4.5 4.1 1.3 6-5.5-3.1-5.5 3.1 1.3-6L1.3 7.7l6.1-.6z"></path>
-                                    </svg><svg class="w-3.5 h-3.5 fill-upa-peach" viewBox="0 0 20 20">
-                                        <path d="M10 1.5l2.6 5.6 6.1.6-4.5 4.1 1.3 6-5.5-3.1-5.5 3.1 1.3-6L1.3 7.7l6.1-.6z"></path>
-                                    </svg><svg class="w-3.5 h-3.5 fill-upa-peach" viewBox="0 0 20 20">
-                                        <path d="M10 1.5l2.6 5.6 6.1.6-4.5 4.1 1.3 6-5.5-3.1-5.5 3.1 1.3-6L1.3 7.7l6.1-.6z"></path>
-                                    </svg><svg class="w-3.5 h-3.5 fill-gray-300" viewBox="0 0 20 20">
-                                        <path d="M10 1.5l2.6 5.6 6.1.6-4.5 4.1 1.3 6-5.5-3.1-5.5 3.1 1.3-6L1.3 7.7l6.1-.6z"></path>
-                                    </svg>
-                                </div>
-                                <div class="upa-alcrs-card-price-row">
-                                    <div class="flex items-center gap-2">
-                                        <span class="upa-alcrs-card-price-new">£29</span>
-                                        <span class="upa-alcrs-card-price-old">£115</span>
-                                    </div>
-                                    <a href="#" class="upa-btn text-sm! py-2! px-4!">View Course</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="upa-alcrs-card">
-                            <div class="upa-alcrs-card-image-wrap">
-                                <img src="<?php echo get_stylesheet_directory_uri() . '/assets/img/course-food-hygiene.jpg'; ?>" alt="Food Hygiene course">
-                                <div class="upa-alcrs-card-sale-clip">
-                                    <div class="upa-alcrs-card-sale-ribbon">Sale</div>
-                                </div>
-                            </div>
-                            <div class="upa-alcrs-card-body">
-                                <h3 class="text-upa-green font-bold upa-txt-normal">Food Hygiene</h3>
-                                <p class="upa-txt-sm">Essential food handling, Hygiene, safety and nutrition training</p>
-                                <div class="upa-alcrs-card-stars">
-                                    <svg class="w-3.5 h-3.5 fill-upa-peach" viewBox="0 0 20 20">
-                                        <path d="M10 1.5l2.6 5.6 6.1.6-4.5 4.1 1.3 6-5.5-3.1-5.5 3.1 1.3-6L1.3 7.7l6.1-.6z"></path>
-                                    </svg><svg class="w-3.5 h-3.5 fill-upa-peach" viewBox="0 0 20 20">
-                                        <path d="M10 1.5l2.6 5.6 6.1.6-4.5 4.1 1.3 6-5.5-3.1-5.5 3.1 1.3-6L1.3 7.7l6.1-.6z"></path>
-                                    </svg><svg class="w-3.5 h-3.5 fill-upa-peach" viewBox="0 0 20 20">
-                                        <path d="M10 1.5l2.6 5.6 6.1.6-4.5 4.1 1.3 6-5.5-3.1-5.5 3.1 1.3-6L1.3 7.7l6.1-.6z"></path>
-                                    </svg><svg class="w-3.5 h-3.5 fill-upa-peach" viewBox="0 0 20 20">
-                                        <path d="M10 1.5l2.6 5.6 6.1.6-4.5 4.1 1.3 6-5.5-3.1-5.5 3.1 1.3-6L1.3 7.7l6.1-.6z"></path>
-                                    </svg><svg class="w-3.5 h-3.5 fill-gray-300" viewBox="0 0 20 20">
-                                        <path d="M10 1.5l2.6 5.6 6.1.6-4.5 4.1 1.3 6-5.5-3.1-5.5 3.1 1.3-6L1.3 7.7l6.1-.6z"></path>
-                                    </svg>
-                                </div>
-                                <div class="upa-alcrs-card-price-row">
-                                    <div class="flex items-center gap-2">
-                                        <span class="upa-alcrs-card-price-new">£29</span>
-                                        <span class="upa-alcrs-card-price-old">£115</span>
-                                    </div>
-                                    <a href="#" class="upa-btn text-sm! py-2! px-4!">View Course</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="upa-alcrs-card">
-                            <div class="upa-alcrs-card-image-wrap">
-                                <img src="<?php echo get_stylesheet_directory_uri() . '/assets/img/course-food-hygiene.jpg'; ?>" alt="Food Hygiene course">
-                                <div class="upa-alcrs-card-sale-clip">
-                                    <div class="upa-alcrs-card-sale-ribbon">Sale</div>
-                                </div>
-                            </div>
-                            <div class="upa-alcrs-card-body">
-                                <h3 class="text-upa-green font-bold upa-txt-normal">Food Hygiene</h3>
-                                <p class="upa-txt-sm">Essential food handling, Hygiene, safety and nutrition training</p>
-                                <div class="upa-alcrs-card-stars">
-                                    <svg class="w-3.5 h-3.5 fill-upa-peach" viewBox="0 0 20 20">
-                                        <path d="M10 1.5l2.6 5.6 6.1.6-4.5 4.1 1.3 6-5.5-3.1-5.5 3.1 1.3-6L1.3 7.7l6.1-.6z"></path>
-                                    </svg><svg class="w-3.5 h-3.5 fill-upa-peach" viewBox="0 0 20 20">
-                                        <path d="M10 1.5l2.6 5.6 6.1.6-4.5 4.1 1.3 6-5.5-3.1-5.5 3.1 1.3-6L1.3 7.7l6.1-.6z"></path>
-                                    </svg><svg class="w-3.5 h-3.5 fill-upa-peach" viewBox="0 0 20 20">
-                                        <path d="M10 1.5l2.6 5.6 6.1.6-4.5 4.1 1.3 6-5.5-3.1-5.5 3.1 1.3-6L1.3 7.7l6.1-.6z"></path>
-                                    </svg><svg class="w-3.5 h-3.5 fill-upa-peach" viewBox="0 0 20 20">
-                                        <path d="M10 1.5l2.6 5.6 6.1.6-4.5 4.1 1.3 6-5.5-3.1-5.5 3.1 1.3-6L1.3 7.7l6.1-.6z"></path>
-                                    </svg><svg class="w-3.5 h-3.5 fill-gray-300" viewBox="0 0 20 20">
-                                        <path d="M10 1.5l2.6 5.6 6.1.6-4.5 4.1 1.3 6-5.5-3.1-5.5 3.1 1.3-6L1.3 7.7l6.1-.6z"></path>
-                                    </svg>
-                                </div>
-                                <div class="upa-alcrs-card-price-row">
-                                    <div class="flex items-center gap-2">
-                                        <span class="upa-alcrs-card-price-new">£29</span>
-                                        <span class="upa-alcrs-card-price-old">£115</span>
-                                    </div>
-                                    <a href="#" class="upa-btn text-sm! py-2! px-4!">View Course</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="upa-alcrs-card">
-                            <div class="upa-alcrs-card-image-wrap">
-                                <img src="<?php echo get_stylesheet_directory_uri() . '/assets/img/course-food-hygiene.jpg'; ?>" alt="Food Hygiene course">
-                            </div>
-                            <div class="upa-alcrs-card-body">
-                                <h3 class="text-upa-green font-bold upa-txt-normal">Food Hygiene</h3>
-                                <p class="upa-txt-sm">Essential food handling, Hygiene, safety and nutrition training</p>
-                                <div class="upa-alcrs-card-stars">
-                                    <svg class="w-3.5 h-3.5 fill-upa-peach" viewBox="0 0 20 20">
-                                        <path d="M10 1.5l2.6 5.6 6.1.6-4.5 4.1 1.3 6-5.5-3.1-5.5 3.1 1.3-6L1.3 7.7l6.1-.6z"></path>
-                                    </svg><svg class="w-3.5 h-3.5 fill-upa-peach" viewBox="0 0 20 20">
-                                        <path d="M10 1.5l2.6 5.6 6.1.6-4.5 4.1 1.3 6-5.5-3.1-5.5 3.1 1.3-6L1.3 7.7l6.1-.6z"></path>
-                                    </svg><svg class="w-3.5 h-3.5 fill-upa-peach" viewBox="0 0 20 20">
-                                        <path d="M10 1.5l2.6 5.6 6.1.6-4.5 4.1 1.3 6-5.5-3.1-5.5 3.1 1.3-6L1.3 7.7l6.1-.6z"></path>
-                                    </svg><svg class="w-3.5 h-3.5 fill-upa-peach" viewBox="0 0 20 20">
-                                        <path d="M10 1.5l2.6 5.6 6.1.6-4.5 4.1 1.3 6-5.5-3.1-5.5 3.1 1.3-6L1.3 7.7l6.1-.6z"></path>
-                                    </svg><svg class="w-3.5 h-3.5 fill-gray-300" viewBox="0 0 20 20">
-                                        <path d="M10 1.5l2.6 5.6 6.1.6-4.5 4.1 1.3 6-5.5-3.1-5.5 3.1 1.3-6L1.3 7.7l6.1-.6z"></path>
-                                    </svg>
-                                </div>
-                                <div class="upa-alcrs-card-price-row">
-                                    <div class="flex items-center gap-2">
-                                        <span class="upa-alcrs-card-price-new">£29</span>
-                                        <span class="upa-alcrs-card-price-old">£115</span>
-                                    </div>
-                                    <a href="#" class="upa-btn text-sm! py-2! px-4!">View Course</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="upa-alcrs-card">
-                            <div class="upa-alcrs-card-image-wrap">
-                                <img src="<?php echo get_stylesheet_directory_uri() . '/assets/img/course-food-hygiene.jpg'; ?>" alt="Food Hygiene course">
-                                <div class="upa-alcrs-card-sale-clip">
-                                    <div class="upa-alcrs-card-sale-ribbon">Sale</div>
-                                </div>
-                            </div>
-                            <div class="upa-alcrs-card-body">
-                                <h3 class="text-upa-green font-bold upa-txt-normal">Food Hygiene</h3>
-                                <p class="upa-txt-sm">Essential food handling, Hygiene, safety and nutrition training</p>
-                                <div class="upa-alcrs-card-stars">
-                                    <svg class="w-3.5 h-3.5 fill-upa-peach" viewBox="0 0 20 20">
-                                        <path d="M10 1.5l2.6 5.6 6.1.6-4.5 4.1 1.3 6-5.5-3.1-5.5 3.1 1.3-6L1.3 7.7l6.1-.6z"></path>
-                                    </svg><svg class="w-3.5 h-3.5 fill-upa-peach" viewBox="0 0 20 20">
-                                        <path d="M10 1.5l2.6 5.6 6.1.6-4.5 4.1 1.3 6-5.5-3.1-5.5 3.1 1.3-6L1.3 7.7l6.1-.6z"></path>
-                                    </svg><svg class="w-3.5 h-3.5 fill-upa-peach" viewBox="0 0 20 20">
-                                        <path d="M10 1.5l2.6 5.6 6.1.6-4.5 4.1 1.3 6-5.5-3.1-5.5 3.1 1.3-6L1.3 7.7l6.1-.6z"></path>
-                                    </svg><svg class="w-3.5 h-3.5 fill-upa-peach" viewBox="0 0 20 20">
-                                        <path d="M10 1.5l2.6 5.6 6.1.6-4.5 4.1 1.3 6-5.5-3.1-5.5 3.1 1.3-6L1.3 7.7l6.1-.6z"></path>
-                                    </svg><svg class="w-3.5 h-3.5 fill-gray-300" viewBox="0 0 20 20">
-                                        <path d="M10 1.5l2.6 5.6 6.1.6-4.5 4.1 1.3 6-5.5-3.1-5.5 3.1 1.3-6L1.3 7.7l6.1-.6z"></path>
-                                    </svg>
-                                </div>
-                                <div class="upa-alcrs-card-price-row">
-                                    <div class="flex items-center gap-2">
-                                        <span class="upa-alcrs-card-price-new">£29</span>
-                                        <span class="upa-alcrs-card-price-old">£115</span>
-                                    </div>
-                                    <a href="#" class="upa-btn text-sm! py-2! px-4!">View Course</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="upa-alcrs-card">
-                            <div class="upa-alcrs-card-image-wrap">
-                                <img src="<?php echo get_stylesheet_directory_uri() . '/assets/img/course-food-hygiene.jpg'; ?>" alt="Food Hygiene course">
-                                <div class="upa-alcrs-card-sale-clip">
-                                    <div class="upa-alcrs-card-sale-ribbon">Sale</div>
-                                </div>
-                            </div>
-                            <div class="upa-alcrs-card-body">
-                                <h3 class="text-upa-green font-bold upa-txt-normal">Food Hygiene</h3>
-                                <p class="upa-txt-sm">Essential food handling, Hygiene, safety and nutrition training</p>
-                                <div class="upa-alcrs-card-stars">
-                                    <svg class="w-3.5 h-3.5 fill-upa-peach" viewBox="0 0 20 20">
-                                        <path d="M10 1.5l2.6 5.6 6.1.6-4.5 4.1 1.3 6-5.5-3.1-5.5 3.1 1.3-6L1.3 7.7l6.1-.6z"></path>
-                                    </svg><svg class="w-3.5 h-3.5 fill-upa-peach" viewBox="0 0 20 20">
-                                        <path d="M10 1.5l2.6 5.6 6.1.6-4.5 4.1 1.3 6-5.5-3.1-5.5 3.1 1.3-6L1.3 7.7l6.1-.6z"></path>
-                                    </svg><svg class="w-3.5 h-3.5 fill-upa-peach" viewBox="0 0 20 20">
-                                        <path d="M10 1.5l2.6 5.6 6.1.6-4.5 4.1 1.3 6-5.5-3.1-5.5 3.1 1.3-6L1.3 7.7l6.1-.6z"></path>
-                                    </svg><svg class="w-3.5 h-3.5 fill-upa-peach" viewBox="0 0 20 20">
-                                        <path d="M10 1.5l2.6 5.6 6.1.6-4.5 4.1 1.3 6-5.5-3.1-5.5 3.1 1.3-6L1.3 7.7l6.1-.6z"></path>
-                                    </svg><svg class="w-3.5 h-3.5 fill-gray-300" viewBox="0 0 20 20">
-                                        <path d="M10 1.5l2.6 5.6 6.1.6-4.5 4.1 1.3 6-5.5-3.1-5.5 3.1 1.3-6L1.3 7.7l6.1-.6z"></path>
-                                    </svg>
-                                </div>
-                                <div class="upa-alcrs-card-price-row">
-                                    <div class="flex items-center gap-2">
-                                        <span class="upa-alcrs-card-price-new">£29</span>
-                                        <span class="upa-alcrs-card-price-old">£115</span>
-                                    </div>
-                                    <a href="#" class="upa-btn text-sm! py-2! px-4!">View Course</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="upa-alcrs-card">
-                            <div class="upa-alcrs-card-image-wrap">
-                                <img src="<?php echo get_stylesheet_directory_uri() . '/assets/img/course-food-hygiene.jpg'; ?>" alt="Food Hygiene course">
-                            </div>
-                            <div class="upa-alcrs-card-body">
-                                <h3 class="text-upa-green font-bold upa-txt-normal">Food Hygiene</h3>
-                                <p class="upa-txt-sm">Essential food handling, Hygiene, safety and nutrition training</p>
-                                <div class="upa-alcrs-card-stars">
-                                    <svg class="w-3.5 h-3.5 fill-upa-peach" viewBox="0 0 20 20">
-                                        <path d="M10 1.5l2.6 5.6 6.1.6-4.5 4.1 1.3 6-5.5-3.1-5.5 3.1 1.3-6L1.3 7.7l6.1-.6z"></path>
-                                    </svg><svg class="w-3.5 h-3.5 fill-upa-peach" viewBox="0 0 20 20">
-                                        <path d="M10 1.5l2.6 5.6 6.1.6-4.5 4.1 1.3 6-5.5-3.1-5.5 3.1 1.3-6L1.3 7.7l6.1-.6z"></path>
-                                    </svg><svg class="w-3.5 h-3.5 fill-upa-peach" viewBox="0 0 20 20">
-                                        <path d="M10 1.5l2.6 5.6 6.1.6-4.5 4.1 1.3 6-5.5-3.1-5.5 3.1 1.3-6L1.3 7.7l6.1-.6z"></path>
-                                    </svg><svg class="w-3.5 h-3.5 fill-upa-peach" viewBox="0 0 20 20">
-                                        <path d="M10 1.5l2.6 5.6 6.1.6-4.5 4.1 1.3 6-5.5-3.1-5.5 3.1 1.3-6L1.3 7.7l6.1-.6z"></path>
-                                    </svg><svg class="w-3.5 h-3.5 fill-gray-300" viewBox="0 0 20 20">
-                                        <path d="M10 1.5l2.6 5.6 6.1.6-4.5 4.1 1.3 6-5.5-3.1-5.5 3.1 1.3-6L1.3 7.7l6.1-.6z"></path>
-                                    </svg>
-                                </div>
-                                <div class="upa-alcrs-card-price-row">
-                                    <div class="flex items-center gap-2">
-                                        <span class="upa-alcrs-card-price-new">£29</span>
-                                        <span class="upa-alcrs-card-price-old">£115</span>
-                                    </div>
-                                    <a href="#" class="upa-btn text-sm! py-2! px-4!">View Course</a>
-                                </div>
-                            </div>
-                        </div>
+                         <?php endwhile; ?>
                     </div>
 
                     <!-- DYNAMIC: pagination - current page gets aria-current="page" -->
                     <nav class="upa-alcrs-card-pages" aria-label="Course pages">
-                        <a href="#" class="upa-alcrs-card-page" aria-current="page">1</a>
+                        <?php echo paginate_links([
+                            'previous' => 'Previous',
+                            'next' => 'Next',
+                            'mid_size' => 1,
+                            'end_size' => 1,
+                            'total' => $wp_query->max_num_pages,
+                        ]);  wp_reset_postdata(); ?>
+                        <!--<a href="#" class="upa-alcrs-card-page" aria-current="page">1</a>
                         <a href="#" class="upa-alcrs-card-page">2</a>
                         <a href="#" class="upa-alcrs-card-page">3</a>
                         <a href="#" class="upa-alcrs-card-page">4</a>
@@ -721,7 +211,7 @@
                                 aria-hidden="true">
                                 <path d="M9 6l6 6-6 6" />
                             </svg>
-                        </a>
+                        </a>-->
                     </nav>
 
                 </div>
