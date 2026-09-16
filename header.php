@@ -177,7 +177,13 @@
                             class="absolute -top-2 -right-2 bg-upa-red text-white text-[11px] leading-none font-bold w-5 h-5 rounded-full flex items-center justify-center">3</span>-->
                     </a>
 
-                    <a href="<?php echo home_url('dashboard'); ?>" class="upa-btn upa-btn-navy_green text-sm! !py-2 !px-5 flex-shrink-0">Log in</a>
+                    <a href="<?php echo home_url('dashboard'); ?>" class="upa-btn upa-btn-navy_green text-sm! !py-2 !px-5 flex-shrink-0">
+                        <?php 
+                        if(!is_user_logged_in())
+                            echo "Log in";
+                        else
+                        echo "Dashboard"; ?>
+                    </a>
 
                     <!-- Hamburger (mobile only) -->
                     <button id="hamburger-btn" class="lg:hidden flex-shrink-0" aria-label="Toggle menu"

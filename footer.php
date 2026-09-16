@@ -8,24 +8,23 @@
                         <img src="<?php echo get_stylesheet_directory_uri() . '/assets/img/upa-logo.svg'; ?>" alt="Upskilling Academy" class="h-20 w-auto">
                     </a>
                     <div class="flex flex-col gap-2 upa-txt-normal text-upa-navy">
-                        <a href="tel:" class="hover:text-upa-green transition-colors">Phone Number</a>
-                        <a href="#" class="hover:text-upa-green transition-colors">Address</a>
+                        <a href="tel:07463203894" class="hover:text-upa-green transition-colors">Phone Number: 07463203894</a>
+                        <a href="#" class="hover:text-upa-green transition-colors">Address: 128 City Road, London, EC1V 2NX</a>
                     </div>
                 </div>
 
                 <!-- Column 2: Links -->
                 <nav class="flex flex-col gap-3 upa-txt-normal text-upa-navy">
-                    <a href="#" class="hover:text-upa-green transition-colors">About Us</a>
-                    <a href="#" class="hover:text-upa-green transition-colors">All Courses</a>
-                    <a href="#" class="hover:text-upa-green transition-colors">Privacy & Policy</a>
-                    <a href="#" class="hover:text-upa-green transition-colors">Terms & Conditions</a>
-                    <a href="#" class="hover:text-upa-green transition-colors">Blog</a>
-                    <a href="#" class="hover:text-upa-green transition-colors">Write for Us</a>
+                    <a href="<?php echo home_url('about'); ?>" class="hover:text-upa-green transition-colors">About Us</a>
+                    <a href="<?php echo home_url('our-courses'); ?>" class="hover:text-upa-green transition-colors">All Courses</a>
+                    <a href="<?php echo home_url('privacy-policy'); ?>" class="hover:text-upa-green transition-colors">Privacy & Policy</a>
+                    <a href="<?php echo home_url('terms-and-conditions'); ?>" class="hover:text-upa-green transition-colors">Terms & Conditions</a>
+                    <a href="<?php echo home_url('blog'); ?>" class="hover:text-upa-green transition-colors">Blog</a>
                 </nav>
 
                 <!-- Column 3: Certificate validator + payment icons -->
                 <div class="flex flex-col gap-8">
-                    <div class="flex flex-col gap-3">
+                    <!--<div class="flex flex-col gap-3">
                         <p class="upa-txt-normal text-upa-navy">Certificate Validator</p>
                         <form
                             class="flex items-stretch border border-gray-300 rounded-full overflow-hidden bg-white w-full max-w-2xs">
@@ -35,7 +34,7 @@
                                 Validate
                             </button>
                         </form>
-                    </div>
+                    </div>-->
 
                     <div class="flex flex-col gap-3">
                         <p class="upa-txt-normal text-upa-navy">Pay With Confidence</p>
