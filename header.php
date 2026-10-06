@@ -68,8 +68,8 @@
                                     <!-- Course links grid -->
                                     <div class="flex-1 p-8">
                                         <div class="grid grid-cols-3 gap-x-8 gap-y-1">
-                                            <a href="#"
-                                                class="upa-nav-link active flex! justify-between items-center px-2 py-3 upa-txt-normal text-upa-navy  transition-colors">
+                                            <a href="https://upskillingacademy.co.uk/course-category/food-safety/?tutor-course-filter-category=56"
+                                                class="upa-nav-link flex! justify-between items-center px-2 py-3 upa-txt-normal text-upa-navy  transition-colors">
                                                 Food Hygiene
                                                 <svg class="w-3 h-3 flex-shrink-0" viewBox="0 0 12 12" fill="none"
                                                     xmlns="http://www.w3.org/2000/svg">
@@ -78,7 +78,7 @@
                                                         stroke-linejoin="round" />
                                                 </svg>
                                             </a>
-                                            <a href="#"
+                                            <a href="https://upskillingacademy.co.uk/course-category/health-safety/?tutor-course-filter-category=26"
                                                 class="upa-nav-link flex! justify-between items-center px-2 py-3 upa-txt-normal text-upa-navy  transition-colors">
                                                 Health & Safety
                                                 <svg class="w-3 h-3 flex-shrink-0" viewBox="0 0 12 12" fill="none"
@@ -88,7 +88,7 @@
                                                         stroke-linejoin="round" />
                                                 </svg>
                                             </a>
-                                            <a href="#"
+                                            <a href="https://upskillingacademy.co.uk/course-category/safeguarding/?tutor-course-filter-category=96"
                                                 class="upa-nav-link flex! justify-between items-center px-2 py-3 upa-txt-normal text-upa-navy  transition-colors">
                                                 Safeguarding
                                                 <svg class="w-3 h-3 flex-shrink-0" viewBox="0 0 12 12" fill="none"
@@ -98,7 +98,7 @@
                                                         stroke-linejoin="round" />
                                                 </svg>
                                             </a>
-                                            <a href="#"
+                                            <a href="https://upskillingacademy.co.uk/course-category/first-aid/?tutor-course-filter-category=97"
                                                 class="upa-nav-link flex! justify-between items-center px-2 py-3 upa-txt-normal text-upa-navy  transition-colors">
                                                 First Aid
                                                 <svg class="w-3 h-3 flex-shrink-0" viewBox="0 0 12 12" fill="none"
@@ -108,9 +108,9 @@
                                                         stroke-linejoin="round" />
                                                 </svg>
                                             </a>
-                                            <a href="#"
+                                            <a href="https://upskillingacademy.co.uk/course-category/leadership-management/?tutor-course-filter-category=45"
                                                 class="upa-nav-link flex! justify-between items-center px-2 py-3 upa-txt-normal text-upa-navy  transition-colors">
-                                                Fire Safety
+                                                Leadership and Management
                                                 <svg class="w-3 h-3 flex-shrink-0" viewBox="0 0 12 12" fill="none"
                                                     xmlns="http://www.w3.org/2000/svg">
                                                     <path d="M4.5 2.5L8 6L4.5 9.5" stroke="currentColor"
@@ -118,7 +118,7 @@
                                                         stroke-linejoin="round" />
                                                 </svg>
                                             </a>
-                                            <a href="#"
+                                            <a href="https://upskillingacademy.co.uk/course-category/mental-health/?tutor-course-filter-category=22"
                                                 class="upa-nav-link flex! justify-between items-center px-2 py-3 upa-txt-normal text-upa-navy  transition-colors">
                                                 Mental Health
                                                 <svg class="w-3 h-3 flex-shrink-0" viewBox="0 0 12 12" fill="none"

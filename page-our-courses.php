@@ -46,11 +46,12 @@
 
                     $first_course = (15 * intval($paged)) + 1;
                     $page_count = $courses->post_count;
+                    $last_course = (15 * intval($paged)) + $page_count;
                     $total = $courses->found_posts;
                     ?>
 
                     <!-- DYNAMIC: result count -->
-                    <p class="upa-alcrs-card-count"><?php echo "Showing " . $first_course . "-" . $page_count . " of " . $total . " Courses"; ?></p>
+                    <p class="upa-alcrs-card-count"><?php echo "Showing " . $first_course . "-" . $last_course . " of " . $total . " Courses"; ?></p>
 
                     <!-- ============================================
                         CATEGORY FILTER (upa-alcrs-cats-*)
@@ -67,7 +68,7 @@
                             </svg>
                         </button>
                         <h2 class="upa-alcrs-cats-title">Course Categories</h2>
-                        <?php $terms = get_terms(['taxonomy' => 'course-category']); ?>
+                        <?php $terms = get_terms(['taxonomy' => 'course-category', 'number' => 15]); ?>
 
                         <!-- DYNAMIC: category filter form - submit/URL handling for the course archive -->
                         <form id="upa-alcrs-cats-panel" action="#" method="get" class="upa-alcrs-cats-panel">
@@ -129,14 +130,21 @@
                             ?>
                         <!-- LOOP START: course card -->
                         <div class="upa-alcrs-card">
-                            <div class="upa-alcrs-card-image-wrap">
-                                <!-- DYNAMIC: course_thumbnail -->
-                                <img src="<?php echo get_the_post_thumbnail_url(); ?>" alt="<?php echo get_the_title(); ?> thumbnail">
-                                <!-- CONDITIONAL: sale ribbon, discounted courses only -->
+                            <div class="upa-popcrs-image-wrap flex items-center justify-center"
+                                style="background-image: url('<?php echo get_the_post_thumbnail_url(); ?>'); background-size: cover;">
+
+                                <div class="w-full" style="background: rgba(0,0,0,0.6);">
+                                    <h2 class="text-center text-white text-[28px]">
+                                        <?php echo get_the_title(); ?>
+                                    </h2>
+                                </div>
+
                                 <div class="upa-alcrs-card-sale-clip">
                                     <div class="upa-alcrs-card-sale-ribbon">Sale</div>
                                 </div>
+
                             </div>
+                            
                             <div class="upa-alcrs-card-body">
                                 <!-- DYNAMIC: course_title -->
                                 <a href="<?php echo get_the_permalink(); ?>"><h3 class="text-upa-green font-bold upa-txt-normal"><?php echo get_the_title(); ?></h3></a>

@@ -106,7 +106,8 @@
         ============================================ -->
         <?php 
         $terms = get_terms([
-            'taxonomy' => 'course-category'
+            'taxonomy' => 'course-category',
+            'number' => 12
         ]);
         ?>
         <section class="w-full bg-white">
@@ -168,8 +169,14 @@
                             $courses->the_post();
                     ?>
                     <div class="upa-popcrs-card">
-                        <div class="upa-popcrs-image-wrap">
-                            <img src="<?php echo get_the_post_thumbnail_url(); ?>" alt="Food Hygiene course">
+                        <div class="upa-popcrs-image-wrap flex items-center justify-center"
+                            style="background-image: url('<?php echo get_the_post_thumbnail_url(); ?>'); background-size: cover;">
+
+                            <div class="w-full" style="background: rgba(0,0,0,0.6);">
+                                <h2 class="text-center text-white text-[28px]">
+                                    <?php echo get_the_title(); ?>
+                                </h2>
+                            </div>
 
                         </div>
                         <div class="upa-popcrs-body">
@@ -226,14 +233,19 @@
                             <?php while($courses->have_posts()): $courses->the_post(); ?>
                             <div class="swiper-slide">
                                 <div class="upa-popcrs-card">
-                                    <div class="upa-popcrs-image-wrap">
-                                        <img src="<?php echo get_stylesheet_directory_uri() . '/assets/img/course-food-hygiene.jpg'; ?>" alt="Food Hygiene course">
+                                    <div class="upa-popcrs-image-wrap flex items-center justify-center"
+                                        style="background-image: url('<?php echo get_the_post_thumbnail_url(); ?>'); background-size: cover;">
+
+                                        <div class="w-full" style="background: rgba(0,0,0,0.6);">
+                                            <h2 class="text-center text-white text-[28px]">
+                                                <?php echo get_the_title(); ?>
+                                            </h2>
+                                        </div>
 
                                     </div>
                                     <div class="upa-popcrs-body">
-                                        <h3 class="text-upa-green font-bold upa-txt-normal">Food Hygiene</h3>
-                                        <p class="upa-txt-sm">Essential food handling, Hygiene, safety and nutrition
-                                            training</p>
+                                        <h3 class="text-upa-green font-bold upa-txt-normal"><?php echo get_the_title(); ?></h3>
+                                        <p class="upa-txt-sm"><?php echo wp_trim_words(get_the_excerpt(), 7); ?></p>
                                         <div class="upa-popcrs-stars">
                                             <svg class="w-3.5 h-3.5 fill-upa-peach" viewBox="0 0 20 20">
                                                 <path
@@ -253,11 +265,19 @@
                                             </svg>
                                         </div>
                                         <div class="upa-popcrs-price-row">
+                                            <?php
+                                            $product_id = tutor_utils()->get_course_product_id();
+                                            if($product_id):
+                                                $product = wc_get_product($product_id);
+                                            ?>
                                             <div class="flex items-center gap-2">
-                                                <span class="upa-popcrs-price-new">£29</span>
-                                                <span class="upa-popcrs-price-old">£115</span>
+                                                <span class="upa-popcrs-price-new"><?php echo wc_price($product->get_price()); ?></span>
+                                                <span class="upa-popcrs-price-old"><?php if($product->get_sale_price()) echo $product->get_regular_price(); ?></span>
                                             </div>
-                                            <a href="#" class="upa-btn !text-sm !py-2 !px-4">View Course</a>
+                                            <?php
+                                            endif;
+                                            ?>
+                                            <a href="<?php echo get_the_permalink(); ?>" class="upa-btn !text-sm !py-2 !px-4">View Course</a>
                                         </div>
                                     </div>
                                 </div>

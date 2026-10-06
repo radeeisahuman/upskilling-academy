@@ -19,96 +19,30 @@
             Clicking a side card brings it to the centre instead of
             following its link. overflow-hidden clips the outer cards.
         ============================================ -->
+        <?php
+        $terms = get_terms(['taxonomy'=>'category']);
+        ?>
         <section class="w-full bg-white overflow-hidden">
             <div class="max-w-[1280px] mx-auto px-4 md:px-8 py-12 lg:py-16">
                 <div class="swiper upa-stack-swiper upa-alblg-feat-swiper" aria-label="Featured topics">
                     <div class="swiper-wrapper">
+                            <?php foreach($terms as $term): ?>
                         <!-- LOOP START: featured topic (blog category) -->
                         <div class="swiper-slide">
                             <!-- DYNAMIC: category archive URL -->
-                            <a href="#" class="upa-alblg-feat-card">
+                            <a href="<?php get_term_link('$term'); ?>" class="upa-alblg-feat-card">
                                 <!-- DYNAMIC: category image -->
-                                <img src="assets/imgs/course-food-hygiene.jpg" alt="" loading="lazy">
+                                <!--<img src="assets/imgs/course-food-hygiene.jpg" alt="" loading="lazy">-->
                                 <span class="upa-alblg-feat-body">
                                     <!-- DYNAMIC: category name -->
-                                    <span class="upa-alblg-feat-title">Food Hygiene</span>
+                                    <span class="upa-alblg-feat-title"><?php echo $term->name; ?></span>
                                     <!-- DYNAMIC: category description -->
-                                    <span class="upa-alblg-feat-text">Essential food handling, Hygiene, safety and
-                                        nutrition training</span>
+                                    <span class="upa-alblg-feat-text"><?php echo $term->description; ?></span>
                                 </span>
                             </a>
                         </div>
                         <!-- LOOP END -->
-                        <div class="swiper-slide">
-                            <a href="#" class="upa-alblg-feat-card">
-                                <img src="assets/imgs/course-food-hygiene.jpg" alt="" loading="lazy">
-                                <span class="upa-alblg-feat-body">
-                                    <span class="upa-alblg-feat-title">Food Hygiene</span>
-                                    <span class="upa-alblg-feat-text">Essential food handling, Hygiene, safety and
-                                        nutrition training</span>
-                                </span>
-                            </a>
-                        </div>
-                        <div class="swiper-slide">
-                            <a href="#" class="upa-alblg-feat-card">
-                                <img src="assets/imgs/course-food-hygiene.jpg" alt="" loading="lazy">
-                                <span class="upa-alblg-feat-body">
-                                    <span class="upa-alblg-feat-title">Food Hygiene</span>
-                                    <span class="upa-alblg-feat-text">Essential food handling, Hygiene, safety and
-                                        nutrition training</span>
-                                </span>
-                            </a>
-                        </div>
-                        <div class="swiper-slide">
-                            <a href="#" class="upa-alblg-feat-card">
-                                <img src="assets/imgs/course-food-hygiene.jpg" alt="" loading="lazy">
-                                <span class="upa-alblg-feat-body">
-                                    <span class="upa-alblg-feat-title">Food Hygiene</span>
-                                    <span class="upa-alblg-feat-text">Essential food handling, Hygiene, safety and
-                                        nutrition training</span>
-                                </span>
-                            </a>
-                        </div>
-                        <div class="swiper-slide">
-                            <a href="#" class="upa-alblg-feat-card">
-                                <img src="assets/imgs/course-food-hygiene.jpg" alt="" loading="lazy">
-                                <span class="upa-alblg-feat-body">
-                                    <span class="upa-alblg-feat-title">Food Hygiene</span>
-                                    <span class="upa-alblg-feat-text">Essential food handling, Hygiene, safety and
-                                        nutrition training</span>
-                                </span>
-                            </a>
-                        </div>
-                        <div class="swiper-slide">
-                            <a href="#" class="upa-alblg-feat-card">
-                                <img src="assets/imgs/course-food-hygiene.jpg" alt="" loading="lazy">
-                                <span class="upa-alblg-feat-body">
-                                    <span class="upa-alblg-feat-title">Food Hygiene</span>
-                                    <span class="upa-alblg-feat-text">Essential food handling, Hygiene, safety and
-                                        nutrition training</span>
-                                </span>
-                            </a>
-                        </div>
-                        <div class="swiper-slide">
-                            <a href="#" class="upa-alblg-feat-card">
-                                <img src="assets/imgs/course-food-hygiene.jpg" alt="" loading="lazy">
-                                <span class="upa-alblg-feat-body">
-                                    <span class="upa-alblg-feat-title">Food Hygiene</span>
-                                    <span class="upa-alblg-feat-text">Essential food handling, Hygiene, safety and
-                                        nutrition training</span>
-                                </span>
-                            </a>
-                        </div>
-                        <div class="swiper-slide">
-                            <a href="#" class="upa-alblg-feat-card">
-                                <img src="assets/imgs/course-food-hygiene.jpg" alt="" loading="lazy">
-                                <span class="upa-alblg-feat-body">
-                                    <span class="upa-alblg-feat-title">Food Hygiene</span>
-                                    <span class="upa-alblg-feat-text">Essential food handling, Hygiene, safety and
-                                        nutrition training</span>
-                                </span>
-                            </a>
-                        </div>
+                         <?php endforeach; ?>
                     </div>
                 </div>
                 <div class="upa-alblg-feat-pagination flex justify-center gap-1.5 mt-6"></div>
@@ -198,31 +132,40 @@
                 </div>
 
                 <div class="upa-alblg-list">
+                    <?php
+                    $posts = new WP_Query([
+                        'post_type' => 'post',
+                        'posts_per_page' => 10,
+                        'post_status' => 'publish'
+                    ]);
+
+                    while($posts->have_posts()):
+                        $posts->the_post();
+                    ?>
                     <!-- LOOP START: blog post -->
                     <article class="upa-alblg-post">
                         <!-- DYNAMIC: post date (md+ box) -->
                         <time class="upa-alblg-post-datebox" datetime="2026-08-22">
-                            <span class="upa-alblg-post-day">22</span>
-                            <span class="upa-alblg-post-month">Aug</span>
+                            <span class="upa-alblg-post-day"><?php echo get_the_modified_date('d'); ?></span>
+                            <span class="upa-alblg-post-month"><?php echo get_the_modified_date('M'); ?></span>
                         </time>
                         <!-- DYNAMIC: post URL, featured image -->
-                        <a href="#" class="upa-alblg-post-image" tabindex="-1" aria-hidden="true">
-                            <img src="assets/imgs/course-food-hygiene.jpg" alt="" loading="lazy">
+                        <a href="<?php echo get_the_permalink(); ?>" class="upa-alblg-post-image" tabindex="-1" aria-hidden="true">
+                            <img src="<?php echo get_the_post_thumbnail_url(); ?>" alt="" loading="lazy">
                         </a>
                         <div class="upa-alblg-post-body">
                             <!-- DYNAMIC: post date (mobile pill) -->
-                            <time class="upa-alblg-post-date" datetime="2026-08-22">22 Aug, 2026</time>
+                            <time class="upa-alblg-post-date" datetime="2026-08-22"><?php get_the_modified_date("D M, Y"); ?></time>
                             <!-- DYNAMIC: category name + archive URL -->
-                            <a href="#" class="upa-alblg-post-cat">Food Hygiene &amp; Safety</a>
+                             <?php foreach(get_the_terms(get_the_ID(), 'category') as $term): ?>
+                            <a href="<?php get_term_link($term); ?>" class="upa-alblg-post-cat"><?php echo $term->name; ?></a>
+                            <?php endforeach; ?>
                             <!-- DYNAMIC: post title + URL -->
-                            <h3 class="upa-alblg-post-title"><a href="#">Food Safety Made Simple: Expert Tips for Safer
-                                    Food Handling</a></h3>
+                            <h3 class="upa-alblg-post-title"><a href="<?php echo get_the_permalink(); ?>"><?php echo get_the_title(); ?></a></h3>
                             <!-- DYNAMIC: post excerpt -->
-                            <p class="upa-alblg-post-excerpt">Discover expert food hygiene tips and practical guidance
-                                to help you handle, prepare, and store food safely with confidence.</p>
+                            <p class="upa-alblg-post-excerpt"><?php echo wp_trim_words(get_the_excerpt(), 15); ?></p>
                             <!-- DYNAMIC: post URL; sr-only text = post title -->
-                            <a href="#" class="upa-alblg-post-more">View details<span class="sr-only">: Food Safety
-                                    Made Simple: Expert Tips for Safer Food Handling</span>
+                            <a href="<?php echo get_the_permalink(); ?>" class="upa-alblg-post-more">View details<span class="sr-only">: <?php echo get_the_title(); ?></span>
                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                                     stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                                     <path d="M4 12h15M14 7l5 5-5 5" />
@@ -231,102 +174,7 @@
                         </div>
                     </article>
                     <!-- LOOP END -->
-                    <article class="upa-alblg-post">
-                        <time class="upa-alblg-post-datebox" datetime="2026-08-22">
-                            <span class="upa-alblg-post-day">22</span>
-                            <span class="upa-alblg-post-month">Aug</span>
-                        </time>
-                        <a href="#" class="upa-alblg-post-image" tabindex="-1" aria-hidden="true">
-                            <img src="assets/imgs/course-food-hygiene.jpg" alt="" loading="lazy">
-                        </a>
-                        <div class="upa-alblg-post-body">
-                            <time class="upa-alblg-post-date" datetime="2026-08-22">22 Aug, 2026</time>
-                            <a href="#" class="upa-alblg-post-cat">Food Hygiene &amp; Safety</a>
-                            <h3 class="upa-alblg-post-title"><a href="#">Food Safety Made Simple: Expert Tips for Safer
-                                    Food Handling</a></h3>
-                            <p class="upa-alblg-post-excerpt">Discover expert food hygiene tips and practical guidance
-                                to help you handle, prepare, and store food safely with confidence.</p>
-                            <a href="#" class="upa-alblg-post-more">View details<span class="sr-only">: Food Safety
-                                    Made Simple: Expert Tips for Safer Food Handling</span>
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                    stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                                    <path d="M4 12h15M14 7l5 5-5 5" />
-                                </svg>
-                            </a>
-                        </div>
-                    </article>
-                    <article class="upa-alblg-post">
-                        <time class="upa-alblg-post-datebox" datetime="2026-08-22">
-                            <span class="upa-alblg-post-day">22</span>
-                            <span class="upa-alblg-post-month">Aug</span>
-                        </time>
-                        <a href="#" class="upa-alblg-post-image" tabindex="-1" aria-hidden="true">
-                            <img src="assets/imgs/course-food-hygiene.jpg" alt="" loading="lazy">
-                        </a>
-                        <div class="upa-alblg-post-body">
-                            <time class="upa-alblg-post-date" datetime="2026-08-22">22 Aug, 2026</time>
-                            <a href="#" class="upa-alblg-post-cat">Food Hygiene &amp; Safety</a>
-                            <h3 class="upa-alblg-post-title"><a href="#">Food Safety Made Simple: Expert Tips for Safer
-                                    Food Handling</a></h3>
-                            <p class="upa-alblg-post-excerpt">Discover expert food hygiene tips and practical guidance
-                                to help you handle, prepare, and store food safely with confidence.</p>
-                            <a href="#" class="upa-alblg-post-more">View details<span class="sr-only">: Food Safety
-                                    Made Simple: Expert Tips for Safer Food Handling</span>
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                    stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                                    <path d="M4 12h15M14 7l5 5-5 5" />
-                                </svg>
-                            </a>
-                        </div>
-                    </article>
-                    <article class="upa-alblg-post">
-                        <time class="upa-alblg-post-datebox" datetime="2026-08-22">
-                            <span class="upa-alblg-post-day">22</span>
-                            <span class="upa-alblg-post-month">Aug</span>
-                        </time>
-                        <a href="#" class="upa-alblg-post-image" tabindex="-1" aria-hidden="true">
-                            <img src="assets/imgs/course-food-hygiene.jpg" alt="" loading="lazy">
-                        </a>
-                        <div class="upa-alblg-post-body">
-                            <time class="upa-alblg-post-date" datetime="2026-08-22">22 Aug, 2026</time>
-                            <a href="#" class="upa-alblg-post-cat">Food Hygiene &amp; Safety</a>
-                            <h3 class="upa-alblg-post-title"><a href="#">Food Safety Made Simple: Expert Tips for Safer
-                                    Food Handling</a></h3>
-                            <p class="upa-alblg-post-excerpt">Discover expert food hygiene tips and practical guidance
-                                to help you handle, prepare, and store food safely with confidence.</p>
-                            <a href="#" class="upa-alblg-post-more">View details<span class="sr-only">: Food Safety
-                                    Made Simple: Expert Tips for Safer Food Handling</span>
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                    stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                                    <path d="M4 12h15M14 7l5 5-5 5" />
-                                </svg>
-                            </a>
-                        </div>
-                    </article>
-                    <article class="upa-alblg-post">
-                        <time class="upa-alblg-post-datebox" datetime="2026-08-22">
-                            <span class="upa-alblg-post-day">22</span>
-                            <span class="upa-alblg-post-month">Aug</span>
-                        </time>
-                        <a href="#" class="upa-alblg-post-image" tabindex="-1" aria-hidden="true">
-                            <img src="assets/imgs/course-food-hygiene.jpg" alt="" loading="lazy">
-                        </a>
-                        <div class="upa-alblg-post-body">
-                            <time class="upa-alblg-post-date" datetime="2026-08-22">22 Aug, 2026</time>
-                            <a href="#" class="upa-alblg-post-cat">Food Hygiene &amp; Safety</a>
-                            <h3 class="upa-alblg-post-title"><a href="#">Food Safety Made Simple: Expert Tips for Safer
-                                    Food Handling</a></h3>
-                            <p class="upa-alblg-post-excerpt">Discover expert food hygiene tips and practical guidance
-                                to help you handle, prepare, and store food safely with confidence.</p>
-                            <a href="#" class="upa-alblg-post-more">View details<span class="sr-only">: Food Safety
-                                    Made Simple: Expert Tips for Safer Food Handling</span>
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                    stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                                    <path d="M4 12h15M14 7l5 5-5 5" />
-                                </svg>
-                            </a>
-                        </div>
-                    </article>
+                     <?php endwhile; ?>
                 </div>
             </div>
         </section>

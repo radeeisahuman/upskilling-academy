@@ -122,14 +122,21 @@
                     ?>
                     <!-- LOOP START: course card -->
                     <div class="upa-popcrs-card">
-                        <div class="upa-popcrs-image-wrap">
-                            <!-- DYNAMIC: course_thumbnail -->
-                            <img src="<?php echo get_the_post_thumbnail_url(); ?>" alt="<?php echo get_the_title(); ?> Thumbnail">
-                            <!-- CONDITIONAL: sale ribbon, discounted courses only -->
+                        <div class="upa-popcrs-image-wrap flex items-center justify-center"
+                            style="background-image: url('<?php echo get_the_post_thumbnail_url(); ?>'); background-size: cover;">
+
+                            <div class="w-full" style="background: rgba(0,0,0,0.6);">
+                                <h2 class="text-center text-white text-[28px]">
+                                    <?php echo get_the_title(); ?>
+                                </h2>
+                            </div>
+
                             <div class="upa-popcrs-sale-clip">
                                 <div class="upa-popcrs-sale-ribbon">Sale</div>
                             </div>
+
                         </div>
+                        
                         <div class="upa-popcrs-body">
                             <!-- DYNAMIC: course_title -->
                             <h3 class="text-upa-green font-bold upa-txt-normal"><?php echo get_the_title(); ?></h3>
@@ -181,11 +188,19 @@
                             ?>
                             <div class="swiper-slide">
                                 <div class="upa-popcrs-card">
-                                    <div class="upa-popcrs-image-wrap">
-                                        <img src="<?php echo get_the_post_thumbnail_url(); ?>" alt="<?php echo get_the_title(); ?> Thumbnail">
+                                    <div class="upa-popcrs-image-wrap flex items-center justify-center"
+                                        style="background-image: url('<?php echo get_the_post_thumbnail_url(); ?>'); background-size: cover;">
+
+                                        <div class="w-full" style="background: rgba(0,0,0,0.6);">
+                                            <h2 class="text-center text-white text-[28px]">
+                                                <?php echo get_the_title(); ?>
+                                            </h2>
+                                        </div>
+
                                         <div class="upa-popcrs-sale-clip">
                                             <div class="upa-popcrs-sale-ribbon">Sale</div>
                                         </div>
+
                                     </div>
                                     <div class="upa-popcrs-body">
                                         <h3 class="text-upa-green font-bold upa-txt-normal"><?php echo get_the_title(); ?></h3>

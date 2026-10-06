@@ -86,7 +86,7 @@
                         </div>
 
                         <!-- DYNAMIC: add-to-cart URL for the membership -->
-                        <a href="#" class="upa-btn upa-btn-peach_green upa-lftsub-hi-plan-btn">Add To Cart</a>
+                        <a href="<?php echo home_url() . '?add-to-cart=17042'; ?>" class="upa-btn upa-btn-peach_green upa-lftsub-hi-plan-btn">Add To Cart</a>
                     </div>
 
                 </div>
@@ -188,7 +188,7 @@
 
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6 mt-8">
                     <?php
-                    $terms = get_terms(['taxonomy' => 'course-category']);
+                    $terms = get_terms(['taxonomy' => 'course-category', 'number' => 20]);
                     foreach($terms as $term):
                     ?>
                     <a href="<?php echo get_term_link($term); ?>" class="upa-crcat-card">
@@ -598,7 +598,7 @@
                 <p class="upa-txt-normal mt-3 max-w-xl mx-auto">Join thousands of learners who have advanced their
                     careers with our accredited bundle courses.</p>
                 <!-- DYNAMIC: add-to-cart URL for the membership -->
-                <a href="#" class="upa-btn upa-btn-peach_green mt-6">Enrol Now - £99/Onetime</a>
+                <a href="<?php echo home_url() . '?add-to-cart=17042'; ?>" class="upa-btn upa-btn-peach_green mt-6">Enrol Now - £99/Onetime</a>
             </div>
         </section>
 

@@ -42,12 +42,12 @@
                     $paged = max(1, get_query_var('paged'));
                     $page_count = $wp_query->post_count;
                     $total = $wp_query->found_posts;
-
+                    $last_course = (15 * intval($paged)) + $page_count;
                     $first_course = (($paged - 1) * 15) + 1;
                     ?>
 
                     <!-- DYNAMIC: result count -->
-                    <p class="upa-alcrs-card-count"><?php echo "Showing " . $first_course . "-" . $page_count . " of " . $total . " Courses"; ?></p>
+                    <p class="upa-alcrs-card-count"><?php echo "Showing " . $first_course . "-" . $last_course . " of " . $total . " Courses"; ?></p>
 
                     <!-- ============================================
                         CATEGORY FILTER (upa-alcrs-cats-*)
@@ -66,7 +66,7 @@
                         <h2 class="upa-alcrs-cats-title">Course Categories</h2>
                         <?php
                         
-                        $terms = get_terms(['taxonomy' => 'course-category']);
+                        $terms = get_terms(['taxonomy' => 'course-category', 'number' => 15]);
                         $category_id = '';
                         if(isset($_GET['tutor-course-filter-category'])):
                             $category_id = intval($_GET['tutor-course-filter-category']);
@@ -141,13 +141,19 @@
                             ?>
                         <!-- LOOP START: course card -->
                         <div class="upa-alcrs-card">
-                            <div class="upa-alcrs-card-image-wrap">
-                                <!-- DYNAMIC: course_thumbnail -->
-                                <img src="<?php echo get_the_post_thumbnail_url(); ?>" alt="<?php echo get_the_title(); ?> thumbnail">
-                                <!-- CONDITIONAL: sale ribbon, discounted courses only -->
+                            <div class="upa-popcrs-image-wrap flex items-center justify-center"
+                                style="background-image: url('<?php echo get_the_post_thumbnail_url(); ?>'); background-size: cover;">
+
+                                <div class="w-full" style="background: rgba(0,0,0,0.6);">
+                                    <h2 class="text-center text-white text-[28px]">
+                                        <?php echo get_the_title(); ?>
+                                    </h2>
+                                </div>
+
                                 <div class="upa-alcrs-card-sale-clip">
                                     <div class="upa-alcrs-card-sale-ribbon">Sale</div>
                                 </div>
+
                             </div>
                             <div class="upa-alcrs-card-body">
                                 <!-- DYNAMIC: course_title -->

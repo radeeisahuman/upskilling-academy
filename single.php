@@ -18,66 +18,44 @@ while(have_posts()):
 
                     <div class="upa-snglblg-hi-image">
                         <!-- DYNAMIC: post featured image -->
-                        <img src="assets/imgs/course-food-hygiene.jpg" alt="A table of cooked food dishes">
+                        <img src="<?php echo get_the_post_thumbnail_url(); ?>" alt="<?php echo get_the_title(); ?> thubmnail">
                     </div>
 
                     <div class="upa-snglblg-hi-text">
                         <!-- DYNAMIC: post title -->
-                        <h1 class="upa-snglblg-hi-title">Build Essential Skills for Safety, Confidence &amp; Everyday
-                            Life</h1>
+                        <h1 class="upa-snglblg-hi-title"><?php echo get_the_title(); ?></h1>
                         <!-- DYNAMIC: post excerpt -->
-                        <p class="upa-txt-normal max-w-xl">Expert tips, practical guides, and actionable checklists
-                            to help you develop skills and apply what you learn.</p>
+                        <p class="upa-txt-normal max-w-xl"><?php echo wp_trim_words(get_the_excerpt(), 10); ?></p>
                         <!-- DYNAMIC: post date -->
-                        <time class="upa-snglblg-hi-date" datetime="2026-08-22">22 August, 2026</time>
+                        <time class="upa-snglblg-hi-date" datetime="2026-08-22"><?php echo get_the_modified_date('d M, Y')?></time>
                     </div>
 
                     <!-- Relevant courses: small slider -->
                     <div class="upa-snglblg-hi-rel">
-                        <h2 class="upa-snglblg-hi-rel-title">Relevant Courses</h2>
+                        <h2 class="upa-snglblg-hi-rel-title">Recent Courses</h2>
                         <div class="swiper upa-snglblg-hi-rel-swiper">
                             <div class="swiper-wrapper">
+                                <?php 
+                                $courses = new WP_Query([
+                                    'post_type' => 'courses',
+                                    'post_status' => 'publish',
+                                    'posts_per_page' => 5
+                                ]);
+                                while($courses->have_posts()):
+                                    $courses->the_post();
+                                ?>
                                 <!-- LOOP START: relevant course -->
                                 <div class="swiper-slide h-auto">
                                     <!-- DYNAMIC: course URL -->
-                                    <a href="#" class="upa-snglblg-hi-rel-card">
+                                    <a href="<?php echo get_the_permalink(); ?>" class="upa-snglblg-hi-rel-card">
                                         <!-- DYNAMIC: course thumbnail -->
-                                        <img src="assets/imgs/course-food-hygiene.jpg" alt="" loading="lazy">
+                                        <img src="<?php echo get_the_post_thumbnail_url(); ?>" alt="" loading="lazy">
                                         <!-- DYNAMIC: course title -->
-                                        <span class="upa-snglblg-hi-rel-name">Food Hygiene Training</span>
+                                        <span class="upa-snglblg-hi-rel-name"><?php echo get_the_title(); ?></span>
                                     </a>
                                 </div>
                                 <!-- LOOP END -->
-                                <div class="swiper-slide h-auto">
-                                    <a href="#" class="upa-snglblg-hi-rel-card">
-                                        <img src="assets/imgs/course-food-hygiene.jpg" alt="" loading="lazy">
-                                        <span class="upa-snglblg-hi-rel-name">Food Hygiene Training</span>
-                                    </a>
-                                </div>
-                                <div class="swiper-slide h-auto">
-                                    <a href="#" class="upa-snglblg-hi-rel-card">
-                                        <img src="assets/imgs/course-food-hygiene.jpg" alt="" loading="lazy">
-                                        <span class="upa-snglblg-hi-rel-name">Food Hygiene Training</span>
-                                    </a>
-                                </div>
-                                <div class="swiper-slide h-auto">
-                                    <a href="#" class="upa-snglblg-hi-rel-card">
-                                        <img src="assets/imgs/course-food-hygiene.jpg" alt="" loading="lazy">
-                                        <span class="upa-snglblg-hi-rel-name">Food Hygiene Training</span>
-                                    </a>
-                                </div>
-                                <div class="swiper-slide h-auto">
-                                    <a href="#" class="upa-snglblg-hi-rel-card">
-                                        <img src="assets/imgs/course-food-hygiene.jpg" alt="" loading="lazy">
-                                        <span class="upa-snglblg-hi-rel-name">Food Hygiene Training</span>
-                                    </a>
-                                </div>
-                                <div class="swiper-slide h-auto">
-                                    <a href="#" class="upa-snglblg-hi-rel-card">
-                                        <img src="assets/imgs/course-food-hygiene.jpg" alt="" loading="lazy">
-                                        <span class="upa-snglblg-hi-rel-name">Food Hygiene Training</span>
-                                    </a>
-                                </div>
+                                <?php endwhile; wp_reset_postdata(); ?>
                             </div>
                         </div>
                         <div class="upa-snglblg-hi-rel-nav">
@@ -135,72 +113,37 @@ while(have_posts()):
                     <!-- DYNAMIC: post content (the_content) - the .upa-snglblg-content
                          rules style plain editor output, no classes needed inside -->
                     <article class="upa-snglblg-content">
-                        <p>Understanding <strong>why HACCP training is essential</strong> is fundamental for any UK
-                            business that prepares, manufactures, stores, transports, serves or sells food. Food safety
-                            cannot depend solely on staff being careful or premises appearing clean. Instead, businesses
-                            need a structured, evidence-based approach to identifying what could make food unsafe,
-                            determining where control is critical, and taking prompt action when something goes wrong.
-                        </p>
-
-                        <h3>Quick Overview</h3>
-                        <p>Why HACCP Training Is Essential for UK food businesses is a key consideration for
-                            organisations that prepare, manufacture, store, transport, serve or sell food. HACCP
-                            training helps employees understand food safety risks, apply HACCP principles and maintain
-                            effective hazard control procedures.</p>
-
-                        <p>This guide covers:</p>
-                        <ul>
-                            <li>Why HACCP Training Is Essential and how it supports effective food safety management
-                            </li>
-                            <li>What HACCP is, why it is important and how HACCP principles help identify and control
-                                food safety hazards</li>
-                            <li>Who needs HACCP training, the different training levels and which roles require greater
-                                HACCP knowledge</li>
-                            <li>The seven principles of HACCP, including hazard analysis, Critical Control Points,
-                                monitoring and corrective actions</li>
-                            <li>UK HACCP requirements, legal responsibilities, training expectations and choosing the
-                                right HACCP course</li>
-                            <li>How HACCP training helps businesses improve food safety practices, protect consumers and
-                                maintain reliable food safety systems</li>
-                        </ul>
-
-                        <figure>
-                            <img src="assets/imgs/course-food-hygiene.jpg" alt="A table of cooked food dishes"
-                                loading="lazy">
-                        </figure>
-
-                        <h2>What Is HACCP and Why Does It Matter?</h2>
-                        <!-- PLACEHOLDER: article continues -->
-                        <p>Text Goes On</p>
+                        <?php the_content(); ?>
                     </article>
 
                     <!-- Sidebar: lifetime membership (same image as the hot deals page) -->
                     <aside class="upa-snglblg-aside" aria-label="Lifetime membership offer">
                         <!-- DYNAMIC: lifetime membership URL -->
-                        <a href="#" class="upa-snglblg-aside-promo">
-                            <img src="assets/imgs/htdl-plan-lifetime.png"
+                        <a href="<?php echo home_url('lifetime-membership'); ?>" class="upa-snglblg-aside-promo">
+                            <img src="<?php echo get_stylesheet_directory_uri() . '/assets/img/htdl-plan-lifetime.png'; ?>"
                                 alt="Lifetime Membership Plan - £99 for lifetime access to all courses and unlimited digital certificates, 90% off the regular £2000. Start now"
                                 loading="lazy">
                         </a>
                     </aside>
 
-                    <!-- Featured course (B3 promo) -->
+                    <!-- Featured course (B3 promo) 
                     <div class="upa-snglblg-course">
                         <div class="upa-snglblg-course-image">
-                            <!-- DYNAMIC: course thumbnail -->
+                             DYNAMIC: course thumbnail 
                             <img src="assets/imgs/course-food-hygiene.jpg" alt="" loading="lazy">
                         </div>
                         <div class="upa-snglblg-course-body">
-                            <!-- DYNAMIC: course title -->
+                             DYNAMIC: course title 
                             <h2 class="upa-snglblg-course-title">Food Hygiene Training Level 3</h2>
-                            <!-- DYNAMIC: course excerpt -->
+                             DYNAMIC: course excerpt 
                             <p class="upa-snglblg-course-text">Master the essentials of food hygiene and gain practical
                                 knowledge to help prevent contamination, protect customers, and maintain safer food
                                 standards.</p>
-                            <!-- DYNAMIC: course URL -->
+                             DYNAMIC: course URL 
                             <a href="#" class="upa-btn upa-btn-peach_green mt-1">Enroll Now</a>
                         </div>
                     </div>
+                                -->
 
                 </div>
             </div>
